@@ -4303,5 +4303,36 @@ window.updateMxPillForLive = function(isLive){
 })();
 
 </script>
+  <!-- REQUIRED URL: https://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&light=1&feed=%2Fmadcatnik%2F${slug}%2F -->
+<iframe id="den-mixcloud-widget" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0.01;" allow="autoplay" frameborder="0"></iframe>
+<script>
+const REQUIRED_URL = "https://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&light=1&feed=%2Fmadcatnik%2F${slug}%2F";
+let latestSlug = "";
+async function fetchLatest(){
+  try{
+    const r = await fetch("https://api.mixcloud.com/madcatnik/cloudcasts/?limit=1");
+    const j = await r.json();
+    if(j.data && j.data[0]){
+      latestSlug = j.data[0].key.replace(/\/$/, "").split("/").pop();
+      const t = document.getElementById('track-name'); if(t) t.textContent = j.data[0].name;
+    }
+  }catch(e){}
+}
+fetchLatest();
+const mainBtn = document.getElementById('btn');
+if(mainBtn){
+  mainBtn.addEventListener('click', ()=>{
+    setTimeout(()=>{
+      const iframe = document.getElementById('den-mixcloud-widget');
+      const playing = mainBtn.classList.contains('playing');
+      if(playing && latestSlug){
+        iframe.src = REQUIRED_URL.replace("${slug}", latestSlug);
+      } else {
+        iframe.src = "";
+      }
+    },150);
+  });
+}
+</script>
 </body>
 </html>
