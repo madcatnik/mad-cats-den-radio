@@ -1,2 +1,5 @@
-/api/votes  /.netlify/functions/votes  200
-/api/visitors  /.netlify/functions/visitors  200
+/listen  https://www.mixcloud.com/live/madcatnik/  302
+/live    https://www.mixcloud.com/live/madcatnik/  302
+/latest  https://www.mixcloud.com/madcatnik/  302
+/mix     https://www.mixcloud.com/madcatnik/  302
+/dispatches  https://madcatsdenradio.com/#dispatches  301
