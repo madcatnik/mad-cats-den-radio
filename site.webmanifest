@@ -1,0 +1,27 @@
+{
+  "name": "MAD CATS DEN \u2014 Rockabilly Radio+Zine",
+  "short_name": "MCD",
+  "description": "Rockabilly Radio+Zine Athens GR. Night Owl Radio archive, 45s, vinyl culture.",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#10120F",
+  "background_color": "#10120F",
+  "display": "standalone",
+  "start_url": "/"
+}
