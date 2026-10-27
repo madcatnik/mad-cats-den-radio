@@ -134,7 +134,7 @@ body.menu-open{overflow:hidden;scrollbar-gutter:stable}
 .shell.playing{border-color:rgba(155,219,193,.6);box-shadow:0 0 0 1px rgba(155,219,193,.32),0 0 24px rgba(155,219,193,.38),0 0 60px rgba(155,219,193,.2),6px 6px 0 var(--black)}
 .shell.live{border-color:rgba(204,45,48,.7);box-shadow:0 0 0 1px rgba(204,45,48,.4),0 0 28px rgba(204,45,48,.35),0 0 60px rgba(204,45,48,.15),6px 6px 0 var(--black)}
 .main{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:nowrap;overflow:visible}
-.cat{width:176px;height:176px;position:relative;flex:0 0 176px;border-radius:14px;flex-shrink:0;overflow:visible}
+.cat{width:220px;height:220px;position:relative;flex:0 0 220px;border-radius:14px;flex-shrink:0;overflow:visible}
 .cat img{width:100%;height:100%;object-fit:contain;position:relative;z-index:2;display:block}
 .glow{position:absolute;inset:-26px;background:radial-gradient(ellipse at 50% 45%,rgba(155,219,193,.22) 0%,rgba(155,219,193,.08) 40%,transparent 70%);filter:blur(26px);opacity:.11;pointer-events:none;transition:.35s}
 .shell.playing .glow{opacity:.2;filter:blur(22px)}
@@ -552,10 +552,10 @@ header{background:var(--ink)}
 @media (max-width: 768px){.hero{padding:24px 12px 24px;overflow:clip}
 .shell{width:100%;max-width:100%;display:flex;padding:16px 12px}
 .main{flex-direction:column;flex-wrap:wrap;gap:16px;align-items:center}
-.cat{width:140px;height:140px;flex:0 0 140px}
-.cat img{width:140px;height:140px}
-.cat picture{width:140px;height:140px}
-.cat picture img{width:140px;height:140px}
+.cat{width:180px;height:180px;flex:0 0 180px}
+.cat img{width:180px;height:180px}
+.cat picture{width:180px;height:180px}
+.cat picture img{width:180px;height:180px}
 .center{min-width:0;width:100%;gap:6px}
 .title .w{font-size:40px}
 .title .r{font-size:40px}
@@ -571,7 +571,7 @@ header{background:var(--ink)}
 @media(max-width:900px){.hero{padding:20px 10px 20px;overflow:hidden}
 .shell{width:calc(100% - 12px);max-width:520px;padding:16px 12px;overflow:hidden;align-items:stretch}
 .main{flex-direction:column;flex-wrap:nowrap;gap:16px;align-items:center;justify-content:flex-start;width:100%;overflow:hidden}
-.cat{width:160px;height:160px;flex:0 0 160px}
+.cat{width:180px;height:180px;flex:0 0 180px}
 .title{justify-content:center}
 .title .w{font-size:50px}
 .title .r{font-size:50px}
@@ -581,7 +581,7 @@ header{background:var(--ink)}
 .dial{max-width:100%}}
 @media(max-width:480px){.title .w{font-size:38px}
 .title .r{font-size:38px}
-.cat{width:140px;height:140px;flex:0 0 140px}
+.cat{width:180px;height:180px;flex:0 0 180px}
 .dial{max-width:100%}
 .shell{padding:14px 10px}
 .player{padding:10px 8px}}
@@ -2308,40 +2308,7 @@ section.mcd-program{
 }
 
 
-/* === 12PX GAP - sections close === */
-.hero{
-  padding:32px 12px 12px !important;
-  margin-bottom:12px !important;
-}
-#round-the-clock.mcd-super-section{
-  margin-bottom:12px !important;
-}
-#round-the-clock.mcd-super-section > section,
-#main-content > section.mcd-program{
-  margin-bottom:12px !important;
-}
-#main-content > section.mcd-program:last-of-type{
-  margin-bottom:0 !important;
-}
-.mcd-program__header.tighter.final-v24{
-  padding:16px 0 10px 0 !important;
-}
-
-@media (max-width:900px){
-  .hero{ padding:24px 12px 10px !important; margin-bottom:10px !important; }
-  #round-the-clock.mcd-super-section{ margin-bottom:10px !important; }
-  #round-the-clock.mcd-super-section > section,
-  #main-content > section.mcd-program{ margin-bottom:10px !important; }
-}
-@media (max-width:640px){
-  .hero{ padding:20px 10px 8px !important; margin-bottom:8px !important; }
-  #round-the-clock.mcd-super-section{ margin-bottom:8px !important; }
-  #round-the-clock.mcd-super-section > section,
-  #main-content > section.mcd-program{ margin-bottom:8px !important; }
-}
-
-
-/* === FINAL: visitors badge pop + 12px tight === */
+/* === FINAL SPACING: 12px top / 8px all below === */
 @keyframes catBadgePop{
   0%{transform:scale(1) rotate(0deg)}
   30%{transform:scale(1.28) rotate(-3deg)}
@@ -2352,24 +2319,202 @@ section.mcd-program{
   animation: catBadgePop 0.38s cubic-bezier(.34,1.56,.64,1);
   display:inline-block;
 }
-
-
-/* === EQUAL GAPS - nav<>hero == hero<>round same distance === */
-nav.mcd-nav, nav{margin-bottom:0 !important; border-bottom-width:1px !important}
+nav.mcd-nav, nav, #main-nav{margin-bottom:0 !important; border-bottom-width:1px !important}
 .hero{
   margin-top:12px !important;
-  margin-bottom:12px !important;
+  margin-bottom:8px !important;
   padding:12px !important;
 }
 #round-the-clock.mcd-super-section{
   margin-top:0 !important;
-  margin-bottom:12px !important;
+  margin-bottom:8px !important;
   padding-top:0 !important;
+  padding-bottom:0 !important;
 }
-#round-the-clock .mcd-program__header,
-.mcd-program__header{
+#round-the-clock.mcd-super-section > section,
+#main-content > section,
+#main-content > section.mcd-program,
+section.mcd-program,
+.mcd-contact-section,
+#gig-guide, #den, #crate{
   margin-top:0 !important;
-  padding-top:12px !important;
+  margin-bottom:8px !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  border-top:none !important;
+}
+#dispatches{
+  margin-top:20px !important;
+  margin-bottom:8px !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  border-top:none !important;
+}
+.mcd-program__header,
+.mcd-program__header.tighter.final-v24,
+#round-the-clock .mcd-program__header{
+  margin:0 !important;
+  padding:8px 0 8px 0 !important;
+  gap:6px !important;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.mcd-program__header::before,
+.mcd-program__header::after{ display:none !important }
+.mcd-program__grid{
+  margin-top:8px !important;
+  margin-bottom:0 !important;
+  gap:8px !important;
+}
+.mcd-program__sub,
+.mcd-program__sub.tighter-meta{
+  margin:0 !important;
+  padding:0 !important;
+  gap:6px !important;
+}
+
+/* === MINI PLAYER FIX - no more funny sticking === */
+#mini-player.mini-player{
+  position:fixed !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  z-index:999 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+  padding:10px 14px !important;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0px)) !important;
+  min-height:52px !important;
+  background:#10120F !important;
+  background-image:none !important;
+  border-top:1.5px solid rgba(240,240,218,0.14) !important;
+  border-bottom:none !important;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.6) !important;
+  transform:translateY(100%) !important;
+  transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1) !important;
+}
+#mini-player.mini-player.show{
+  transform:translateY(0) !important;
+}
+#mini-player.mini-player[hidden]{
+  display:none !important;
+}
+#mini-player .mini-dot{ display:none !important }
+#mini-player .mini-track::before{ display:none !important }
+#mini-player #mini-status.mini-status.den-rules{
+  flex-shrink:0 !important;
+  color:#F0F0DA !important;
+  background:#CC2D30 !important;
+  border:1.5px solid #050505 !important;
+  font-family:'Bebas Neue',sans-serif !important;
+  font-size:11px !important;
+  letter-spacing:.06em !important;
+  font-weight:400 !important;
+  padding:4px 10px !important;
+  border-radius:6px !important;
+  box-shadow:2px 2px 0 #050505 !important;
+  text-shadow:1px 1px 0 #050505 !important;
+  transform:rotate(-0.8deg) !important;
+  white-space:nowrap !important;
+  line-height:1 !important;
+}
+#mini-player #mini-track.mini-track{
+  flex:1 !important;
+  min-width:0 !important;
+  font-family:'Space Mono',monospace !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+  letter-spacing:.06em !important;
+  color:#F0F0DA !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  opacity:0.9 !important;
+}
+#mini-player #mini-btn.mini-btn{
+  flex-shrink:0 !important;
+  width:44px !important;
+  height:36px !important;
+  min-width:44px !important;
+  background:#F0F0DA !important;
+  color:#050505 !important;
+  border:2px solid #050505 !important;
+  border-radius:8px !important;
+  box-shadow:2px 2px 0 #050505 !important;
+  font-size:14px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  transform:rotate(-0.6deg) !important;
+  transition:transform .15s, box-shadow .15s !important;
+}
+#mini-player #mini-btn.mini-btn:hover{
+  transform:rotate(0deg) translate(-1px,-1px) !important;
+  box-shadow:3px 3px 0 #050505 !important;
+  background:#FFFFFF !important;
+}
+#mini-player #mini-btn.mini-btn:active{
+  transform:translate(1px,1px) !important;
+  box-shadow:1px 1px 0 #050505 !important;
+}
+#mini-player #mini-btn.mini-btn.playing{
+  background:#9BDBC1 !important;
+}
+/* === VOTE CARD DARK TEXT - YOU VOTED === */
+.vote-card.has-voted{
+  border-color:#050505 !important;
+}
+.vote-card.has-voted .vote-top-left{
+  color:#050505 !important;
+  font-weight:700 !important;
+}
+.vote-card.has-voted .vote-top-left .dot-teal{
+  background:#050505 !important;
+  animation:none !important;
+}
+.mcd-footer{
+  padding-bottom:72px !important;
+}
+@media(max-width:900px){
+  .hero{ margin-top:12px !important; margin-bottom:8px !important; padding:12px !important }
+  #round-the-clock.mcd-super-section,
+  #main-content > section,
+  section.mcd-program{ margin-bottom:8px !important }
+  .mcd-program__header{ padding:8px 0 8px 0 !important }
+  .mcd-program__grid{ margin-top:8px !important; gap:8px !important }
+}
+@media(max-width:640px){
+  .hero{ margin-top:10px !important; margin-bottom:6px !important; padding:10px !important }
+  #round-the-clock.mcd-super-section,
+  #main-content > section,
+  section.mcd-program{ margin-bottom:6px !important }
+  .mcd-program__header{ padding:6px 0 6px 0 !important }
+  .mcd-program__grid{ margin-top:6px !important; gap:6px !important }
+  #mini-player.mini-player{
+    padding:8px 10px !important;
+    padding-bottom:calc(8px + env(safe-area-inset-bottom,0px)) !important;
+    gap:8px !important;
+    min-height:48px !important;
+  }
+  #mini-player #mini-status.mini-status.den-rules{
+    font-size:9px !important;
+    padding:3px 7px !important;
+  }
+  #mini-player #mini-track.mini-track{
+    font-size:9px !important;
+  }
+  #mini-player #mini-btn.mini-btn{
+    width:38px !important;
+    height:32px !important;
+    min-width:38px !important;
+    font-size:12px !important;
+  }
+  .mcd-footer{
+    padding-bottom:88px !important;
+  }
 }
 
 </style>
@@ -2418,9 +2563,9 @@ nav.mcd-nav, nav{margin-bottom:0 !important; border-bottom-width:1px !important}
   <div class="shell" id="shell">
     <div class="main">
       <div class="cat"><div class="glow" aria-hidden="true"></div><picture>
-  <source srcset="og-image.png 1x, og-image.png 2x" media="(max-width: 768px)">
-  <source srcset="og-image.png 1x, og-image.png 2x" type="image/webp">
-  <img src="og-image.png" alt="MAD CATS DEN hero cat with pompadour" width="176" height="176" loading="eager" decoding="async" fetchpriority="high">
+  <source srcset="assets/images/cat-hero-140.webp 1x, assets/images/cat-hero-140@2x.webp 2x" media="(max-width: 768px)">
+  <source srcset="assets/images/cat-hero.webp 1x, assets/images/cat-hero@2x.webp 2x" type="image/webp">
+  <img src="assets/images/cat-hero.webp" alt="MAD CATS DEN hero cat with pompadour" width="176" height="176" loading="eager" decoding="async" fetchpriority="high">
 </picture></div>
       <div class="center">
         <div class="manifesto">BROADCASTING FROM A BASEMENT<br class="manifesto-br"> LOW CEILING • HIGH VOLUME</div>
@@ -3972,19 +4117,8 @@ window.updateMxPillForLive = function(isLive){
     mini.classList.toggle('show', show);
     mini.hidden = !show;
     if(show) sync();
-    // footer together: if footer is in view, lift mini above footer
-    if(footer && show){
-      const rect = footer.getBoundingClientRect();
-      const overlap = window.innerHeight - rect.top;
-      if(overlap > 0){
-        mini.style.transform = 'translateY(0)';
-        mini.style.bottom = Math.min(overlap, footer.offsetHeight) + 'px';
-        mini.classList.add('above-footer');
-      } else {
-        mini.style.bottom = '0px';
-        mini.classList.remove('above-footer');
-      }
-    }
+    // Keep fixed at bottom - no more funny lifting
+    mini.style.bottom = '0px';
   }
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', onScroll, {passive:true});
