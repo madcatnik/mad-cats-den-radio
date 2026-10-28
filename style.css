@@ -2716,6 +2716,3 @@ html{scroll-behavior:auto}
   .mcd-card__dot{animation:none !important;}
   .live-dot{animation:none !important;}
 }
-.hint{color:inherit;text-decoration:none}
-a.hint{color:rgba(240,240,218,0.6) !important;text-decoration:none !important}
-a.hint:hover{opacity:1;color:var(--teal) !important}

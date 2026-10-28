@@ -62,7 +62,6 @@ window.MCD_Athens = {
     menu.classList.add('open');
     mBtn.classList.add('open');
     mBtn.setAttribute('aria-expanded','true');
-    mBtn.setAttribute('aria-label','Close menu');
     document.body.classList.add('menu-open');
     if(main){
       if('inert' in HTMLElement.prototype){
@@ -80,7 +79,6 @@ window.MCD_Athens = {
     menu.classList.remove('open');
     mBtn.classList.remove('open');
     mBtn.setAttribute('aria-expanded','false');
-    mBtn.setAttribute('aria-label','Open menu');
     document.body.classList.remove('menu-open');
     if(main){
       main.removeAttribute('inert');
@@ -134,10 +132,7 @@ window.MCD_Athens = {
     const seen=new Set();
     const sections=[];
     allLinks.forEach(l=>{ const el=document.querySelector(l.getAttribute('href')); if(el && !seen.has(el.id)){ seen.add(el.id); sections.push(el); } });
-    let hasScrolled = false;
-    window.addEventListener('scroll', ()=>{ hasScrolled = true; }, {once:true});
     const setCurrent=(id)=>{
-      if(!hasScrolled && id==='round-the-clock') return;
       allLinks.forEach(a=>a.removeAttribute('aria-current'));
       // only first desktop + first mobile per id to avoid ROUND+CRATE both lit
       const firstDesk = desktopLinks.find(a=>a.getAttribute('href')==='#'+id);
@@ -145,9 +140,8 @@ window.MCD_Athens = {
       if(firstDesk) firstDesk.setAttribute('aria-current','page');
       if(firstMob) firstMob.setAttribute('aria-current','page');
     };
-    // clear hardcoded aria-current from HTML - no highlight on load
-    allLinks.forEach(a=>a.removeAttribute('aria-current'))
-    setTimeout(()=>allLinks.forEach(a=>a.removeAttribute('aria-current')), 300);
+    // clear hardcoded aria-current from HTML
+    allLinks.forEach(a=>a.removeAttribute('aria-current'));
     allLinks.forEach(a=>a.addEventListener('click',()=>setCurrent(a.getAttribute('href').slice(1))));
     if('IntersectionObserver' in window && sections.length){
       const io=new IntersectionObserver((entries)=>{
