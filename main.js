@@ -493,8 +493,39 @@ window.updateMxPillForLive = function(isLive){
   const mTower=document.getElementById('modal-tower');
   const mOnAir=document.getElementById('modal-onair');
   if(!modal||!card) return;
+  let cassettePreviousFocus = null;
+  function getCassetteFocusable(){
+    if(!modal) return [];
+    return Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(el=>!el.hasAttribute('disabled') && el.getAttribute('aria-hidden')!=='true');
+  }
+  function handleCassetteKeydown(e){
+    if(!modal.classList.contains('is-open')) return;
+    if(e.key==='Escape'){
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+    if(e.key==='Tab'){
+      const focusable = getCassetteFocusable();
+      if(focusable.length===0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length-1];
+      if(e.shiftKey){
+        if(document.activeElement===first){
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if(document.activeElement===last){
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+  }
   function openModal(el){
     if(!el||!el.dataset) return;
+    cassettePreviousFocus = document.activeElement;
     const time=el.dataset.time||'';
     const title=el.dataset.title||'';
     const desc=el.dataset.desc||'';
@@ -525,6 +556,19 @@ window.updateMxPillForLive = function(isLive){
     modal.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
     document.documentElement.style.overflow='hidden';
+    // A2: make background inert
+    const mainEl = document.getElementById('main-content');
+    const navEl = document.getElementById('main-nav');
+    const footerEl = document.getElementById('footer');
+    if(mainEl) mainEl.inert = true;
+    if(navEl) navEl.inert = true;
+    if(footerEl) footerEl.inert = true;
+    // focus close button
+    setTimeout(()=>{
+      const closeBtnEl = modal.querySelector('#cassette-close, .modal-close, button');
+      if(closeBtnEl) closeBtnEl.focus();
+    }, 50);
+    document.addEventListener('keydown', handleCassetteKeydown);
     const skullImg=document.getElementById('modal-tower-img');
     const skullTower=document.getElementById('modal-tower');
     const reelA=document.getElementById('reel-a');
@@ -544,12 +588,23 @@ window.updateMxPillForLive = function(isLive){
   function closeModal(){
     if(!modal||!card) return;
     card.classList.remove('is-visible');
+    document.removeEventListener('keydown', handleCassetteKeydown);
+    const mainEl = document.getElementById('main-content');
+    const navEl = document.getElementById('main-nav');
+    const footerEl = document.getElementById('footer');
+    if(mainEl) mainEl.inert = false;
+    if(navEl) navEl.inert = false;
+    if(footerEl) footerEl.inert = false;
     setTimeout(function(){
       modal.classList.add('modal-hidden');
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden','true');
       document.body.style.overflow='';
       document.documentElement.style.overflow='';
+      if(cassettePreviousFocus && cassettePreviousFocus.focus){
+        cassettePreviousFocus.focus();
+      }
+      cassettePreviousFocus = null;
     },200);
   }
   document.getElementById('program-cards')?.addEventListener('click', function(e){

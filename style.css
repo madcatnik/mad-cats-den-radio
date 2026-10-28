@@ -1,16 +1,12 @@
-/* LOCKED FINAL - Racing + Staatliches + Space Mono - Self-hosted only, no Google */
+/* SELF-HOSTED FONTS - Racing + Staatliches + Space Mono - Offline */
 @font-face{
   font-family:'Racing Sans One';
   font-style:normal;
   font-weight:400;
   font-display:swap;
   src: url('assets/fonts/RacingSansOne-Regular.woff2') format('woff2'),
-       url('assets/fonts/RacingSansOne/RacingSansOne-Regular.woff2') format('woff2'),
-       url('assets/fonts/RacingSansOne-Regular.woff2') format('woff2'),
        url('assets/fonts/RacingSansOne-Regular.woff') format('woff'),
-       url('assets/fonts/RacingSansOne/RacingSansOne-Regular.woff') format('woff'),
-       url('assets/fonts/RacingSansOne-Regular.ttf') format('truetype'),
-       url('assets/fonts/RacingSansOne/RacingSansOne-Regular.ttf') format('truetype');
+       url('assets/fonts/RacingSansOne-Regular.ttf') format('truetype');
 }
 @font-face{
   font-family:'Staatliches';
@@ -18,32 +14,22 @@
   font-weight:400;
   font-display:swap;
   src: url('assets/fonts/Staatliches-Regular.woff2') format('woff2'),
-       url('assets/fonts/Staatliches/Staatliches-Regular.woff2') format('woff2'),
-       url('assets/fonts/Staatliches-Regular.woff2') format('woff2'),
        url('assets/fonts/Staatliches-Regular.woff') format('woff'),
-       url('assets/fonts/Staatliches/Staatliches-Regular.woff') format('woff'),
-       url('assets/fonts/Staatliches-Regular.ttf') format('truetype'),
-       url('assets/fonts/Staatliches/Staatliches-Regular.ttf') format('truetype');
+       url('assets/fonts/Staatliches-Regular.ttf') format('truetype');
 }
 @font-face{
   font-family:'Space Mono';
   font-style:normal;
   font-weight:400;
   font-display:swap;
-  src: url('assets/fonts/SpaceMono-Regular.woff2') format('woff2'),
-       url('assets/fonts/SpaceMono/SpaceMono-Regular.woff2') format('woff2'),
-       url('assets/fonts/SpaceMono-Regular.woff') format('woff'),
-       url('assets/fonts/SpaceMono-Regular.ttf') format('truetype');
+  src: url('assets/fonts/SpaceMono-Regular.woff2') format('woff2');
 }
 @font-face{
   font-family:'Space Mono';
   font-style:normal;
   font-weight:700;
   font-display:swap;
-  src: url('assets/fonts/SpaceMono-Bold.woff2') format('woff2'),
-       url('assets/fonts/SpaceMono/SpaceMono-Bold.woff2') format('woff2'),
-       url('assets/fonts/SpaceMono-Bold.woff') format('woff'),
-       url('assets/fonts/SpaceMono-Bold.ttf') format('truetype');
+  src: url('assets/fonts/SpaceMono-Bold.woff2') format('woff2');
 }
 
 :root{--bg:#10120F;--card:#1A1C18;--cream:#F0F0DA;--red:#CC2D30;--teal:#9BDBC1;--black:#050505;--nav-height:56px;--nav-height-d:62px;--nav-bg:rgba(16,18,15,0.92);--nav-bg-mobile:rgba(16,18,15,0.98);--logo-mad-bg:#050505;--logo-mad-text:#F0F0DA;--logo-sub-bg:#050505;--logo-sub-text:#9BDBC1;--ink:#10120F;--surface:#1A1C18;--elevated:#23251F;--paper:#F0F0DA;--mint:#9BDBC1;--mint-dot:#5AAE8E;--brick:#CC2D30;--brick-text:#D84548;--border-paper:rgba(240,240,218,0.18);--border-mint:rgba(155,219,193,0.25)}
