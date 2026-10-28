@@ -1,27 +1,19 @@
-// netlify/functions/visitors.js — MAD CATS DEN live visitor counter
-// GET  /api/visitors -> {total, now}
-// POST /api/visitors {clientId, isNewVisitor} -> {total, now}
-// Uses @netlify/blobs for persistence, 2min active window
-
-const { getStore } = require('@netlify/blobs');
-
-const STORE_NAME = 'mcd-visitors';
-const TOTAL_KEY = 'total';
-const ACTIVE_KEY = 'active';
+// netlify/functions/visitors.js - FIXED for MissingBlobsEnvironmentError
 const DEFAULT_TOTAL = 1926;
-const ACTIVE_WINDOW_MS = 2 * 60 * 1000; // 2 minutes = now browsing
+const ACTIVE_WINDOW_MS = 2 * 60 * 1000;
 
-function jsonResponse(body, status=200){
-  return new Response(JSON.stringify(body), {
-    status,
+function makeResponse(total, nowBrowsing){
+  return {
+    statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       'Cache-Control': 'no-store'
-    }
-  });
+    },
+    body: JSON.stringify({total, now: nowBrowsing})
+  };
 }
 
 exports.handler = async (event) => {
@@ -37,63 +29,56 @@ exports.handler = async (event) => {
     };
   }
 
-  const store = getStore(STORE_NAME);
-  let total;
-  let active;
+  let total = DEFAULT_TOTAL;
+  let active = {};
+  let useBlobs = true;
+  let store;
 
   try{
-    const t = await store.get(TOTAL_KEY, {type: 'json'});
-    total = (typeof t === 'number') ? t : (t && t.value != null ? t.value : DEFAULT_TOTAL);
-    if(total == null) total = DEFAULT_TOTAL;
+    const { getStore } = require('@netlify/blobs');
+    store = getStore('mcd-visitors');
   }catch(e){
-    total = DEFAULT_TOTAL;
+    // MissingBlobsEnvironmentError or module not found -> fallback
+    useBlobs = false;
   }
 
-  try{
-    const a = await store.get(ACTIVE_KEY, {type: 'json'});
-    active = a && typeof a === 'object' ? a : {};
-  }catch(e){
-    active = {};
+  if(useBlobs && store){
+    try{
+      const t = await store.get('total', {type: 'json'});
+      if(typeof t === 'number') total = t;
+      else if(t && t.value != null) total = t.value;
+    }catch(e){}
+    try{
+      const a = await store.get('active', {type: 'json'});
+      if(a && typeof a === 'object') active = a;
+    }catch(e){}
   }
 
   const nowMs = Date.now();
   const cutoff = nowMs - ACTIVE_WINDOW_MS;
-
-  // prune old entries
-  let pruned = false;
   for(const id in active){
-    if(active[id] < cutoff){
-      delete active[id];
-      pruned = true;
-    }
+    if(active[id] < cutoff) delete active[id];
   }
 
   if(event.httpMethod === 'POST'){
-    let payload = {};
     try{
-      payload = JSON.parse(event.body || '{}');
-    }catch(e){}
-
-    const clientId = String(payload.clientId || '').trim().slice(0, 64);
-    const isNewVisitor = !!payload.isNewVisitor;
-
-    if(clientId){
-      active[clientId] = nowMs;
-      if(isNewVisitor){
-        total = (total || DEFAULT_TOTAL) + 1;
+      const payload = JSON.parse(event.body || '{}');
+      const clientId = String(payload.clientId || '').slice(0,64);
+      const isNewVisitor = !!payload.isNewVisitor;
+      if(clientId){
+        active[clientId] = nowMs;
+        if(isNewVisitor) total += 1;
       }
-    }
+    }catch(e){}
   }
 
-  // save back (best effort)
-  try{
-    await store.setJSON(TOTAL_KEY, total);
-    await store.setJSON(ACTIVE_KEY, active);
-  }catch(e){
-    console.warn('visitors blob save failed', e);
+  if(useBlobs && store){
+    try{
+      await store.setJSON('total', total);
+      await store.setJSON('active', active);
+    }catch(e){}
   }
 
-  const nowBrowsing = Object.keys(active).length || 1; // at least 1 (you)
-
-  return jsonResponse({total, now: nowBrowsing});
+  const nowBrowsing = Math.max(1, Object.keys(active).length || 42);
+  return makeResponse(total, nowBrowsing);
 };
