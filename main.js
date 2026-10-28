@@ -132,7 +132,10 @@ window.MCD_Athens = {
     const seen=new Set();
     const sections=[];
     allLinks.forEach(l=>{ const el=document.querySelector(l.getAttribute('href')); if(el && !seen.has(el.id)){ seen.add(el.id); sections.push(el); } });
+    let hasScrolled = false;
+    window.addEventListener('scroll', ()=>{ hasScrolled = true; }, {once:true});
     const setCurrent=(id)=>{
+      if(!hasScrolled && id==='round-the-clock') return; // no highlight on initial load for ROUND
       allLinks.forEach(a=>a.removeAttribute('aria-current'));
       // only first desktop + first mobile per id to avoid ROUND+CRATE both lit
       const firstDesk = desktopLinks.find(a=>a.getAttribute('href')==='#'+id);
@@ -140,8 +143,9 @@ window.MCD_Athens = {
       if(firstDesk) firstDesk.setAttribute('aria-current','page');
       if(firstMob) firstMob.setAttribute('aria-current','page');
     };
-    // clear hardcoded aria-current from HTML
-    allLinks.forEach(a=>a.removeAttribute('aria-current'));
+    // clear hardcoded aria-current from HTML - no highlight on load
+    allLinks.forEach(a=>a.removeAttribute('aria-current'))
+    setTimeout(()=>allLinks.forEach(a=>a.removeAttribute('aria-current')), 300);
     allLinks.forEach(a=>a.addEventListener('click',()=>setCurrent(a.getAttribute('href').slice(1))));
     if('IntersectionObserver' in window && sections.length){
       const io=new IntersectionObserver((entries)=>{
