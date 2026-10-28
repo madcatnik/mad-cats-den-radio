@@ -37,31 +37,6 @@ window.MCD_safeStorage = (function(){
   return {get:get, set:set, parse:parse};
 })();
 
-// Appearance-neutral accessibility helpers shared by both existing dialogs.
-window.MCD_motionBehavior = function(){
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-};
-window.MCD_modalBackground = (function(){
-  let saved = null;
-  return function(block){
-    if(block && !saved){
-      saved = Array.from(document.querySelectorAll('#main-content,#main-nav,#footer,#mobile-menu,#mini-player,.skip-link')).map(function(el){
-        const state = {el:el, inert:el.inert};
-        el.inert = true;
-        return state;
-      });
-    } else if(!block && saved){
-      saved.forEach(function(state){ state.el.inert = state.inert; });
-      saved = null;
-    }
-  };
-})();
-window.MCD_dialogFocusables = function(root){
-  return Array.from(root.querySelectorAll('button,a[href],input,select,textarea,[tabindex]')).filter(function(el){
-    return !el.disabled && el.tabIndex >= 0 && !el.closest('[hidden],[inert]') && el.getClientRects().length > 0;
-  });
-};
-
 // ATHENS CLOCK — single source of truth (V79) — replaces 3 duplicated getAthensTime()
 window.MCD_Athens = {
   time: function(){ try{ return new Date().toLocaleTimeString('en-GB',{timeZone:'Europe/Athens',hour:'2-digit',minute:'2-digit',hour12:false}); }catch(e){ return new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); } },
@@ -84,11 +59,9 @@ window.MCD_Athens = {
   if(!menu||!mBtn) return;
   function getFocusable(){ return Array.from(menu.querySelectorAll('a,button')).filter(el=>!el.disabled); }
   function openMenu(){
-    menu.inert=false;
     menu.classList.add('open');
     mBtn.classList.add('open');
     mBtn.setAttribute('aria-expanded','true');
-    mBtn.setAttribute('aria-label','Close menu');
     document.body.classList.add('menu-open');
     if(main){
       if('inert' in HTMLElement.prototype){
@@ -103,11 +76,9 @@ window.MCD_Athens = {
     if(first) first.focus({preventScroll:true});
   }
   function closeMenu(){
-    menu.inert=true;
     menu.classList.remove('open');
     mBtn.classList.remove('open');
     mBtn.setAttribute('aria-expanded','false');
-    mBtn.setAttribute('aria-label','Open menu');
     document.body.classList.remove('menu-open');
     if(main){
       main.removeAttribute('inert');
@@ -200,7 +171,7 @@ window.MCD_Athens = {
     const next = !prog.classList.contains('is-expanded');
     setExpanded(next);
     if(next){
-      document.getElementById('program-cards')?.scrollIntoView({behavior:window.MCD_motionBehavior(), block:'start'});
+      document.getElementById('program-cards')?.scrollIntoView({behavior:'smooth', block:'start'});
     }
   }
   
@@ -215,7 +186,38 @@ window.MCD_Athens = {
   handleDesktop();
 })();
 
-// Native player buttons already support Enter and Space without global interception.
+// Keyboard: Space to play/pause (safe, ignores inputs, modals)
+
+// KEYBOARD — V99 (safe, local only): Space to play/pause, ignores typing
+(function(){
+  const btn = document.getElementById('btn');
+  const miniBtn = document.getElementById('mini-btn');
+  if(!btn) return;
+  document.addEventListener('keydown', (e)=>{
+    if(e.code !== 'Space' && e.key !== ' ') return;
+    const t = e.target;
+    const isTyping = t && (t.tagName==='INPUT' || t.tagName==='TEXTAREA' || t.tagName==='SELECT' || t.isContentEditable);
+    if(isTyping) return;
+    // Don't hijack when vote modal or cassette modal is open
+    const voteOpen = document.getElementById('voteModal') && document.getElementById('voteModal').classList.contains('open');
+    const cassetteOpen = document.getElementById('cassette-modal') && !document.getElementById('cassette-modal').classList.contains('modal-hidden');
+    if(voteOpen || cassetteOpen) return;
+    // Only when player is in view or focused — allow global space for radio feel, but prevent scroll
+    if(document.activeElement === btn || document.activeElement === miniBtn || document.activeElement === document.body){
+      e.preventDefault();
+      btn.click();
+    } else if (e.target === document.body) {
+      e.preventDefault();
+      btn.click();
+    }
+  });
+  // Make mini-btn also space-able via focus
+  if(miniBtn){
+    miniBtn.addEventListener('keydown', (e)=>{
+      if(e.code==='Space' || e.key===' '){ e.preventDefault(); miniBtn.click(); }
+    });
+  }
+})();
 
 /* ==========================================
 
@@ -253,7 +255,6 @@ window.__mcdUpdateMxPill = function(isLive){
 
 window.setLiveMode = function(live){
   isLiveMode = !!live;
-  if(pTrack){ pTrack.href = isLiveMode ? MIXCLOUD_LIVE : MIXCLOUD_PROFILE; pTrack.setAttribute('aria-label', (isLiveMode ? 'Mixcloud live' : 'Mixcloud archive') + ' (opens in new tab)'); }
   window.__mcdUpdateMxPill(isLiveMode);
 
   if(isLiveMode){
@@ -264,10 +265,10 @@ window.setLiveMode = function(live){
     marquee.textContent='● LIVE NOW: madcatnik on Mixcloud • CLICK TO TUNE IN •';
     marquee.classList.add('playing');
     pTrack.classList.add('live');
-    pTrack.title='Tune in live on Mixcloud (opens in new tab)';
+    pTrack.title='Tune in live on Mixcloud';
     lbl.textContent='TUNE IN LIVE';
     btn.className='btn live';
-    btn.setAttribute('aria-label','Tune in live on Mixcloud (opens in new tab)');
+    btn.setAttribute('aria-label','Tune in live on Mixcloud');
     reel1.classList.add('playing'); reel2.classList.add('playing'); tape.classList.add('playing');
   } else {
     shell.classList.remove('live'); player.classList.remove('live');
@@ -285,10 +286,10 @@ window.setLiveMode = function(live){
       marquee.classList.remove('playing');
     }
     pTrack.classList.remove('live');
-    pTrack.title='Open Mixcloud archive (opens in new tab)';
+    pTrack.title='Open Mixcloud archive';
     lbl.textContent='FIRE IT UP';
     btn.className='btn idle';
-    btn.setAttribute('aria-label','Open Mixcloud archive (opens in new tab)');
+    btn.setAttribute('aria-label','Open Mixcloud archive');
     shell.classList.remove('playing'); player.classList.remove('playing');
     reel1.classList.remove('playing'); reel2.classList.remove('playing'); tape.classList.remove('playing');
   }
@@ -350,6 +351,18 @@ if(btn){
       }, 900);
     }
   };
+}
+if(pTrack){ pTrack.onclick=openMixcloud; }
+const scrollTriggerEl=document.getElementById('scroll-trigger');
+const heroEl=document.getElementById('hero');
+function doScroll(){
+  const next = heroEl.nextElementSibling;
+  if(next && next.offsetHeight>20){ next.scrollIntoView({behavior:'smooth', block:'start'}); }
+  else { window.scrollBy({top: window.innerHeight*0.85, behavior:'smooth'}); }
+}
+if(scrollTriggerEl){
+  scrollTriggerEl.addEventListener('click', doScroll);
+  scrollTriggerEl.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); doScroll(); }});
 }
 
 // Single source of truth is window.__mcdUpdateMxPill (defined in hero). Keep alias for legacy calls.
@@ -428,9 +441,6 @@ window.updateMxPillForLive = function(isLive){
     document.querySelectorAll('.mcd-card').forEach(c=>{
       const isNow = c.dataset.time===slot;
       c.classList.toggle('is-now', isNow);
-      c.setAttribute('aria-label', c.dataset.time+' '+c.dataset.title+' — liner notes'+(isNow ? ' — ON AIR' : ''));
-      if(isNow) c.setAttribute('aria-current','true');
-      else c.removeAttribute('aria-current');
       if(isNow){
         currentCard = c;
         const g = c.dataset.circleBg || '#9BDBC1';
@@ -483,22 +493,39 @@ window.updateMxPillForLive = function(isLive){
   const mTower=document.getElementById('modal-tower');
   const mOnAir=document.getElementById('modal-onair');
   if(!modal||!card) return;
-  let lastFocus=null;
-  let closing=false;
-  function trapTab(e){
-    if(e.key!=='Tab'||!modal.classList.contains('is-open')) return;
-    const f=window.MCD_dialogFocusables(card);
-    if(!f.length){ e.preventDefault(); return; }
-    const first=f[0], last=f[f.length-1];
-    if(e.shiftKey&&(document.activeElement===first||!card.contains(document.activeElement))){ e.preventDefault(); last.focus(); }
-    else if(!e.shiftKey&&(document.activeElement===last||!card.contains(document.activeElement))){ e.preventDefault(); first.focus(); }
+  let cassettePrevFocus = null;
+  function getCassetteFocusables(){
+    if(!modal) return [];
+    return Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(function(el){ return !el.hasAttribute('disabled') && el.getAttribute('aria-hidden')!=='true'; });
   }
-  document.addEventListener('keydown', trapTab);
+  function handleCassetteTab(e){
+    if(!modal.classList.contains('is-open')) return;
+    if(e.key==='Escape'){
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+    if(e.key==='Tab'){
+      var focusable = getCassetteFocusables();
+      if(focusable.length===0) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length-1];
+      if(e.shiftKey){
+        if(document.activeElement===first){
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if(document.activeElement===last){
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+  }
   function openModal(el){
     if(!el||!el.dataset) return;
-    if(modal.classList.contains('is-open')) return;
-    closing=false;
-    lastFocus=el;
+    cassettePrevFocus = document.activeElement;
     const time=el.dataset.time||'';
     const title=el.dataset.title||'';
     const desc=el.dataset.desc||'';
@@ -529,6 +556,18 @@ window.updateMxPillForLive = function(isLive){
     modal.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
     document.documentElement.style.overflow='hidden';
+    // A1+A2: background inert + focus
+    var mainEl = document.getElementById('main-content');
+    var navEl = document.getElementById('main-nav');
+    var footerEl = document.getElementById('footer');
+    if(mainEl) mainEl.inert = true;
+    if(navEl) navEl.inert = true;
+    if(footerEl) footerEl.inert = true;
+    setTimeout(function(){
+      var closeBtnEl = modal.querySelector('#cassette-close, .modal-close, button');
+      if(closeBtnEl) closeBtnEl.focus();
+    }, 60);
+    document.addEventListener('keydown', handleCassetteTab);
     const skullImg=document.getElementById('modal-tower-img');
     const skullTower=document.getElementById('modal-tower');
     const reelA=document.getElementById('reel-a');
@@ -544,23 +583,27 @@ window.updateMxPillForLive = function(isLive){
       setTimeout(function(){ reelA.classList.remove('mcd-rotate'); reelB.classList.remove('mcd-rotate-reverse'); }, 3000);
     }
     setTimeout(function(){ card.classList.add('is-visible'); },10);
-    if(closeBtn) closeBtn.focus({preventScroll:true});
-    window.MCD_modalBackground(true);
   }
   function closeModal(){
-    if(!modal.classList.contains('is-open')||closing) return;
-    closing=true;
+    if(!modal||!card) return;
     card.classList.remove('is-visible');
+    document.removeEventListener('keydown', handleCassetteTab);
+    var mainEl = document.getElementById('main-content');
+    var navEl = document.getElementById('main-nav');
+    var footerEl = document.getElementById('footer');
+    if(mainEl) mainEl.inert = false;
+    if(navEl) navEl.inert = false;
+    if(footerEl) footerEl.inert = false;
     setTimeout(function(){
       modal.classList.add('modal-hidden');
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden','true');
       document.body.style.overflow='';
       document.documentElement.style.overflow='';
-      window.MCD_modalBackground(false);
-      if(lastFocus&&document.contains(lastFocus)) lastFocus.focus({preventScroll:true});
-      closing=false;
-      lastFocus=null;
+      if(cassettePrevFocus && cassettePrevFocus.focus){
+        cassettePrevFocus.focus();
+      }
+      cassettePrevFocus = null;
     },200);
   }
   document.getElementById('program-cards')?.addEventListener('click', function(e){
@@ -600,14 +643,12 @@ window.updateMxPillForLive = function(isLive){
   const pinnedAuthor = $('#pinned-shout-author');
   const pinnedNote = $('#pinned-note');
 
-  // Stop rotating placeholders for people who request reduced motion.
-  const placeholderMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   // ROCK / ROLL slow rotation - 5s
   const catPlaceholders = ["ROCK", "ROLL"];
   let catIdx = 0;
   nikoInput.placeholder = catPlaceholders[0];
   function rotateCatPlaceholder(){
-    if(!placeholderMotion.matches && document.activeElement !== nikoInput && !nikoInput.value){
+    if(document.activeElement !== nikoInput && !nikoInput.value){
       catIdx = (catIdx + 1) % catPlaceholders.length;
       nikoInput.placeholder = catPlaceholders[catIdx];
     }
@@ -794,7 +835,7 @@ window.updateMxPillForLive = function(isLive){
     const track = trackRaw || 'Gene Vincent - Crazy Beat';
     const id = uid(); const time = bu();
     const msg = track;
-    const note = {id, name:nameRaw, isHost:false, time, msg, vinyl:'teal'};
+    const note = {id, name:nameRaw, isHost:true, time, msg, vinyl:'teal'};
     notes.unshift(note);
     // Guardrail: keep only 50 in memory + storage
     if(notes.length>50) notes.length = 50;
@@ -804,7 +845,7 @@ window.updateMxPillForLive = function(isLive){
     while(shoutWall.children.length>50){
       shoutWall.removeChild(shoutWall.lastChild);
     }
-    shoutWall.scrollTo({top:0, behavior:window.MCD_motionBehavior()});
+    shoutWall.scrollTo({top:0, behavior:'smooth'});
     ruthInput.value=''; saveNotes(notes); toast('BOPPER DROPPED TO SIDE B');
     lastDropAt = now;
     dropBtn.disabled = true;
@@ -893,15 +934,43 @@ window.updateMxPillForLive = function(isLive){
   let selectedVote = getLastVote();
   let currentCounts = getLocalCounts();
   let previousFocus = null;
-  let voteOpenVersion = 0;
   let isChangingVote = false;
 
   
+  // Step 5: radiogroup arrow-key navigation (a11y)
+  (function(){
+    const group = document.getElementById('voteOptions');
+    if(!group) return;
+    group.addEventListener('keydown', function(e){
+      const options = Array.from(group.querySelectorAll('.vote-option:not([disabled])'));
+      if(!options.length) return;
+      const currentIndex = options.indexOf(document.activeElement);
+      if(currentIndex===-1) return;
+      let nextIndex = -1;
+      if(e.key==='ArrowDown' || e.key==='ArrowRight'){
+        e.preventDefault();
+        nextIndex = (currentIndex + 1) % options.length;
+      } else if(e.key==='ArrowUp' || e.key==='ArrowLeft'){
+        e.preventDefault();
+        nextIndex = (currentIndex - 1 + options.length) % options.length;
+      } else if(e.key==='Home'){
+        e.preventDefault();
+        nextIndex = 0;
+      } else if(e.key==='End'){
+        e.preventDefault();
+        nextIndex = options.length - 1;
+      }
+      if(nextIndex>=0){
+        options[nextIndex].focus();
+        options[nextIndex].click();
+      }
+    });
+  })();
 
   function getFocusableElements(){
     const modalBox = voteModal.querySelector('.modal-box');
     if(!modalBox) return [];
-    return window.MCD_dialogFocusables(modalBox);
+    return Array.from(modalBox.querySelectorAll('button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(el=>!el.closest('[hidden]') && el.offsetParent!==null);
   }
 
   function renderVoteResults(counts){
@@ -996,8 +1065,6 @@ window.updateMxPillForLive = function(isLive){
       if(!opt.matches(':focus')){
         opt.tabIndex = isSelected ? 0 : -1;
       }
-      const result = document.getElementById('vote-result-'+v);
-      if(result) result.textContent = showResults ? pct[v]+' percent of votes' : '';
       if(showResults){
         opt.classList.add('has-results');
         opt.classList.remove('is-selected');
@@ -1056,33 +1123,37 @@ window.updateMxPillForLive = function(isLive){
   }
 
   async function openVote(){
-    if(voteModal.classList.contains('open')) return;
-    const version = ++voteOpenVersion;
     previousFocus = document.activeElement;
+    if(voteCard) voteCard.setAttribute('aria-expanded','true');
     voteModal.classList.add('open');
     voteModal.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';
+    try{
+      currentCounts = await fetchRealCounts();
+    }catch(e){ currentCounts = getLocalCounts(); }
     renderVoteResults(currentCounts);
-    const options = Array.from(voteModal.querySelectorAll('.vote-option'));
-    const sel = options.find(opt=>opt.getAttribute('aria-checked')==='true') || options[0];
-    options.forEach(opt=>opt.tabIndex = opt===sel ? 0 : -1);
-    if(sel) sel.focus({preventScroll:true});
-    window.MCD_modalBackground(true);
-    let counts;
-    try{ counts = await fetchRealCounts(); }catch(e){ counts = getLocalCounts(); }
-    if(version !== voteOpenVersion || !voteModal.classList.contains('open')) return;
-    renderVoteResults(counts);
+    requestAnimationFrame(()=>{
+      const sel = voteModal.querySelector('.vote-option[aria-checked="true"]') || voteModal.querySelector('.vote-option');
+      if(sel){
+        sel.tabIndex = 0;
+        sel.focus();
+      } else {
+        const firstFocus = getFocusableElements()[0];
+        if(firstFocus) firstFocus.focus();
+      }
+    });
   }
   function closeVote(){
-    if(!voteModal.classList.contains('open')) return;
-    ++voteOpenVersion;
+    if(voteCard) voteCard.setAttribute('aria-expanded','false');
     voteModal.classList.remove('open');
     voteModal.setAttribute('aria-hidden','true');
     document.body.style.overflow = '';
     isChangingVote = false;
-    window.MCD_modalBackground(false);
-    if(previousFocus && document.contains(previousFocus)) previousFocus.focus({preventScroll:true});
-    else if(voteCard) voteCard.focus({preventScroll:true});
+    if(previousFocus && previousFocus.focus){
+      try{ previousFocus.focus(); }catch(e){}
+    } else if(voteCard){
+      voteCard.focus();
+    }
     previousFocus = null;
   }
 
@@ -1133,7 +1204,7 @@ window.updateMxPillForLive = function(isLive){
   }
 
   voteCard.addEventListener('click', openVote);
-
+  voteCard.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openVote(); } });
   // closeModal guard removed — dead
   const modalCloseX = document.getElementById('modalCloseX');
   if(modalCloseX){ modalCloseX.addEventListener('click', closeVote); }
@@ -1170,12 +1241,12 @@ window.updateMxPillForLive = function(isLive){
       const first = focusable[0];
       const last = focusable[focusable.length-1];
       if(e.shiftKey){
-        if(document.activeElement===first || !voteModal.contains(document.activeElement)){
+        if(document.activeElement===first){
           e.preventDefault();
           last.focus();
         }
       } else {
-        if(document.activeElement===last || !voteModal.contains(document.activeElement)){
+        if(document.activeElement===last){
           e.preventDefault();
           first.focus();
         }

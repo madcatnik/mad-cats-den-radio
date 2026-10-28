@@ -1,24 +1,10 @@
-/* =======================================================
-   MAD CATS DEN — style.css
-   Consolidated & cacheable — Zero visual changes
-   Generated: grouped 86 media queries into buckets
-   ======================================================= */
-
-/* 1. Variables & Base Styles */
-:root{--bg:#10120F;--card:#1A1C18;--cream:#F0F0DA;--red:#CC2D30;--teal:#9BDBC1;--black:#050505;--nav-height:56px;--nav-height-d:62px;--nav-bg:rgba(16,18,15,0.92);--nav-bg-mobile:rgba(16,18,15,0.98);--logo-mad-bg:#050505;--logo-mad-text:#F0F0DA;--logo-sub-bg:#050505;--logo-sub-text:#9BDBC1;--ink:#10120F;--surface:#1A1C18;--elevated:#23251F;--paper:#F0F0DA;--mint:#9BDBC1;--mint-dot:#5AAE8E;--brick:#CC2D30;--brick-text:#D84548;--border-paper:rgba(240,240,218,0.18);--border-mint:rgba(155,219,193,0.25)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;margin:0;padding:0;background:#10120F}
-body{background:#10120F;color:var(--cream);font-family:'Space Mono', monospace;overflow-x:hidden;-webkit-font-smoothing:antialiased;margin:0;padding:0}
-:focus-visible{outline:2px solid #9BDBC1;outline-offset:2px;outline-color:var(--mint)}
-
-
+/* SELF-HOSTED FONTS - Racing + Staatliches + Space Mono - Offline */
 @font-face{
   font-family:'Racing Sans One';
   font-style:normal;
   font-weight:400;
   font-display:swap;
   src: url('assets/fonts/RacingSansOne-Regular.woff2') format('woff2'),
-       url('assets/fonts/RacingSansOne/RacingSansOne-Regular.woff2') format('woff2'),
        url('assets/fonts/RacingSansOne-Regular.woff') format('woff'),
        url('assets/fonts/RacingSansOne-Regular.ttf') format('truetype');
 }
@@ -28,7 +14,6 @@ body{background:#10120F;color:var(--cream);font-family:'Space Mono', monospace;o
   font-weight:400;
   font-display:swap;
   src: url('assets/fonts/Staatliches-Regular.woff2') format('woff2'),
-       url('assets/fonts/Staatliches/Staatliches-Regular.woff2') format('woff2'),
        url('assets/fonts/Staatliches-Regular.woff') format('woff'),
        url('assets/fonts/Staatliches-Regular.ttf') format('truetype');
 }
@@ -37,19 +22,21 @@ body{background:#10120F;color:var(--cream);font-family:'Space Mono', monospace;o
   font-style:normal;
   font-weight:400;
   font-display:swap;
-  src: url('assets/fonts/SpaceMono-Regular.woff2') format('woff2'),
-       url('assets/fonts/SpaceMono/SpaceMono-Regular.woff2') format('woff2'),
-       url('assets/fonts/SpaceMono-Regular.ttf') format('truetype');
+  src: url('assets/fonts/SpaceMono-Regular.woff2') format('woff2');
 }
 @font-face{
   font-family:'Space Mono';
   font-style:normal;
   font-weight:700;
   font-display:swap;
-  src: url('assets/fonts/SpaceMono-Bold.woff2') format('woff2'),
-       url('assets/fonts/SpaceMono/SpaceMono-Bold.woff2') format('woff2'),
-       url('assets/fonts/SpaceMono-Bold.ttf') format('truetype');
+  src: url('assets/fonts/SpaceMono-Bold.woff2') format('woff2');
 }
+
+:root{--bg:#10120F;--card:#1A1C18;--cream:#F0F0DA;--red:#CC2D30;--teal:#9BDBC1;--black:#050505;--nav-height:56px;--nav-height-d:62px;--nav-bg:rgba(16,18,15,0.92);--nav-bg-mobile:rgba(16,18,15,0.98);--logo-mad-bg:#050505;--logo-mad-text:#F0F0DA;--logo-sub-bg:#050505;--logo-sub-text:#9BDBC1;--ink:#10120F;--surface:#1A1C18;--elevated:#23251F;--paper:#F0F0DA;--mint:#9BDBC1;--mint-dot:#5AAE8E;--brick:#CC2D30;--brick-text:#D84548;--border-paper:rgba(240,240,218,0.18);--border-mint:rgba(155,219,193,0.25)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;margin:0;padding:0;background:#10120F}
+body{background:#10120F;color:var(--cream);font-family:'Space Mono', monospace;overflow-x:hidden;-webkit-font-smoothing:antialiased;margin:0;padding:0}
+:focus-visible{outline:2px solid #9BDBC1;outline-offset:2px;outline-color:var(--mint)}
 
 /* 2. Keyframes */
 @keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(90,174,142,.4)}70%{box-shadow:0 0 0 6px rgba(90,174,142,0)}100%{box-shadow:0 0 0 0 rgba(90,174,142,0)}}
@@ -95,7 +82,7 @@ body{background:#10120F;color:var(--cream);font-family:'Space Mono', monospace;o
 .logo-stamp-link{display:flex;align-items:center;text-decoration:none;flex-shrink:1;min-width:0;max-width:68%;transform:rotate(-0.4deg);transition:transform .15s}
 .logo-stamp-link:hover{transform:rotate(-0.6deg) translate(-1px,-1px)}
 .logo-stamp{display:inline-flex;align-items:stretch;background:#10120F;border:1px solid #F0F0DA;border-radius:9px;box-shadow:2px 2px 0 #050505;overflow:hidden;max-width:100%;gap:0}
-.stamp-mad{background:#10120F;color:#F0F0DA;font-family:'Racing Sans One',cursive;font-size:18px;font-weight:600;letter-spacing:-0.02em;padding:7px 4px 7px 9px;line-height:.9;display:flex;align-items:center;border-right:1px solid rgba(240,240,218,0.8);margin-right:0;margin:0}
+.stamp-mad{background:#10120F;color:#F0F0DA;font-family:'Racing Sans One',sans-serif;font-size:18px;font-weight:600;letter-spacing:-0.02em;padding:7px 4px 7px 9px;line-height:.9;display:flex;align-items:center;border-right:1px solid rgba(240,240,218,0.8);margin-right:0;margin:0}
 .stamp-sub{background:#10120F;color:#9BDBC1;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:7px 10px 6px 5px;letter-spacing:0.08em;border-left:none;display:inline-flex;align-items:center;text-transform:uppercase;border-left-width:0;margin-left:-1px;box-shadow:none;line-height:1;white-space:nowrap;border:none;margin:0;gap:3px}
 .nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .nav-links{display:none;align-items:center;gap:4px;font-family:'Staatliches',sans-serif;font-size:13px;letter-spacing:.08em}
@@ -106,7 +93,7 @@ body{background:#10120F;color:var(--cream);font-family:'Space Mono', monospace;o
 .cats-badge:hover{transform:rotate(0deg) translate(-1px,-1px);box-shadow:4px 4px 0 #050505}
 .cats-badge .dot{width:9px;height:9px;background:var(--mint-dot);border:1.5px solid #050505;border-radius:50%;box-shadow:0 0 0 2px rgba(90,174,142,.2);animation:livePulse 1.8s infinite;border-color:#050505}
 .cats-badge .count{display:flex;align-items:baseline;gap:3px}
-.cats-badge .count .num{font-family:'Racing Sans One',cursive;font-size:14px;color:#050505;line-height:.9}
+.cats-badge .count .num{font-family:'Racing Sans One',sans-serif;font-size:14px;color:#050505;line-height:.9}
 .cats-badge .count .label{font-family:'Staatliches',sans-serif;font-size:13px;color:#050505;letter-spacing:.06em;opacity:.9}
 .hamburger{width:56px;height:44px;background:#F0F0DA;border:2.5px solid #050505;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0 8px;box-shadow:3px 3px 0 #050505;cursor:pointer;transition:transform .15s,box-shadow .15s;flex-shrink:0}
 .hamburger span{width:26px;height:2.5px;background:#050505;display:block;border-radius:2px;transition:transform .2s,opacity .2s}
@@ -134,7 +121,7 @@ body.menu-open{overflow:hidden;scrollbar-gutter:stable}
 .shell.live .glow{background:radial-gradient(ellipse at 50% 45%,rgba(204,45,48,.28) 0%,rgba(204,45,48,.1) 40%,transparent 70%);opacity:.22}
 .center{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:280px}
 .manifesto{font-size:10px;letter-spacing:.14em;opacity:.9;white-space:nowrap;margin-bottom:2px;line-height:1.2}
-.title{font-family:'Racing Sans One',cursive;display:flex;gap:6px;line-height:.9;font-size:0;user-select:none;margin:0;font-weight:400}
+.title{font-family:'Racing Sans One',sans-serif;display:flex;gap:6px;line-height:.9;font-size:0;user-select:none;margin:0;font-weight:400}
 .title .w{color:var(--cream);font-size:62px;letter-spacing:.01em}
 .title .r{color:var(--red);font-size:62px}
 .sub{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.18em;color:var(--teal);opacity:.7;margin-bottom:4px;line-height:1}
@@ -200,7 +187,7 @@ body.menu-open{overflow:hidden;scrollbar-gutter:stable}
 .live-badge{display:none;font-size:8px;font-weight:800;letter-spacing:.14em;background:var(--brick);color:var(--paper);padding:2px 6px;border-radius:4px;animation:livePulseRed 1.2s infinite}
 .player.live .live-badge{display:inline-block}
 .shell.live .live-badge{display:inline-block}
-.mcd-program__title{font-size:clamp(18px,3.4vw,26px);font-family:'Racing Sans One',cursive;line-height:1;text-transform:uppercase;letter-spacing:0.03em;margin:0;color:#F0F0DA;text-shadow:1px 1px 0 #050505;white-space:nowrap}
+.mcd-program__title{font-size:clamp(18px,3.4vw,26px);font-family:'Racing Sans One',sans-serif;line-height:1;text-transform:uppercase;letter-spacing:0.03em;margin:0;color:#F0F0DA;text-shadow:1px 1px 0 #050505;white-space:nowrap}
 .modal-desc{font-size:15px;text-align:center;font-family:'Space Mono', monospace;line-height:1.55;margin:0 0 14px 0;opacity:0.8;max-width:32ch;margin-left:auto;margin-right:auto;letter-spacing:-0.01em;font-weight:500;color:#F0F0DA;text-wrap:balance}
 #voteDesc.modal-desc{color:#050505;max-width:100%;white-space:normal;text-align:center;word-break:break-word;line-height:1.4;font-size:8px;opacity:1}
 .r-shake-line{font-size:clamp(2px,4.2vw,20px);font-family:'Staatliches', sans-serif;background:#F0F0DA;color:#050505;line-height:0.9;padding:3px clamp(6px,1vw,10px);border:1.5px solid #050505;border-radius:6px 2px 8px 3px;box-shadow:1.5px 1.5px 0 #050505;transform:rotate(-1.5deg);display:inline-flex;white-space:nowrap;flex-shrink:1;min-width:0}
@@ -256,7 +243,7 @@ a[href*="netlify"] .badge{display:none}
 .modal-center{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px}
 .modal-card.is-visible{transform:scale(1);opacity:1}
 .modal-close:focus-visible{outline:2px solid #F0F0DA;outline-offset:2px}
-.modal-close:focus:not(:focus-visible){outline:none}
+.modal-close:focus{outline:none}
 .modal-halftone{position:absolute;inset:8px;opacity:0.07;pointer-events:none;background-image:radial-gradient(white 1px,transparent 1px);background-size:10px 10px;border-radius:4px}
 .modal-body{position:relative;padding:12px}
 .modal-top-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
@@ -286,7 +273,7 @@ a[href*="netlify"] .badge{display:none}
 .mcd-program__sub .sub-dot{opacity:0.45}
 .mcd-program__sub #athens-clock-v5{color:#9BDBC1;opacity:0.95}
 .mcd-card:focus-visible{outline:2px solid #F0F0DA;outline-offset:2px;box-shadow:4px 4px 0 #050505,0 0 0 2px #F0F0DA}
-.mcd-card:focus:not(:focus-visible){outline:none}
+.mcd-card:focus{outline:none}
 .mcd-show-all-btn:focus-visible{outline:2px solid #F0F0DA;outline-offset:2px}
 .mcd-contact-section{background:#10120F;padding:0 16px 40px 16px;max-width:1280px;margin:0 auto;position:relative;overflow:visible}
 .mcd-contact-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,240,218,0.06),transparent)}
@@ -632,7 +619,7 @@ header{background:var(--ink)}
 
 
 /* V80 - nav aria-current highlight */
-.nav-link[aria-current="page"], .mobile-link[aria-current="page"]{color:var(--mint);border-color:rgba(155,219,193,.4);background:rgba(155,219,193,.12)}
+.nav-link[aria-current="page"], .mobile-link[aria-current="page"]{color:var(--paper);border-color:transparent;background:transparent}
 .vote-card:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
 
 /* V83 — backdrop-filter perf polish */
@@ -680,7 +667,7 @@ header{background:var(--ink)}
 
 /* V113 — Future anchors SOON stamp + footer */
 .soon-wrap{position:relative;overflow:hidden}
-.soon-stamp{position:absolute;top:12px;right:12px;background:#CC2D30;color:#F0F0DA;border:2px solid #050505;padding:4px 10px;font-family:'Racing Sans One',cursive;font-size:14px;letter-spacing:.08em;transform:rotate(3deg);box-shadow:2px 2px 0 #050505;z-index:2}
+.soon-stamp{position:absolute;top:12px;right:12px;background:#CC2D30;color:#F0F0DA;border:2px solid #050505;padding:4px 10px;font-family:'Racing Sans One',sans-serif;font-size:14px;letter-spacing:.08em;transform:rotate(3deg);box-shadow:2px 2px 0 #050505;z-index:2}
 .soon-stamp.teal{background:#9BDBC1;color:#050505;transform:rotate(-2deg)}
 .soon-stamp.cream{background:#F0F0DA;color:#050505;transform:rotate(1.5deg)}
 
@@ -2729,15 +2716,6 @@ html{scroll-behavior:auto}
   .mcd-card__dot{animation:none !important;}
   .live-dot{animation:none !important;}
 }
-/* Accessibility-only changes: retain all existing dimensions, colors and typography. */
-.a11y-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
-button.vote-card{font:inherit;text-align:inherit}
-.vote-card .r-and-vote-group{display:flex}
-a.hint,a.p-track{display:block;color:inherit;text-decoration:none}
-a.hint:hover{text-decoration:underline}
-h2.header-gimme{margin:0;font-weight:inherit}
-.footer-socials a,.footer-links a{position:relative}
-.footer-socials a::after,.footer-links a::after{content:'';position:absolute;top:50%;left:50%;width:max(100%,24px);height:max(100%,24px);transform:translate(-50%,-50%)}
-@media(prefers-reduced-motion:reduce){
-  .mcd-card.is-now .mcd-card__circle-normal,.dot-red,.dot-teal,.modal-onair-dot,.mcd-program__dot::after,.shell.playing .marquee,.shell.live .marquee,.shell.playing .p-bar,.shell.live .p-bar{animation:none!important}
-}
+.hint{color:inherit;text-decoration:none}
+a.hint{color:rgba(240,240,218,0.6) !important;text-decoration:none !important}
+a.hint:hover{opacity:1;color:var(--teal) !important}
