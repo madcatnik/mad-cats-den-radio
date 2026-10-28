@@ -6,11 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="MAD CATS DEN — Rockabilly Radio+Zine Athens GR. Night Owl Radio archive, 45s, vinyl culture, live wires. Est 2026.">
 <meta name="theme-color" content="#10120F">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="assets/fonts/RacingSansOne-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Staatliches-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/SpaceMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
-
-
 
 <meta property="og:image" content="https://madcatsdenradio.com/og-image.png">
 <meta property="og:image:secure_url" content="https://madcatsdenradio.com/og-image.png">
@@ -28,7 +29,6 @@
 <meta name="twitter:image:alt" content="MAD CATS DEN mascot - transparent rockabilly cat">
 <meta name="twitter:title" content="MAD CATS DEN — Rockabilly Radio+Zine Athens GR">
 <meta name="twitter:description" content="Rockabilly Radio+Zine Athens GR. Night Owl Radio archive, 45s, vinyl culture, live wires.">
-<!-- Transparent mascot sources: /assets/images/cat-hero-transparent.png (with tail), /assets/images/cat-hero-final-transparent.png (tight crop), /assets/images/og-image-transparent.png, /assets/images/skull-transparent.png -->
 <link rel="manifest" href="/site.webmanifest">
 <link rel="canonical" href="https://madcatsdenradio.com/">
 
@@ -40,9 +40,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
-<link rel="manifest" href="/site.webmanifest">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=selfhosted-staatliches">
 
 <script type="application/ld+json">
 {
@@ -77,57 +76,57 @@
 <body>
 <a href="#main-content" class="skip-link">SKIP TO CONTENT ✦</a>
 
-
-
 <nav id="main-nav">
   <div class="nav-inner">
     <a href="#hero" aria-label="MAD CATS DEN home - go to hero" class="logo-stamp-link" title="MAD CATS DEN - hero">
       <div class="logo-stamp"><span class="stamp-mad">MCD</span><span class="stamp-sub"><span class="stamp-star">✦</span> RADIO+ZINE <span class="stamp-est">EST.2026</span></span></div>
     </a>
     <div class="nav-right">
-      <div class="nav-links">
+            <div class="nav-links">
         <a class="nav-link" href="#round-the-clock">ROUND THE CLOCK</a><span class="nav-dot" aria-hidden="true">•</span>
         <a class="nav-link" href="#dispatches">DISPATCHES</a><span class="nav-dot" aria-hidden="true">•</span>
         <a class="nav-link" href="#gig-guide">GIG GUIDE</a><span class="nav-dot" aria-hidden="true">•</span>
-        <a class="nav-link" href="#den">THE DEN</a><span class="nav-dot" aria-hidden="true">•</span>
-        <a class="nav-link" href="#crate">CRATE</a>
+        <a class="nav-link" href="#crate">CRATE</a><span class="nav-dot" aria-hidden="true">•</span>
+        <a class="nav-link" href="#den">DEN</a><span class="nav-dot" aria-hidden="true">•</span>
+        <a class="nav-link" href="#gear">GEAR</a>
       </div>
-      <span role="status" aria-live="polite" aria-atomic="true" id="cats-badge" class="cats-badge" 
+      <a href="#round-the-clock" id="cats-badge" class="cats-badge" 
          data-tooltip="1926 cats prowled the den - 42 browsing now" 
          aria-label="1926 cats prowled the den - 42 browsing now" 
         >
         <span class="dot" aria-hidden="true"></span><span class="count"><span class="num">42</span><span class="label">CATS</span></span>
-      </span>
+      </a>
       <button type="button" class="hamburger" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
-<nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" inert>
+<nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
   <a class="mobile-link" href="#round-the-clock">ROUND THE CLOCK</a>
   <a class="mobile-link" href="#dispatches">DISPATCHES</a>
   <a class="mobile-link" href="#gig-guide">GIG GUIDE</a>
-  <a class="mobile-link" href="#den">THE DEN</a>
   <a class="mobile-link" href="#crate">CRATE</a>
+  <a class="mobile-link" href="#den">DEN</a>
+  <a class="mobile-link" href="#gear">GEAR</a>
 </nav>
 
-<main id="main-content" tabindex="-1"><div class="hero" id="hero">
+<main id="main-content"><div class="hero" id="hero">
   <div class="shell" id="shell">
     <div class="main">
       <div class="cat"><div class="glow" aria-hidden="true"></div><picture>
-  <source srcset="assets/images/cat-hero-140.webp 1x, assets/images/cat-hero-140@2x.webp 2x" media="(max-width: 768px)">
+  <source srcset="assets/images/cat-hero-140.webp 1x, assets/images/cat-hero-140@2x.webp 2x" media="(max-width: 768px)" type="image/webp">
   <source srcset="assets/images/cat-hero.webp 1x, assets/images/cat-hero@2x.webp 2x" type="image/webp">
   <img src="assets/images/cat-hero.webp" alt="MAD CATS DEN hero cat with pompadour" width="176" height="176" loading="eager" decoding="async" fetchpriority="high">
 </picture></div>
       <div class="center">
         <div class="manifesto">BROADCASTING FROM A BASEMENT<br class="manifesto-br"> LOW CEILING • HIGH VOLUME</div>
-        <h1 class="title" aria-label="Mad Cats Den"><span class="w">MAD</span><span class="w">CATS</span><span class="r">DEN</span></h1>
+        <h1 class="title"><span class="w">MAD</span><span class="w">CATS</span><span class="r">DEN</span></h1>
         <div class="sub" aria-hidden="true"><i></i><span>• REAL GONE ROCK & ROLL •</span><i></i></div>
         <div class="dial" aria-hidden="true"><div class="track"><div class="needle"></div></div></div>
-        <a href="#round-the-clock" class="hint" id="scroll-trigger" title="Scroll to dig">CRATE LIGHT ON • TAPE HISS INCLUDED • SCROLL TO DIG ▼</a>
+        <div class="hint" id="scroll-trigger" role="button" tabindex="0" title="Scroll to dig">CRATE LIGHT ON • TAPE HISS INCLUDED • SCROLL TO DIG ▼</div>
       </div>
       <div class="player" id="player">
         <div class="p-top"><span style="display:flex;align-items:center;gap:6px"><span class="p-dot idle" id="dot" aria-hidden="true"></span><span id="p-status">STEREO • 33⅓ RPM</span> <span class="live-badge" id="live-badge">● LIVE</span></span><span class="p-bars" aria-hidden="true"><span class="p-bar"></span><span class="p-bar"></span><span class="p-bar"></span></span></div>
-        <a href="https://www.mixcloud.com/madcatnik/" target="_blank" rel="noopener noreferrer" class="p-track" id="p-track" title="Open Mixcloud" aria-label="Mixcloud (opens in new tab)"><div class="marquee" id="marquee">ARCHIVE: mixcloud.com/madcatnik • Night Owl Radio •</div></a>
+        <div class="p-track" id="p-track" title="Open Mixcloud"><div class="marquee" id="marquee">ARCHIVE: mixcloud.com/madcatnik • Night Owl Radio •</div></div>
         <div class="p390-reels" aria-hidden="true">
           <div class="p390-reel"><div class="p390-reel-inner" id="reel1"><div class="p390-reel-cross-h"></div><div class="p390-reel-cross-v"></div><div class="p390-reel-center"></div></div><div id="spokes1" style="position:absolute;inset:0;pointer-events:none"></div></div>
           <div class="p390-tape" id="p390-tape"><div class="p390-tape-fill"></div></div>
@@ -146,22 +145,22 @@
 
 <div class="mcd-program__header tighter final-v24" id="program-header-favorite">
   <div class="title-wrap tighter-header final">
-    <h2 class="t-gimme header-gimme"><span class="star">✦</span> ROUND THE CLOCK</h2>
+    <span class="t-gimme header-gimme"><span class="star">✦</span> ROUND THE CLOCK</span>
     <span class="header-sub-bebas">24 HOURS OF REAL GONE ROCK & ROLL</span>
   </div>
   <div class="mcd-program__sub tighter-meta final-meta four-pills">
     <button id="mcd-toggle-schedule-pill" class="meta-pill view-schedule-pill" type="button" aria-expanded="false" aria-controls="program-cards">VIEW FULL SCHEDULE ↓</button>
-    <span class="sub-dot" aria-hidden="true">•</span>
+    <span class="sub-dot">•</span>
     <span class="meta-pill">ATHENS GR</span>
-    <span class="sub-dot" aria-hidden="true">•</span>
+    <span class="sub-dot">•</span>
     <span class="meta-pill time-pill" id="athens-clock-v5">07:07</span>
-    <span class="sub-dot" aria-hidden="true">•</span>
+    <span class="sub-dot">•</span>
     <span class="meta-pill teal-pill">LIVE WIRES COMING 2027</span>
   </div>
   </div>
 
 <div class="mcd-program__grid" id="program-cards">
-<div aria-label="06:00 MORNING JUMP — liner notes" class="mcd-card" data-desc="06:00 JUMP — BLEARY EYED BOP, BLACK COFFEE, LOUD SAX" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#E9DCC0" data-time="06:00" data-title="MORNING JUMP" role="button" tabindex="0">
+<div aria-label="Liner notes MORNING JUMP" class="mcd-card" data-desc="06:00 JUMP — BLEARY EYED BOP, BLACK COFFEE, LOUD SAX" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#E9DCC0" data-time="06:00" data-title="MORNING JUMP" role="button" tabindex="0">
 <div class="mcd-card__halftone"></div>
 <div class="mcd-card__inner">
 <div class="mcd-card__circle"><div class="mcd-card__circle-normal"><div class="mcd-card__dot"></div></div></div>
@@ -171,7 +170,7 @@
 </div>
 </div>
 </div>
-<div aria-label="09:00 DRAPES & DOLLS — liner notes" class="mcd-card" data-desc="TEDS & DAMES, R&R FLAMES, DEN JUKEBOX SPINS" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#CC2D30" data-time="09:00" data-title="DRAPES & DOLLS" role="button" tabindex="0">
+<div aria-label="Liner notes DRAPES & DOLLS" class="mcd-card" data-desc="TEDS & DAMES, R&R FLAMES, DEN JUKEBOX SPINS" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#CC2D30" data-time="09:00" data-title="DRAPES & DOLLS" role="button" tabindex="0">
 <div class="mcd-card__halftone"></div>
 <div class="mcd-card__inner">
 <div class="mcd-card__circle"><div class="mcd-card__circle-normal"><div class="mcd-card__dot"></div></div></div>
@@ -181,7 +180,7 @@
 </div>
 </div>
 </div>
-<div aria-label="12:00 SUN SLAP TIME — liner notes" class="mcd-card" data-desc="Memphis echo, slap bass, 706 Union Ave heat" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#9BDBC1" data-time="12:00" data-title="SUN SLAP TIME" role="button" tabindex="0">
+<div aria-label="Liner notes SUN SLAP TIME" class="mcd-card" data-desc="Memphis echo, slap bass, 706 Union Ave heat" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#9BDBC1" data-time="12:00" data-title="SUN SLAP TIME" role="button" tabindex="0">
 <div class="mcd-card__halftone"></div>
 <div class="mcd-card__inner">
 <div class="mcd-card__circle"><div class="mcd-card__circle-normal"><div class="mcd-card__dot"></div></div></div>
@@ -191,7 +190,7 @@
 </div>
 </div>
 </div>
-<div aria-label="15:00 THE ORIGINATORS — liner notes" class="mcd-card" data-desc="Ruth, LaVern, Wynonie, Fats & the crew who invented R & B" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#E9DCC0" data-time="15:00" data-title="THE ORIGINATORS" role="button" tabindex="0">
+<div aria-label="Liner notes THE ORIGINATORS" class="mcd-card" data-desc="Ruth, LaVern, Wynonie, Fats & the crew who invented R & B" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#E9DCC0" data-time="15:00" data-title="THE ORIGINATORS" role="button" tabindex="0">
 <div class="mcd-card__halftone"></div>
 <div class="mcd-card__inner">
 <div class="mcd-card__circle"><div class="mcd-card__circle-normal"><div class="mcd-card__dot"></div></div></div>
@@ -201,7 +200,7 @@
 </div>
 </div>
 </div>
-<div aria-label="18:00 DEN WILDMEN — liner notes" class="mcd-card" data-desc="Greased, loud & dangerous — mad, bad cat" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#CC2D30" data-time="18:00" data-title="DEN WILDMEN" role="button" tabindex="0">
+<div aria-label="Liner notes DEN WILDMEN" class="mcd-card" data-desc="Greased, loud & dangerous — mad, bad cat" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#CC2D30" data-time="18:00" data-title="DEN WILDMEN" role="button" tabindex="0">
 <div class="mcd-card__halftone"></div>
 <div class="mcd-card__inner">
 <div class="mcd-card__circle"><div class="mcd-card__circle-normal"><div class="mcd-card__dot"></div></div></div>
@@ -211,7 +210,7 @@
 </div>
 </div>
 </div>
-<div aria-label="21:00 THE NEW BREED — liner notes" class="mcd-card" data-desc="Revival killers 1978 → now, old way — heart and mind" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#9BDBC1" data-time="21:00" data-title="THE NEW BREED" role="button" tabindex="0">
+<div aria-label="Liner notes THE NEW BREED" class="mcd-card" data-desc="Revival killers 1978 → now, old way — heart and mind" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#9BDBC1" data-time="21:00" data-title="THE NEW BREED" role="button" tabindex="0">
 <div class="mcd-card__halftone"></div>
 <div class="mcd-card__inner">
 <div class="mcd-card__circle"><div class="mcd-card__circle-normal"><div class="mcd-card__dot"></div></div></div>
@@ -221,7 +220,7 @@
 </div>
 </div>
 </div>
-<div aria-label="00:00 TOMBSTONE BOOGIE — liner notes" class="mcd-card" data-desc="After-midnight rumble — boogie for the undead" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#E9DCC0" data-time="00:00" data-title="TOMBSTONE BOOGIE" role="button" tabindex="0">
+<div aria-label="Liner notes TOMBSTONE BOOGIE" class="mcd-card" data-desc="After-midnight rumble — boogie for the undead" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#E9DCC0" data-time="00:00" data-title="TOMBSTONE BOOGIE" role="button" tabindex="0">
 <div class="mcd-card__halftone"></div>
 <div class="mcd-card__inner">
 <div class="mcd-card__circle"><div class="mcd-card__circle-normal"><div class="mcd-card__dot"></div></div></div>
@@ -231,7 +230,7 @@
 </div>
 </div>
 </div>
-<div aria-label="03:00 THE GRIND — liner notes" class="mcd-card" data-desc="Blue lights, slow grind — Den after-hours" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#CC2D30" data-time="03:00" data-title="THE GRIND" role="button" tabindex="0">
+<div aria-label="Liner notes THE GRIND" class="mcd-card" data-desc="Blue lights, slow grind — Den after-hours" data-dj="Politis N" data-bg="#1A1C18" data-circle-bg="#CC2D30" data-time="03:00" data-title="THE GRIND" role="button" tabindex="0">
 <div class="mcd-card__halftone"></div>
 <div class="mcd-card__inner">
 <div class="mcd-card__circle"><div class="mcd-card__circle-normal"><div class="mcd-card__dot"></div></div></div>
@@ -255,7 +254,7 @@
     <span class="mcd-program__dot" style="background:#CC2D30"></span>
     <h2 class="mcd-program__title"><span>GIMME A BOPPER!</span></h2>
   </div>
-  <div class="mcd-program__sub"><span class="sub-line1">SHOUT IT — DROP IT — WE SPIN IT</span><span class="sub-line2"><span>ATHENS GR</span><span class="sub-dot" aria-hidden="true">•</span><span>DEN WALL LIVE</span><span class="sub-dot" aria-hidden="true">•</span><span id="contact-clock">--:--</span></span></div>
+  <div class="mcd-program__sub"><span class="sub-line1">SHOUT IT — DROP IT — WE SPIN IT</span><span class="sub-line2"><span>ATHENS GR</span><span class="sub-dot">•</span><span>DEN WALL LIVE</span><span class="sub-dot">•</span><span id="contact-clock">--:--</span></span></div>
 </div>
 
 <div class="mcd-grid">
@@ -264,11 +263,9 @@
       <div class="desc">If we have it in the den, we spin it. No Spotify links give us artist + song, or tell the cats you were here... Go cat go!</div>
       <div class="inputs-row">
         <div class="inputs-pair">
-          <label for="niko-input" class="a11y-only">Cat name</label>
-          <input id="niko-input" class="niko-input" placeholder="ROCK" maxlength="12" autocomplete="off" spellcheck="false">
+          <input id="niko-input" class="niko-input" placeholder="ROCK" maxlength="12" autocomplete="off" spellcheck="false" aria-label="Cat name">
           <div class="ruth-wrap">
-            <label for="ruth-input" class="a11y-only">Artist and track</label>
-            <input id="ruth-input" class="ruth-input" placeholder="GENE VINCENT - CRAZY BEAT" autocomplete="off" maxlength="80" spellcheck="false">
+            <input id="ruth-input" class="ruth-input" placeholder="GENE VINCENT - CRAZY BEAT" autocomplete="off" maxlength="80" spellcheck="false" aria-label="Track">
             <span class="music-badge" aria-hidden="true">♫</span>
           </div>
         </div>
@@ -280,38 +277,38 @@
     <div class="top-row">
       <div class="find-us"><span class="howl-star" aria-hidden="true">✦</span> HOWL <span class="howl-arrow" aria-hidden="true">➸</span></div>
       <a href="mailto:niko@madcatsdenradio.com" class="social-pill email-pill"><span class="pill-text">niko@madcatsdenradio.com</span></a>
-      <a href="https://ko-fi.com/madcatnik" target="_blank" rel="noopener noreferrer" class="social-pill kofi-pill" aria-label="Ko-fi — support the Den (opens in new tab)"><span class="pill-text">KO-FI ✦ SUPPORT THE DEN</span></a>
+      <a href="https://ko-fi.com/madcatnik" target="_blank" rel="noopener noreferrer" class="social-pill kofi-pill"><span class="pill-text">KO-FI ✦ SUPPORT THE DEN</span></a>
     </div>
     <div class="bottom-row">
       <div class="icon-group">
-        <a href="https://www.instagram.com/madcatnik/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram (opens in new tab)">IG</a>
-        <a href="https://www.facebook.com/madcatniko/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook (opens in new tab)">FB</a>
-        <a href="https://www.youtube.com/@madcatnik" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="YouTube (opens in new tab)">YT</a>
+        <a href="https://www.instagram.com/madcatnik/" target="_blank" rel="noopener noreferrer" class="social-icon">IG</a>
+        <a href="https://www.facebook.com/madcatniko/" target="_blank" rel="noopener noreferrer" class="social-icon">FB</a>
+        <a href="https://www.youtube.com/@madcatnik" target="_blank" rel="noopener noreferrer" class="social-icon">YT</a>
       </div>
-      <a href="https://www.mixcloud.com/madcatnik/" id="mx-pill" data-href="https://www.mixcloud.com/madcatnik/" data-href-live="https://www.mixcloud.com/live/madcatnik/" target="_blank" rel="noopener noreferrer" class="social-pill mx-pill" aria-label="Mixcloud (opens in new tab)"><span class="pill-text">M-X ✦ TAPE 24/7</span></a>
+      <a href="https://www.mixcloud.com/madcatnik/" id="mx-pill" data-href="https://www.mixcloud.com/madcatnik/" data-href-live="https://www.mixcloud.com/live/madcatnik/" target="_blank" rel="noopener noreferrer" class="social-pill mx-pill"><span class="pill-text">M-X ✦ TAPE 24/7</span></a>
     </div>
   </div>
 </div>
       </section>
 
-    <button type="button" class="vote-card" id="voteCard" aria-label="Open vote booth" aria-haspopup="dialog">
-      <span class="vote-top">
-        <span class="vote-top-left"><span class="dot-teal"></span> CHOOSE THE RUMBLE • ON AIR MONDAY 21:00</span>
-        <span class="vote-top-right"><span class="dot-red"></span> ENDS FRI 18:00</span>
-      </span>
-      <span class="vote-center ransom-single">
-        <span class="ransom-line" aria-label="SHAKE RATTLE & VOTE">
+    <section class="vote-card" id="voteCard" role="button" tabindex="0" aria-label="Open vote booth" aria-haspopup="dialog" aria-controls="voteModal" aria-expanded="false">
+      <div class="vote-top">
+        <div class="vote-top-left"><span class="dot-teal"></span> CHOOSE THE RUMBLE • ON AIR MONDAY 21:00</div>
+        <div class="vote-top-right"><span class="dot-red"></span> ENDS FRI 18:00</div>
+      </div>
+      <div class="vote-center ransom-single">
+        <div class="ransom-line" aria-label="SHAKE RATTLE & VOTE">
           <span class="r-shake-line">SHAKE</span>
           <span class="r-rattle-line">RATTLE</span>
-          <span class="r-and-vote-group"><span class="r-and-line">✦</span><span class="r-vote-line"><span>V</span><span>O</span><span>T</span><span>E</span></span></span>
-        </span>
-      </span>
-      <span class="vote-bottom">
-        <span class="vinyl-stack" aria-hidden="true"><span class="mini-vinyl" data-v="1" style="--v-dot:#9BDBC1"></span><span class="mini-vinyl" data-v="2" style="--v-dot:#CC2D30"></span><span class="mini-vinyl" data-v="3" style="--v-dot:#F0F0DA"></span></span>
+          <div class="r-and-vote-group"><span class="r-and-line">✦</span><span class="r-vote-line"><span>V</span><span>O</span><span>T</span><span>E</span></span></div>
+        </div>
+      </div>
+      <div class="vote-bottom">
+        <div class="vinyl-stack" aria-hidden="true"><span class="mini-vinyl" data-v="1" style="--v-dot:#9BDBC1"></span><span class="mini-vinyl" data-v="2" style="--v-dot:#CC2D30"></span><span class="mini-vinyl" data-v="3" style="--v-dot:#F0F0DA"></span></div>
         <span class="wurlitzer" id="wurlitzerText">WURLITZER 3 SELECTOR</span>
         <span class="one-vote" id="oneVoteText">One vote per cat.</span>
-      </span>
-    </button>
+      </div>
+    </section>
 
     <section class="live-wall" aria-label="Side B Live Wall">
       <div class="wall-header">
@@ -322,7 +319,7 @@
       <div class="wall-divider" aria-hidden="true"></div>
       <div class="shout-wrap">
         <div class="wall-fade-top" aria-hidden="true"></div>
-        <div id="shout-wall" class="shout-wall"></div>
+        <div id="shout-wall" class="shout-wall" aria-live="polite"></div>
         <div class="wall-fade-bottom" aria-hidden="true"></div>
       </div>
       <div class="pinned-wrapper" aria-label="Pinned announcement">
@@ -336,34 +333,33 @@
         </div>
       </div>
 </section>
-</div><!-- /.mcd-grid -->
-</section><!-- /#bopper -->
-</div><!-- /#round-the-clock -->
+</div>
+</section>
+</div>
 
 <section class="mcd-program" id="dispatches" style="scroll-margin-top:24px">
 <div class="mcd-program__header tighter final-v24">
   <div class="title-wrap tighter-header final">
-    <h2 class="t-gimme header-gimme"><span class="star">✦</span> DISPATCHES</h2>
+    <span class="t-gimme header-gimme"><span class="star">✦</span> DISPATCHES</span>
     <span class="header-sub-bebas">ZINE DISPATCHES • SCENE REPORTS • DEN NOTES</span>
   </div>
   <div class="mcd-program__sub tighter-meta final-meta">
-    <span class="meta-pill">ZINE</span><span class="sub-dot" aria-hidden="true">•</span><span class="meta-pill teal-pill">NEW</span>
+    <span class="meta-pill">ZINE</span><span class="sub-dot">•</span><span class="meta-pill teal-pill">NEW</span>
   </div>
 </div>
 <div class="mcd-grid"><div class="bopper-cassette soon-wrap" style="min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center"><div class="soon-stamp">DISPATCH ✦</div><div class="desc">Dispatches from the den — gig reports, wax finds, scene notes. Fresh ink soon.</div></div></div>
 </section>
-
 
 <!-- DISPATCHES - previously missing, now own section -->
 <!-- FUTURE ANCHORS - V113 STAMPED SOON -->
 <section class="mcd-program" id="gig-guide" style="scroll-margin-top:24px">
 <div class="mcd-program__header tighter final-v24">
   <div class="title-wrap tighter-header final">
-    <h2 class="t-gimme header-gimme"><span class="star">✦</span> GIG GUIDE</h2>
+    <span class="t-gimme header-gimme"><span class="star">✦</span> GIG GUIDE</span>
     <span class="header-sub-bebas">LIVE WIRES • ATHENS & BEYOND • REAL GONE</span>
   </div>
   <div class="mcd-program__sub tighter-meta final-meta">
-    <span class="meta-pill">CURATED</span><span class="sub-dot" aria-hidden="true">•</span><span class="meta-pill teal-pill">COMING SOON</span>
+    <span class="meta-pill">CURATED</span><span class="sub-dot">•</span><span class="meta-pill teal-pill">COMING SOON</span>
   </div>
 </div>
 <div class="mcd-grid"><div class="bopper-cassette soon-wrap" style="min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center"><div class="soon-stamp">SOON ✦</div><div class="desc">Gig guide drops soon — cut a 45, book a stage? Mail the Den: niko@madcatsdenradio.com</div></div></div>
@@ -372,11 +368,11 @@
 <section class="mcd-program" id="den" style="scroll-margin-top:24px">
 <div class="mcd-program__header tighter final-v24">
   <div class="title-wrap tighter-header final">
-    <h2 class="t-gimme header-gimme"><span class="star">✦</span> THE DEN</h2>
+    <span class="t-gimme header-gimme"><span class="star">✦</span> THE DEN</span>
     <span class="header-sub-bebas">ABOUT • ZINE • DEN LORE • ATHENS GR</span>
   </div>
   <div class="mcd-program__sub tighter-meta final-meta">
-    <span class="meta-pill">ABOUT</span><span class="sub-dot" aria-hidden="true">•</span><span class="meta-pill teal-pill">EST. 2026</span>
+    <span class="meta-pill">ABOUT</span><span class="sub-dot">•</span><span class="meta-pill teal-pill">EST. 2026</span>
   </div>
 </div>
 <div class="mcd-grid"><div class="bopper-cassette soon-wrap" style="min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center"><div class="soon-stamp teal">ABOUT ✦</div><div class="desc">THE DEN is a basement zine + radio — Athens GR, est. 2026. Real gone rock & roll, vinyl culture, low ceiling • high volume. Broadcasting from a basement.</div></div></div>
@@ -385,17 +381,15 @@
 <section class="mcd-program" id="crate" style="scroll-margin-top:24px">
 <div class="mcd-program__header tighter final-v24">
   <div class="title-wrap tighter-header final">
-    <h2 class="t-gimme header-gimme"><span class="star">✦</span> CRATE</h2>
+    <span class="t-gimme header-gimme"><span class="star">✦</span> CRATE</span>
     <span class="header-sub-bebas">ARCHIVES • 45s • LPs • MIXCLOUD</span>
   </div>
   <div class="mcd-program__sub tighter-meta final-meta">
-    <span class="meta-pill">ARCHIVES</span><span class="sub-dot" aria-hidden="true">•</span><span class="meta-pill teal-pill">TAPE 24/7</span>
+    <span class="meta-pill">ARCHIVES</span><span class="sub-dot">•</span><span class="meta-pill teal-pill">TAPE 24/7</span>
   </div>
 </div>
 <div class="mcd-grid"><div class="bopper-cassette soon-wrap" style="min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center"><div class="soon-stamp cream">ARCHIVES ✦</div><div class="desc">ARCHIVES — Mixcloud tapes, 45s want list, finds & trades. Real gone wax, all night.</div></div></div>
 </section>
-
-</main>
 
 <div aria-hidden="true" aria-label="Liner notes" aria-modal="true" class="modal-hidden" id="cassette-modal" role="dialog">
 <div class="modal-overlay" id="cassette-overlay"></div>
@@ -440,32 +434,32 @@
       <span class="r-and-vote-group"><span class="r-and-line">✦</span><span class="r-vote-line"><span>V</span><span>O</span><span>T</span><span>E</span></span></span>
     </div>
     <div id="voteDesc" class="modal-desc">You pick Monday's theme. Most votes takes the title for Monday 21:00. One vote per cat, ends Fri 18:00 EEST — no bots, just wax.</div>
-    <div id="voteOptions" class="vote-options" role="radiogroup" aria-label="Choose Monday theme" aria-describedby="voteDesc" style="display:flex;flex-direction:column;gap:10px;margin:12px 0">
-      <button class="vote-option" data-vote="1" type="button" aria-describedby="vote-result-1" role="radio" aria-checked="false" tabindex="-1">
+    <div id="voteOptions" class="vote-options" role="radiogroup" aria-labelledby="voteDesc" aria-label="Choose Monday theme - A1, B2 or C3" style="display:flex;flex-direction:column;gap:10px;margin:12px 0">
+      <button class="vote-option" data-vote="1" role="radio" aria-checked="false" tabindex="-1">
         <span class="vinyl-icon" style="--v-dot:#9BDBC1"></span>
         <span style="flex:1;min-width:0;text-align:left">
-          <span style="display:block;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.04em;color:#050505">THEME A1 — MAMA'S MEAN</span>
+          <span style="display:block;font-family:'Staatliches',sans-serif;font-size:14px;letter-spacing:.04em;color:#050505">THEME A1 — MAMA'S MEAN</span>
           <span style="display:block;font-family:'Space Mono',monospace;font-size:10px;color:rgba(5,5,5,.6)">Ruth, Big Maybelle, LaVern howl</span>
         </span>
-        <span class="vote-check" aria-hidden="true">○</span><span class="a11y-only" id="vote-result-1"></span>
+        <span class="vote-check">○</span>
         <span class="vote-progress-track"><span class="vote-progress-fill" style="--fill:#9BDBC1"></span></span>
       </button>
-      <button class="vote-option" data-vote="2" type="button" aria-describedby="vote-result-2" role="radio" aria-checked="false" tabindex="-1">
+      <button class="vote-option" data-vote="2" role="radio" aria-checked="false" tabindex="-1">
         <span class="vinyl-icon" style="--v-dot:#CC2D30"></span>
         <span style="flex:1;min-width:0;text-align:left">
-          <span style="display:block;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.04em;color:#050505">THEME B2 — HOUND DOG HOWL</span>
+          <span style="display:block;font-family:'Staatliches',sans-serif;font-size:14px;letter-spacing:.04em;color:#050505">THEME B2 — HOUND DOG HOWL</span>
           <span style="display:block;font-family:'Space Mono',monospace;font-size:10px;color:rgba(5,5,5,.6)">Wolf, Jay Hawkins, late-night growl</span>
         </span>
-        <span class="vote-check" aria-hidden="true">○</span><span class="a11y-only" id="vote-result-2"></span>
+        <span class="vote-check">○</span>
         <span class="vote-progress-track"><span class="vote-progress-fill" style="--fill:#CC2D30"></span></span>
       </button>
-      <button class="vote-option" data-vote="3" type="button" aria-describedby="vote-result-3" role="radio" aria-checked="false" tabindex="-1">
+      <button class="vote-option" data-vote="3" role="radio" aria-checked="false" tabindex="-1">
         <span class="vinyl-icon" style="--v-dot:#F0F0DA"></span>
         <span style="flex:1;min-width:0;text-align:left">
-          <span style="display:block;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.04em;color:#050505">THEME C3 — JIM DANDY JUMP</span>
+          <span style="display:block;font-family:'Staatliches',sans-serif;font-size:14px;letter-spacing:.04em;color:#050505">THEME C3 — JIM DANDY JUMP</span>
           <span style="display:block;font-family:'Space Mono',monospace;font-size:10px;color:rgba(5,5,5,.6)">Baker, Turner, dance-floor jump</span>
         </span>
-        <span class="vote-check" aria-hidden="true">○</span><span class="a11y-only" id="vote-result-3"></span>
+        <span class="vote-check">○</span>
         <span class="vote-progress-track"><span class="vote-progress-fill" style="--fill:#F0F0DA"></span></span>
       </button>
     </div>
@@ -476,6 +470,8 @@
   </div>
 </div>
 
+</main>
+
 <footer class="mcd-footer" id="footer">
   <div class="footer-inner">
     <div class="footer-top compact improved">
@@ -484,17 +480,17 @@
       </a>
       <div class="footer-socials inline improved">
         <a href="mailto:niko@madcatsdenradio.com" class="social-pill email-pill small">niko@madcatsdenradio.com</a>
-        <a href="https://ko-fi.com/madcatnik" target="_blank" rel="noopener" class="social-pill kofi-pill small" aria-label="Ko-fi — support the Den (opens in new tab)">KO-FI ✦ SUPPORT</a>
-        <a href="https://www.mixcloud.com/madcatnik/" target="_blank" rel="noopener" class="social-pill mx-pill small" aria-label="Mixcloud (opens in new tab)">M-X ✦ TAPE 24/7</a>
-        <a href="https://www.instagram.com/madcatnik/" target="_blank" rel="noopener" class="social-icon tiny" aria-label="Instagram (opens in new tab)">IG</a>
-        <a href="https://www.facebook.com/madcatniko/" target="_blank" rel="noopener" class="social-icon tiny" aria-label="Facebook (opens in new tab)">FB</a>
-        <a href="https://www.youtube.com/@madcatnik" target="_blank" rel="noopener" class="social-icon tiny" aria-label="YouTube (opens in new tab)">YT</a>
+        <a href="https://ko-fi.com/madcatnik" target="_blank" rel="noopener" class="social-pill kofi-pill small">KO-FI ✦ SUPPORT</a>
+        <a href="https://www.mixcloud.com/madcatnik/" target="_blank" rel="noopener" class="social-pill mx-pill small">M-X ✦ TAPE 24/7</a>
+        <a href="https://www.instagram.com/madcatnik/" target="_blank" rel="noopener" class="social-icon tiny" aria-label="Instagram">IG</a>
+        <a href="https://www.facebook.com/madcatniko/" target="_blank" rel="noopener" class="social-icon tiny" aria-label="Facebook">FB</a>
+        <a href="https://www.youtube.com/@madcatnik" target="_blank" rel="noopener" class="social-icon tiny" aria-label="YouTube">YT</a>
       </div>
       <nav class="footer-links compact-links improved" aria-label="Footer navigation">
-        <a href="#round-the-clock">ROUND THE CLOCK</a><span class="dot" aria-hidden="true">•</span>
-        <a href="#dispatches">DISPATCHES</a><span class="dot" aria-hidden="true">•</span>
-        <a href="#gig-guide">GIG GUIDE</a><span class="dot" aria-hidden="true">•</span>
-        <a href="#den">THE DEN</a><span class="dot" aria-hidden="true">•</span>
+        <a href="#round-the-clock">ROUND THE CLOCK</a><span class="dot">•</span>
+        <a href="#dispatches">DISPATCHES</a><span class="dot">•</span>
+        <a href="#gig-guide">GIG GUIDE</a><span class="dot">•</span>
+        <a href="#den">THE DEN</a><span class="dot">•</span>
         <a href="#crate">CRATE</a>
       </nav>
     </div>
