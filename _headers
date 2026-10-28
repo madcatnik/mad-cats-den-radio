@@ -1,17 +1,7 @@
-# Netlify _headers - fallback
-/style.css
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+/*/*.woff2
   Cache-Control: public, max-age=31536000, immutable
-/main.js
+/*/*.woff
   Cache-Control: public, max-age=31536000, immutable
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-/*.png
-  Cache-Control: public, max-age=31536000, immutable
-/*.woff2
-  Cache-Control: public, max-age=31536000, immutable
-/*.woff
-  Cache-Control: public, max-age=31536000, immutable
-/*.ttf
-  Cache-Control: public, max-age=31536000, immutable
-/index.html
-  Cache-Control: public, max-age=0, must-revalidate
