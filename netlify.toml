@@ -2,7 +2,6 @@
   publish = "."
   command = ""
 
-# Cache static assets aggressively — HTML stays fresh
 [[headers]]
   for = "/style.css"
   [headers.values]
@@ -10,6 +9,11 @@
 
 [[headers]]
   for = "/main.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
