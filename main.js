@@ -43,15 +43,30 @@ window.MCD_motionBehavior = function(){
 };
 window.MCD_modalBackground = (function(){
   let saved = null;
+  const hasNativeInert = 'inert' in HTMLElement.prototype;
   return function(block){
     if(block && !saved){
       saved = Array.from(document.querySelectorAll('#main-content,#main-nav,#footer,#mobile-menu,#mini-player,.skip-link')).map(function(el){
-        const state = {el:el, inert:el.inert};
-        el.inert = true;
+        const state = {el:el, inert:el.inert, fallback: el.getAttribute('data-inert-fallback'), pointer: el.style.pointerEvents};
+        if(hasNativeInert){
+          el.inert = true;
+        } else {
+          el.setAttribute('data-inert-fallback','');
+          el.style.pointerEvents='none';
+          el.setAttribute('aria-hidden','true');
+        }
         return state;
       });
     } else if(!block && saved){
-      saved.forEach(function(state){ state.el.inert = state.inert; });
+      saved.forEach(function(state){
+        if(hasNativeInert){
+          state.el.inert = state.inert;
+        } else {
+          state.el.removeAttribute('data-inert-fallback');
+          state.el.style.pointerEvents = state.pointer || '';
+          state.el.removeAttribute('aria-hidden');
+        }
+      });
       saved = null;
     }
   };
@@ -526,6 +541,7 @@ window.updateMxPillForLive = function(isLive){
     if(mOnAir){ if(isNow){ mOnAir.classList.remove('hidden'); } else { mOnAir.classList.add('hidden'); } }
     modal.classList.remove('modal-hidden');
     modal.classList.add('is-open');
+    if(overlay) overlay.classList.add('open');
     modal.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
     document.documentElement.style.overflow='hidden';
@@ -551,9 +567,11 @@ window.updateMxPillForLive = function(isLive){
     if(!modal.classList.contains('is-open')||closing) return;
     closing=true;
     card.classList.remove('is-visible');
+    if(overlay) overlay.classList.remove('open');
     setTimeout(function(){
       modal.classList.add('modal-hidden');
       modal.classList.remove('is-open');
+      if(overlay) overlay.classList.remove('open');
       modal.setAttribute('aria-hidden','true');
       document.body.style.overflow='';
       document.documentElement.style.overflow='';
@@ -1265,17 +1283,17 @@ window.updateMxPillForLive = function(isLive){
   const VISITED_KEY = 'mcd-visited-ever';
   function getClientId(){
     try{
-      let id = MCD_safeStorage.get(CLIENT_KEY, null) || localStorage.getItem(CLIENT_KEY);
+      let id = MCD_safeStorage.get(CLIENT_KEY, null);
       if(!id){
         id = (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'mcd-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-        try{ MCD_safeStorage.set(CLIENT_KEY, id); }catch(e){ try{ localStorage.setItem(CLIENT_KEY, id); }catch(e2){} }
+        try{ MCD_safeStorage.set(CLIENT_KEY, id); }catch(e){}
       }
       return id;
     }catch(e){ return 'mcd-' + Math.random().toString(36).slice(2); }
   }
   function isNewVisitor(){
     try{
-      const v = MCD_safeStorage.get(VISITED_KEY, null) || localStorage.getItem(VISITED_KEY);
+      const v = MCD_safeStorage.get(VISITED_KEY, null);
       if(v) return false;
       return true;
     }catch(e){ return false; }
@@ -1283,7 +1301,6 @@ window.updateMxPillForLive = function(isLive){
   function markVisited(){
     try{
       MCD_safeStorage.set(VISITED_KEY, '1');
-      localStorage.setItem(VISITED_KEY, '1');
     }catch(e){}
   }
   function updateBadge(total, now){
