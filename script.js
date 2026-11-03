@@ -9,36 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroSection = document.getElementById('mcd-hero');
   const iframe = document.getElementById('mcd-mixcloud');
   
-  let widget = null;
   let isPlaying = false;
+  const baseFeedUrl = "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2F29-05-25-oinoxoos-rnr-thursday-dedicated-kostas-geros%2F";
 
-  // Initialize Mixcloud Widget API
-  function initWidget() {
-    if (!widget && window.Mixcloud && iframe) {
-      try {
-        widget = Mixcloud.PlayerWidget(iframe);
-      } catch (e) {
-        console.log('Widget init note:', e);
-      }
-    }
-  }
-
-  // Try initial bind
-  initWidget();
-
-  // Toggle or Fire Up Player with Instant Play Trigger
-  if (fireBtn && beautyPlayer) {
+  if (fireBtn && beautyPlayer && iframe) {
     fireBtn.addEventListener('click', () => {
-      // 1. Show player immediately
-      const isHidden = !beautyPlayer.classList.contains('show');
-      if (isHidden) {
+      // 1. Make sure player is visible
+      if (!beautyPlayer.classList.contains('show')) {
         beautyPlayer.classList.add('show');
       }
 
-      // Ensure widget is initialized now that the element is visible
-      initWidget();
-
-      // UI State update
       if (!isPlaying) {
         isPlaying = true;
         fireBtn.classList.add('is-playing');
@@ -47,17 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection) heroSection.classList.add('is-playing');
         document.body.classList.add('is-playing');
 
-        // Send play command to widget (with a small safety timeout for iframe rendering)
-        setTimeout(() => {
-          if (widget) {
-            try {
-              widget.play();
-            } catch (err) {
-              console.log('Widget play trigger note:', err);
-            }
-          }
-        }, 150);
-
+        // Force reload iframe with autoplay enabled
+        if (!iframe.src.includes('autoplay=1')) {
+          iframe.src = baseFeedUrl + "&autoplay=1";
+        }
       } else {
         isPlaying = false;
         fireBtn.classList.remove('is-playing');
@@ -66,11 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection) heroSection.classList.remove('is-playing');
         document.body.classList.remove('is-playing');
 
-        if (widget) {
-          try {
-            widget.pause();
-          } catch (err) {}
-        }
+        // Stop playback by resetting iframe without autoplay
+        iframe.src = baseFeedUrl;
       }
     });
   }
@@ -79,16 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (beautyClose && beautyPlayer) {
     beautyClose.addEventListener('click', () => {
       beautyPlayer.classList.remove('show');
-      if (widget) {
-        try { widget.pause(); } catch (e) {}
-      }
       isPlaying = false;
       if (fireBtn) {
         fireBtn.classList.remove('is-playing');
         fireBtn.textContent = '▶ FIRE IT UP';
       }
       if (heroSection) heroSection.classList.remove('is-playing');
+      document.body.classList.add('is-playing'); // wait, body is-playing reset:
       document.body.classList.remove('is-playing');
+      if (iframe) {
+        iframe.src = baseFeedUrl; // reset stream
+      }
     });
   }
 
