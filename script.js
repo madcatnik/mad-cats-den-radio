@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroSection = document.getElementById('mcd-hero');
 
   let isPlaying = false;
-  
-  // 1. Connect to Mixcloud
+  let isWidgetReady = false;
+  let pendingPlay = false;
+
   const widget = Mixcloud.PlayerWidget(iframe);
 
-  // 2. Main UI Update Function
   function updateUI(playing) {
     if (playing) {
       fireBtn.innerHTML = '💀 KEEP IT WILD';
@@ -27,49 +27,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 3. Wait for Mixcloud to officially wake up and say "Ready"
   widget.ready.then(() => {
-    
-    // Listen for manual play/pause clicks inside the widget itself
-    widget.events.play.on(() => {
-      isPlaying = true;
-      updateUI(true);
-    });
-    
-    widget.events.pause.on(() => {
-      isPlaying = false;
-      updateUI(false);
-    });
-    
-    widget.events.ended.on(() => {
-      isPlaying = false;
-      updateUI(false);
-    });
-
+    isWidgetReady = true;
+    if (pendingPlay) {
+      pendingPlay = false;
+      widget.play().catch(e => console.log("Queued play error:", e));
+    }
+    widget.events.play.on(() => { isPlaying = true; updateUI(true); });
+    widget.events.pause.on(() => { isPlaying = false; updateUI(false); });
+    widget.events.ended.on(() => { isPlaying = false; updateUI(false); beautyPlayer.classList.remove('show'); });
   });
 
-  // 4. Handle clicks on our custom FIRE IT UP button
+  // FIRE - no setTimeout, keep user gesture
   fireBtn.addEventListener('click', () => {
     if (isPlaying) {
+      pendingPlay = false;
       widget.pause();
       isPlaying = false;
       updateUI(false);
     } else {
-      // Show the player instantly
       beautyPlayer.classList.add('show');
       isPlaying = true;
       updateUI(true);
-      
-      // Give the hidden iframe a split-second to wake up and render 
-      // before sending the command, otherwise it misses it.
-      setTimeout(() => {
-        widget.play().catch(err => console.log("Mixcloud still waking up:", err));
-      }, 150); 
+      if (isWidgetReady) {
+        widget.play().catch(err => console.log("Play blocked:", err));
+      } else {
+        pendingPlay = true;
+        try { widget.play().catch(()=>{}); } catch(e){}
+      }
     }
   });
 
-  // 5. Handle clicks on the X close button
   closePlayerBtn.addEventListener('click', () => {
+    pendingPlay = false;
     widget.pause();
     isPlaying = false;
     updateUI(false);

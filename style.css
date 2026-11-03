@@ -306,10 +306,10 @@ body::after{
   #mcd-header-player.is-playing .mcd-stamp-logo{display:none}
   #mcd-header-player.is-playing .mcd-h-right{width:100%;justify-content:center;margin:0}
   
-  #mcd-hero{height:auto;min-height:420px;gap:12px;padding:24px 14px 32px;margin:8px auto 12px}
-  .mcd-hero-mascot-wrap{width:220px;height:220px;overflow:visible}
-  .mad-line{font-size:50px;margin-bottom:2px}
-  .den-line{font-size:66px;margin-bottom:8px}
+  #mcd-hero{height:auto;min-height:460px;gap:16px;padding:28px 16px 36px;margin:8px auto 14px}
+  .mcd-hero-mascot-wrap{width:240px;height:240px;overflow:visible}
+  .mad-line{font-size:58px;margin-bottom:2px}
+  .den-line{font-size:78px;margin-bottom:10px}
   .mcd-hero-kicker{font-size:10px;letter-spacing:0.05em;line-height:1.3;white-space:normal;max-width:90vw;margin-bottom:14px}
   .mcd-tape{font-size:10px;padding:4px 8px}
   .mcd-tape--top{top:-6px}
@@ -328,9 +328,9 @@ body::after{
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{flex:1 1 calc(50% - 8px);min-width:calc(50% - 8px);justify-content:center}
 }
 @media(max-width:640px){
-  .mcd-hero-mascot-wrap{width:175px;height:175px}
-  .mad-line{font-size:46px}
-  .den-line{font-size:60px}
+  .mcd-hero-mascot-wrap{width:200px;height:200px}
+  .mad-line{font-size:52px}
+  .den-line{font-size:68px}
 }
 @media(max-width:480px){
   #mcd-beauty-player{width:calc(100vw - 16px);right:8px;left:8px;bottom:8px;transform:rotate(-0.3deg)}
