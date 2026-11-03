@@ -8,7 +8,7 @@
   font-family:'Alfa Slab One';
   font-style:normal;
   font-weight:400;
-  font-display:swap;
+  font-display:block;
   src: local('Alfa Slab One'), 
        url('./assets/fonts/AlfaSlabOne-Regular.woff2') format('woff2'),
        url('./assets/fonts/AlfaSlabOne-Regular.woff') format('woff'),
@@ -18,7 +18,7 @@
   font-family:'Barlow Condensed';
   font-style:normal;
   font-weight:800;
-  font-display:swap;
+  font-display:block;
   src: local('Barlow Condensed ExtraBold'),
        url('./assets/fonts/BarlowCondensed-ExtraBold.woff2') format('woff2'),
        url('./assets/fonts/BarlowCondensed-ExtraBold.woff') format('woff'),
@@ -28,7 +28,7 @@
   font-family:'IBM Plex Mono';
   font-style:normal;
   font-weight:600;
-  font-display:swap;
+  font-display:block;
   src: local('IBM Plex Mono SemiBold'),
        url('./assets/fonts/IBMPlexMono-SemiBold.woff2') format('woff2'),
        url('./assets/fonts/IBMPlexMono-SemiBold.woff') format('woff'),
@@ -38,7 +38,7 @@
   font-family:'IBM Plex Mono';
   font-style:normal;
   font-weight:700;
-  font-display:swap;
+  font-display:block;
   src: local('IBM Plex Mono Bold'),
        url('./assets/fonts/IBMPlexMono-Bold.woff2') format('woff2'),
        url('./assets/fonts/IBMPlexMono-Bold.woff') format('woff'),
