@@ -60,10 +60,10 @@ body{
   color:var(--cream);
   font-family:'IBM Plex Mono',monospace;
   overflow-x:hidden; 
-  padding-bottom: 120px; /* CLEARANCE FOR MIXCLOUD FIXED PLAYER */
+  padding-bottom: 120px;
 }
 
-/* Noise - kept but below interactive */
+/* Noise texture */
 body::after{
   content:"";
   position:fixed; inset:0;
@@ -187,7 +187,7 @@ body::after{
 .mcd-zine-intro{margin-bottom:14px !important;padding-bottom:4px;}
 .mcd-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px !important;}
 
-/* The Hand-Pasted Mini Cards */
+/* Hand-Pasted Mini Cards */
 .mcd-mini{position:relative;text-align:left;border:2.5px solid var(--black);background:var(--cream);padding:10px;box-shadow:4px 4px 0 var(--black);display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;transition:all 0.12s}
 .mcd-mini:nth-child(1){transform:rotate(-0.5deg);}
 .mcd-mini:nth-child(2){transform:rotate(0.8deg);}
@@ -330,7 +330,7 @@ body::after{
 }
 #mcd-footer .mcd-star { color: var(--mint); font-size: 11px; }
 
-/* --- 7. RESPONSIVE - CONSOLIDATED (SWEET SPOT SIZING) --- */
+/* --- 7. RESPONSIVE --- */
 @media(min-width:1280px){
   #mcd-hero { gap: 50px; height: auto; min-height: 440px; }
   .mcd-hero-mascot-wrap { width: 410px; height: 410px; }
@@ -343,7 +343,6 @@ body::after{
   .mad-line{font-size:60px}
   .den-line{font-size:80px}
   .mcd-hero-kicker{font-size:11px;white-space:normal;text-wrap:balance;max-width:90vw; letter-spacing:0.15em;}
-  /* Flex direction stack to enable mobile order switch */
   .mcd-two-col{display:flex !important;flex-direction:column !important;}
   .mcd-card--zine{order:1 !important;}
   .mcd-card--gig{order:2 !important;}
@@ -379,8 +378,6 @@ body::after{
   
   .mcd-support-row--den.mcd-row-social{flex-wrap:wrap;gap:8px;justify-content:flex-start}
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{flex:1 1 calc(50% - 8px);min-width:calc(50% - 8px);justify-content:center}
-  
-  /* Scale down the massive Kofi banner for mobile */
   .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi { font-size: 16px; padding: 16px 12px; }
 }
 @media(max-width:640px){
