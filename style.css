@@ -1,9 +1,9 @@
 /* =========================================
-   MAD CATS DEN - FINAL-8 CLEAN
-   Consolidated, deduped, mobile-fixed
+   MAD CATS DEN - FINAL-10 HEAVY
+   Consolidated, oversized hits, analog styling
    ========================================= */
 
-/* --- 1. SELF-HOSTED FONTS ONLY (no Google double-load) --- */
+/* --- 1. SELF-HOSTED FONTS ONLY --- */
 @font-face{
   font-family:'Alfa Slab One';
   font-style:normal;
@@ -59,7 +59,8 @@ body{
   background:radial-gradient(ellipse at 50% 35%, #10120F 0%, #10120F 58%, #0E110F 74%, #0A0C0A 100%);
   color:var(--cream);
   font-family:'IBM Plex Mono',monospace;
-  overflow-x:hidden; /* was clip - clip was cutting tapes */
+  overflow-x:hidden; 
+  padding-bottom: 120px; /* CLEARANCE FOR MIXCLOUD FIXED PLAYER */
 }
 
 /* Noise - kept but below interactive */
@@ -93,13 +94,12 @@ body::after{
   box-shadow:3px 3px 0 var(--black); transform:rotate(-0.8deg);
   flex-shrink:0; white-space:nowrap;
 }
-.mcd-stamp-logo .mcd-text{font-family:'Alfa Slab One',cursive;font-style:italic;font-size:16px;color:var(--cream);letter-spacing:0.02em;line-height:1}
+.mcd-stamp-logo .mcd-text{font-family:'Alfa Slab One',cursive;font-style:italic;font-size:20px;color:var(--cream);letter-spacing:0.02em;line-height:1}
 .mcd-stamp-logo .mcd-star{color:var(--brick);font-size:12px;line-height:1}
-.mcd-stamp-logo .mcd-sub{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:var(--mint);white-space:nowrap}
+.mcd-stamp-logo .mcd-sub{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;letter-spacing:0.06em;color:var(--mint);white-space:nowrap}
 .mcd-h-center{
   position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
   display:flex; align-items:center; gap:6px; white-space:nowrap; z-index:3;
-  font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.14em; color:var(--black);
 }
 .mcd-h-right{display:flex;align-items:center;gap:12px;margin-left:auto;flex-shrink:0;z-index:3}
 .mcd-live-dot{
@@ -114,11 +114,11 @@ body::after{
 #mcd-h-fire{
   background:var(--cream); color:var(--brick);
   border:3px solid var(--black); border-radius:14px; box-shadow:3px 3px 0 var(--black);
-  font-family:'Alfa Slab One',cursive; font-size:15px; padding:8px 16px;
-  transform:rotate(-0.8deg); white-space:nowrap; cursor:pointer; transition:all 0.15s ease;
+  font-family:'Alfa Slab One',cursive; font-size:17px; padding:10px 18px;
+  transform:rotate(1deg); white-space:nowrap; cursor:pointer; transition:all 0.15s ease;
 }
-#mcd-h-fire:hover{transform:rotate(-0.8deg) translate(-1px,-1px);box-shadow:4px 4px 0 var(--black)}
-#mcd-h-fire:active{transform:rotate(-0.8deg) translate(2px,2px);box-shadow:0 0 0 var(--black)}
+#mcd-h-fire:hover{transform:rotate(1deg) translate(-1px,-1px);box-shadow:4px 4px 0 var(--black)}
+#mcd-h-fire:active{transform:rotate(1deg) translate(2px,2px) !important;box-shadow:0 0 0 var(--black) !important}
 #mcd-h-fire.is-playing{
   background:var(--brick); color:var(--cream);
   background-image: radial-gradient(ellipse at 28% 18%, rgba(255,255,255,0.18) 0%, transparent 38%),
@@ -126,8 +126,8 @@ body::after{
   animation:patchWobble 4.5s ease-in-out infinite;
 }
 @keyframes patchWobble{
-  0%,100%{transform:rotate(-1.8deg) scale(1.03)}
-  50%{transform:rotate(-1.2deg) scale(1.04)}
+  0%,100%{transform:rotate(1.8deg) scale(1.03)}
+  50%{transform:rotate(1.2deg) scale(1.04)}
 }
 
 /* --- 3. HERO --- */
@@ -153,7 +153,7 @@ body::after{
 .mcd-tape--top{top:-8px;left:50%;transform:translateX(-50%) rotate(1.5deg)}
 .mcd-tape--bottom{bottom:-8px;left:-12px;transform:rotate(-2deg)}
 .mcd-hero-titles{flex:0 1 auto;max-width:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
-.mcd-hero-kicker{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;letter-spacing:0.12em;color:var(--mint);margin-bottom:14px;text-align:center;white-space:nowrap}
+.mcd-hero-kicker{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.2em;color:var(--mint);margin-bottom:14px;text-align:center;white-space:nowrap}
 .mad-line{font-family:'Alfa Slab One',cursive;font-size:94px;line-height:0.88;letter-spacing:-0.02em;color:var(--cream);text-transform:uppercase;display:block;text-align:center;white-space:nowrap;text-shadow:2px 2px 0 var(--black)}
 .den-line{font-family:'Alfa Slab One',cursive;font-size:120px;line-height:0.85;letter-spacing:-0.02em;color:var(--brick);text-transform:uppercase;display:block;text-align:center;white-space:nowrap;text-shadow:2px 2px 0 var(--black)}
 
@@ -167,20 +167,47 @@ body::after{
 .mcd-two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
 .mcd-card{position:relative;display:flex;flex-direction:column;overflow:hidden;border-radius:10px;border:3px solid var(--black);background:var(--cream);box-shadow:6px 6px 0 var(--black);min-height:360px}
 .mcd-card-head{display:flex;flex-direction:column;gap:6px;min-height:48px;padding:8px 14px;border-bottom:3px solid var(--black);background:var(--brick);flex-shrink:0}
-.mcd-card-head h2{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;line-height:0.92;letter-spacing:-0.01em;color:var(--cream);text-transform:uppercase;margin:0;text-shadow:1px 1px 0 var(--black)}
+.mcd-card-head h2{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;line-height:0.92;letter-spacing:-0.01em;color:var(--cream);text-transform:uppercase;margin:0;text-shadow:1.5px 1.5px 0 var(--black)}
 .mcd-card-pill{display:inline-flex;align-items:center;border:1.5px solid var(--black);background:var(--mint);padding:3px 8px;box-shadow:2px 2px 0 var(--black);transform:rotate(-0.8deg);width:fit-content;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.14em;color:var(--ink);text-transform:uppercase}
 .mcd-card-body{position:relative;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:14px;background:var(--cream);color:var(--ink);padding:14px}
 .mcd-card-note{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:9px;letter-spacing:0.12em;color:rgba(0,0,0,0.6);text-transform:uppercase}
 .mcd-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;line-height:0.95;margin-top:4px;color:var(--ink);text-transform:uppercase}
-.mcd-card-text{font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.55;color:rgba(0,0,0,0.7);margin-top:8px}
+
+.mcd-card-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; 
+  line-height: 1.6; 
+  color: rgba(0,0,0,0.75);
+  margin-top: 8px;
+}
+
 .mcd-torn{background:var(--cream);padding:14px;color:var(--ink);box-shadow:4px 4px 0 var(--black);border:1.5px solid var(--black);transform:rotate(1deg);clip-path:polygon(0 2%, 100% 0, 98% 96%, 2% 100%)}
 .mcd-card .mcd-torn .mcd-card-title{font-family:'Alfa Slab One',cursive;font-style:italic;font-size:22px;line-height:1.1}
-.mcd-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mcd-mini{position:relative;text-align:left;border:1.5px solid var(--black);background:var(--cream);padding:10px;box-shadow:3px 3px 0 var(--black);display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;transition:all 0.12s}
-.mcd-mini:hover{box-shadow:5px 5px 0 var(--black);transform:translateY(-1px)}
-.mcd-mini-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.12em;color:var(--ink);text-transform:uppercase;line-height:1}
+
+.mcd-zine-intro{margin-bottom:14px !important;padding-bottom:4px;}
+.mcd-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px !important;}
+
+/* The Hand-Pasted Mini Cards */
+.mcd-mini{position:relative;text-align:left;border:2.5px solid var(--black);background:var(--cream);padding:10px;box-shadow:4px 4px 0 var(--black);display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;transition:all 0.12s}
+.mcd-mini:nth-child(1){transform:rotate(-0.5deg);}
+.mcd-mini:nth-child(2){transform:rotate(0.8deg);}
+.mcd-mini:nth-child(3){transform:rotate(-1.2deg);}
+.mcd-mini:nth-child(4){transform:rotate(0.5deg);}
+.mcd-mini:nth-child(5){transform:rotate(-0.8deg);}
+.mcd-mini:nth-child(6){transform:rotate(1.1deg);}
+
+.mcd-mini:hover{box-shadow:6px 6px 0 var(--black);transform:translateY(-2px) scale(1.02); z-index: 10;}
+.mcd-mini:active{transform:translate(2px,2px) scale(0.98) !important;box-shadow:1px 1px 0 var(--black) !important;background:#e8e8d0 !important;}
+
+.mcd-mini-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;letter-spacing:0.12em;color:var(--ink);text-transform:uppercase;line-height:1}
 .mcd-mini-desc{font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.4;color:rgba(0,0,0,0.7);margin-top:4px}
-.mcd-mini-soon{flex-shrink:0;border:1.5px solid var(--black);background:var(--brick);padding:2px 8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.14em;color:var(--cream);box-shadow:1.5px 1.5px 0 var(--black);transform:rotate(-2deg)}
+.mcd-mini-soon{flex-shrink:0;border:1.5px solid var(--black);padding:3px 8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.14em;box-shadow:2px 2px 0 var(--black);transform:rotate(-2deg)}
+
+/* Mismatched Dymo Tapes */
+.mcd-tape-blk { background: var(--black); color: var(--cream); }
+.mcd-tape-red { background: var(--brick); color: var(--cream); }
+.mcd-tape-mnt { background: var(--mint); color: var(--black); }
+.mcd-tape-crm { background: var(--cream); color: var(--black); border: 2px solid var(--black); }
 
 /* --- 5. SUPPORT BLOCK --- */
 .mcd-support-block--den{
@@ -201,7 +228,16 @@ body::after{
 .mcd-support-head-title{font-family:'Alfa Slab One',cursive;font-style:italic;font-size:15px;color:var(--cream);letter-spacing:0.02em;text-shadow:2px 2px 0 var(--black)}
 .mcd-support-head-pill{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.12em;background:var(--cream);color:var(--black);border:2px solid var(--black);border-radius:6px;padding:3px 8px;box-shadow:2px 2px 0 var(--black);transform:rotate(1deg)}
 .mcd-support-body{padding:12px}
-.mcd-support-body .mcd-support-text{font-family:'IBM Plex Mono',monospace;font-size:10.5px;line-height:1.45;color:var(--cream);opacity:0.9;margin-bottom:12px}
+
+.mcd-support-body .mcd-support-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; 
+  line-height: 1.55; 
+  color: var(--cream);
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
 .mcd-support-row--den{display:flex;flex-wrap:wrap;gap:8px}
 .mcd-s-pill--den{
   display:inline-flex; align-items:center; gap:6px; padding:8px 12px;
@@ -211,38 +247,41 @@ body::after{
 }
 .mcd-s-pill--den:nth-child(even){transform:rotate(0.6deg)}
 .mcd-s-pill--den:hover{transform:translate(3px,3px) rotate(0deg);box-shadow:0 0 0 var(--black)}
+.mcd-s-pill--den:active{transform:translate(4px,4px) rotate(0deg) !important;box-shadow:0 0 0 var(--black) !important;}
+
+/* 4-Color Punch */
 .mcd-s-pill--den.mcd-ig{background:var(--cream);color:var(--black)}
 .mcd-s-pill--den.mcd-fb{background:var(--ink);color:var(--cream)}
 .mcd-s-pill--den.mcd-mx{background:var(--mint);color:var(--black)}
-.mcd-s-pill--den.mcd-mail{background:var(--brick);color:var(--cream)}
-.mcd-s-pill--den.mcd-yt{background:var(--cream);color:var(--black)}
+.mcd-s-pill--den.mcd-yt{background:var(--brick);color:var(--cream)}
 
-/* KOFI - single definition, large version */
+/* KOFI - Billboard dashed cutout */
 .mcd-support-row--den.mcd-row-social{flex-wrap:nowrap;gap:6px;justify-content:space-between}
 .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{flex:1 1 0;justify-content:center;padding:7px 8px;font-size:11px;white-space:nowrap;min-width:0}
 .mcd-support-row--den.mcd-row-kofi{margin-top:14px;justify-content:center}
-.mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi{
-  width:100%; justify-content:center;
-  font-family:'Alfa Slab One',cursive; font-style:italic; font-size:18px; letter-spacing:0.02em; line-height:1.1;
-  padding:15px 20px; background:var(--brick); color:var(--cream);
-  border:3px solid var(--black); border-radius:14px; box-shadow:7px 7px 0 var(--black);
-  transform:rotate(-1deg) scale(1.02); text-shadow:1.5px 1.5px 0 var(--black); position:relative;
-}
-.mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi::before{
-  content:"✦"; position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--cream);
-}
-.mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi::after{
-  content:"✦"; position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--cream);
+.mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi {
+  width: 100%; 
+  justify-content: center;
+  font-family: 'Alfa Slab One', cursive; 
+  font-style: italic; 
+  font-size: 22px; 
+  letter-spacing: 0.02em; 
+  line-height: 1.1;
+  padding: 22px 24px; 
+  background: var(--brick); 
+  color: var(--cream);
+  border: 4px dashed var(--black); 
+  border-radius: 14px; 
+  box-shadow: 7px 7px 0 var(--black);
+  transform: rotate(-1deg) scale(1.02); 
+  text-shadow: 1.5px 1.5px 0 var(--black); 
+  position: relative;
 }
 .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi:hover{
   background:var(--ink); transform:rotate(-1deg) scale(1.04) translate(-1px,-1px); box-shadow:8px 8px 0 var(--black);
 }
-
-.mcd-backroom-kicker{
-  display:block; width:100%; margin:0 0 12px; padding:8px 12px;
-  background:var(--cream); color:var(--black); border:2.5px solid var(--black); border-radius:8px;
-  box-shadow:3px 3px 0 var(--black); font-family:'Alfa Slab One',cursive; font-style:italic;
-  font-size:12px; line-height:1.2; letter-spacing:0.02em; text-align:center; transform:rotate(-0.6deg);
+.mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi:active{
+  transform:rotate(-1deg) scale(1.02) translate(2px,2px) !important;box-shadow:0 0 0 var(--black) !important;
 }
 
 /* --- 6. PLAYER + FOOTER --- */
@@ -271,35 +310,49 @@ body::after{
   z-index:10003; opacity:0; pointer-events:none; transition:all 0.3s ease;
 }
 #mcd-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#mcd-footer{width:100%;display:flex;justify-content:center;align-items:center;padding:12px;margin-top:12px;background:transparent}
-#mcd-footer div{
-  background:var(--cream); border:2.5px solid var(--black); color:var(--ink);
-  font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.12em; line-height:1.3;
-  padding:7px 14px; box-shadow:3px 3px 0 var(--black); transform:rotate(-0.6deg); text-transform:uppercase;
-  text-align:center; max-width:90vw;
-}
-#mcd-footer .mcd-star{color:var(--brick);font-size:10px}
 
-/* --- 7. RESPONSIVE - CONSOLIDATED --- */
+/* Inverted black footer */
+#mcd-footer{width:100%;display:flex;justify-content:center;align-items:center;padding:12px;margin-top:12px;background:transparent}
+#mcd-footer div {
+  background: var(--black); 
+  color: var(--cream);
+  border: none;
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: 9px; 
+  letter-spacing: 0.12em; 
+  line-height: 1.3;
+  padding: 8px 16px; 
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.6); 
+  transform: rotate(1deg);
+  text-transform: uppercase;
+  text-align: center; 
+  max-width: 90vw;
+}
+#mcd-footer .mcd-star { color: var(--mint); font-size: 11px; }
+
+/* --- 7. RESPONSIVE - CONSOLIDATED (SWEET SPOT SIZING) --- */
 @media(min-width:1280px){
-  #mcd-hero{gap:64px}
-  .mcd-hero-mascot-wrap{width:380px;height:380px}
-  .mad-line{font-size:102px}
-  .den-line{font-size:132px}
+  #mcd-hero { gap: 50px; height: auto; min-height: 440px; }
+  .mcd-hero-mascot-wrap { width: 410px; height: 410px; }
+  .mad-line { font-size: 108px; }
+  .den-line { font-size: 140px; }
 }
 @media(max-width:1023px){
   #mcd-hero{flex-direction:column;height:auto;min-height:400px;gap:18px;padding:16px 20px}
-  .mcd-hero-mascot-wrap{width:210px;height:210px}
-  .mad-line{font-size:58px}
-  .den-line{font-size:78px}
-  .mcd-hero-kicker{font-size:11px;white-space:normal;text-wrap:balance;max-width:90vw}
-  .mcd-two-col{grid-template-columns:1fr}
+  .mcd-hero-mascot-wrap{width:220px;height:220px}
+  .mad-line{font-size:60px}
+  .den-line{font-size:80px}
+  .mcd-hero-kicker{font-size:11px;white-space:normal;text-wrap:balance;max-width:90vw; letter-spacing:0.15em;}
+  /* Flex direction stack to enable mobile order switch */
+  .mcd-two-col{display:flex !important;flex-direction:column !important;}
+  .mcd-card--zine{order:1 !important;}
+  .mcd-card--gig{order:2 !important;}
 }
 @media(max-width:768px){
   #mcd-header-player{width:calc(100% - 8px);padding:8px 10px 12px;gap:8px;min-height:56px}
-  .mcd-stamp-logo{padding:5px 10px;font-size:12.5px;max-width:60%}
-  .mcd-stamp-logo .mcd-text{font-size:12.5px}
-  .mcd-stamp-logo .mcd-sub{font-size:7.8px}
+  .mcd-stamp-logo{padding:5px 10px;font-size:14px;max-width:60%}
+  .mcd-stamp-logo .mcd-text{font-size:14px}
+  .mcd-stamp-logo .mcd-sub{font-size:8.5px}
   .mcd-h-center{display:none}
   .mcd-h-right{margin-left:auto;gap:6px}
   .mcd-h-right span:not(#mcd-h-fire){display:none}
@@ -307,16 +360,16 @@ body::after{
   #mcd-header-player.is-playing .mcd-h-right{width:100%;justify-content:center;margin:0}
   
   #mcd-hero{height:auto;min-height:460px;gap:16px;padding:28px 16px 36px;margin:8px auto 14px}
-  .mcd-hero-mascot-wrap{width:240px;height:240px;overflow:visible}
-  .mad-line{font-size:58px;margin-bottom:2px}
-  .den-line{font-size:78px;margin-bottom:10px}
-  .mcd-hero-kicker{font-size:10px;letter-spacing:0.05em;line-height:1.3;white-space:normal;max-width:90vw;margin-bottom:14px}
+  .mcd-hero-mascot-wrap{width:260px;height:260px;overflow:visible}
+  .mad-line{font-size:60px;margin-bottom:2px}
+  .den-line{font-size:82px;margin-bottom:10px}
+  
   .mcd-tape{font-size:10px;padding:4px 8px}
   .mcd-tape--top{top:-6px}
-  .mcd-tape--bottom{left:0;bottom:-6px} /* was -12px clipped */
+  .mcd-tape--bottom{left:0;bottom:-6px}
   
   #mcd-main{padding:10px 14px 12px;gap:18px}
-  .mcd-card--gig > .mcd-card-body > div:first-child > div{width:72%;max-width:340px}
+  .mcd-card--gig > .mcd-card-body > div:first-child > div{width:75%;max-width:340px}
   .mcd-card--gig a[href*="google.com/maps"]{
     font-size:10px;line-height:1.25;white-space:normal;text-wrap:balance;max-width:92%;text-align:center;
   }
@@ -326,11 +379,14 @@ body::after{
   
   .mcd-support-row--den.mcd-row-social{flex-wrap:wrap;gap:8px;justify-content:flex-start}
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{flex:1 1 calc(50% - 8px);min-width:calc(50% - 8px);justify-content:center}
+  
+  /* Scale down the massive Kofi banner for mobile */
+  .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi { font-size: 16px; padding: 16px 12px; }
 }
 @media(max-width:640px){
-  .mcd-hero-mascot-wrap{width:200px;height:200px}
-  .mad-line{font-size:52px}
-  .den-line{font-size:68px}
+  .mcd-hero-mascot-wrap{width:220px;height:220px}
+  .mad-line{font-size:54px}
+  .den-line{font-size:72px}
 }
 @media(max-width:480px){
   #mcd-beauty-player{width:calc(100vw - 16px);right:8px;left:8px;bottom:8px;transform:rotate(-0.3deg)}
@@ -339,4 +395,35 @@ body::after{
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
+}
+
+/* --- 8. THE BACKROOM FORM --- */
+.mcd-backroom-form {
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;
+  background: var(--cream); padding: 12px; border: 3px solid var(--black);
+  border-radius: 10px; box-shadow: 4px 4px 0 var(--black); transform: rotate(-0.6deg);
+}
+.mcd-form-title { font-family: 'Alfa Slab One', cursive; font-style: italic; font-size: 13px; letter-spacing: 0.02em; color: var(--black); text-align: center; margin-bottom: 4px; }
+.mcd-input {
+  width: 100%; background: #e8e8d0; border: 2px solid var(--black); border-radius: 6px;
+  padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  color: var(--black); outline: none; box-shadow: inset 2px 2px 0 rgba(0,0,0,0.1); transition: all 0.1s ease;
+}
+.mcd-input::placeholder { color: rgba(5, 5, 5, 0.7); }
+.mcd-input:focus { background: var(--cream); border-color: var(--brick); box-shadow: inset 0 0 0 transparent, 2px 2px 0 var(--black); transform: translate(-1px, -1px); }
+.mcd-textarea { resize: vertical; min-height: 60px; }
+.mcd-submit-btn {
+  background: var(--ink); color: var(--cream); font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+  font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; border: 2px solid var(--black);
+  border-radius: 8px; padding: 8px; cursor: pointer; box-shadow: 2px 2px 0 var(--black); transition: all 0.1s ease;
+}
+.mcd-submit-btn:hover { background: var(--brick); color: var(--cream); }
+.mcd-submit-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--black); }
+
+/* --- 9. GIG STAMP BADGE --- */
+.mcd-stamp-badge {
+  margin: auto auto; color: var(--black); font-family: 'Alfa Slab One', cursive; font-size: 26px; 
+  line-height: 1; letter-spacing: 0.08em; text-transform: uppercase; border: 6px double var(--black); 
+  padding: 10px 18px; border-radius: 4px; transform: rotate(-7deg); opacity: 0.85; 
+  box-shadow: none; text-shadow: 2px 2px 0px rgba(5, 5, 5, 0.3); mix-blend-mode: multiply; 
 }
