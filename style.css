@@ -1,5 +1,5 @@
 /* =========================================
-   MAD CATS DEN - FINAL MASTER V4
+   MAD CATS DEN - FINAL MASTER V5
    ========================================= */
 
 @font-face{
@@ -108,8 +108,8 @@ body::after{
 .mcd-tape--bottom{bottom:-10px;left:-14px;transform:rotate(-2deg)}
 
 .mcd-hero-titles{flex:0 1 auto;max-width:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
-/* Pulled kicker closer to titles */
-.mcd-hero-kicker{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.2em;color:var(--mint);margin-bottom:-4px;text-align:center;white-space:nowrap}
+/* Added clean breathing room below kicker */
+.mcd-hero-kicker{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.2em;color:var(--mint);margin-bottom:12px;text-align:center;white-space:nowrap}
 .mad-line{font-family:'Alfa Slab One',cursive;font-size:94px;line-height:0.88;letter-spacing:-0.02em;color:var(--cream);text-transform:uppercase;display:block;text-align:center;white-space:nowrap;text-shadow:2px 2px 0 var(--black)}
 .den-line{font-family:'Alfa Slab One',cursive;font-size:120px;line-height:0.85;letter-spacing:-0.02em;color:var(--brick);text-transform:uppercase;display:block;text-align:center;white-space:nowrap;text-shadow:2px 2px 0 var(--black)}
 
@@ -210,7 +210,7 @@ body::after{
   font-size: 22px; letter-spacing: 0.02em; line-height: 1.1; padding: 22px 24px; 
   background: var(--brick) var(--noise-bg); color: var(--cream); border: 4px dashed var(--black); 
   border-radius: 14px; box-shadow: 7px 7px 0 var(--black); transform: rotate(-1deg) scale(1.02); 
-  position: relative;
+  position: relative; text-align: center;
   text-shadow: 3px 3px 0 var(--black), -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px 1px 0 var(--black), 1px 1px 0 var(--black);
 }
 .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi:hover{background:var(--ink); transform:rotate(-1deg) scale(1.04) translate(-1px,-1px); box-shadow:8px 8px 0 var(--black);}
@@ -286,7 +286,7 @@ body::after{
   .mcd-hero-mascot-wrap{width:280px;height:280px}
   .mad-line{font-size:68px}
   .den-line{font-size:92px}
-  .mcd-hero-kicker{font-size:11px;white-space:normal;text-wrap:balance;max-width:90vw; letter-spacing:0.15em; margin-bottom:-4px;}
+  .mcd-hero-kicker{font-size:11px;white-space:normal;text-wrap:balance;max-width:90vw; letter-spacing:0.15em; margin-bottom:14px;}
   .mcd-two-col{display:flex !important;flex-direction:column !important;}
   .mcd-card--zine{order:1 !important;}
   .mcd-card--gig{order:2 !important;}
@@ -305,7 +305,8 @@ body::after{
   #mcd-hero{height:auto;min-height:460px;gap:12px;padding:24px 12px 32px;margin:8px auto 14px}
   .mcd-hero-mascot-wrap{width:320px;height:320px;overflow:visible}
   
-  .mcd-hero-kicker{font-size:12px; line-height:1.4; padding:0 8px; background:transparent; margin-bottom:-6px;}
+  /* Proper mobile spacing for kicker text */
+  .mcd-hero-kicker{font-size:12px; line-height:1.4; padding:0 8px; background:transparent; margin-bottom:14px;}
   
   .mad-line{font-size:72px;line-height:0.85;margin-bottom:0px}
   .den-line{font-size:115px;line-height:0.8;margin-bottom:12px}
@@ -324,8 +325,8 @@ body::after{
   .mcd-support-row--den.mcd-row-social{flex-wrap:wrap;gap:8px;justify-content:flex-start}
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{flex:1 1 calc(50% - 8px);min-width:calc(50% - 8px);justify-content:center}
   
-  /* Mobile Ko-Fi text balance */
-  .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi { font-size: 14px; padding: 16px 12px; line-height: 1.4; text-wrap: balance; }
+  /* Centered, balanced Ko-Fi text for mobile */
+  .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi { font-size: 14px; padding: 16px 12px; line-height: 1.4; text-wrap: balance; text-align: center; }
 }
 @media(max-width:480px){
   .mcd-hero-mascot-wrap{width:290px;height:290px}
