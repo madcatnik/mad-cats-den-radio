@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (fireBtn && beautyPlayer && iframe) {
     fireBtn.addEventListener('click', () => {
-      // 1. Make sure player is visible
+      // Make sure popup is visible
       if (!beautyPlayer.classList.contains('show')) {
         beautyPlayer.classList.add('show');
       }
@@ -22,12 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isPlaying) {
         isPlaying = true;
         fireBtn.classList.add('is-playing');
-        fireBtn.textContent = '⏸ PLAYING';
+        fireBtn.textContent = '💀 KEEP IT WILD'; 
         beautyPlayer.classList.add('is-playing');
         if (heroSection) heroSection.classList.add('is-playing');
         document.body.classList.add('is-playing');
 
-        // Force reload iframe with autoplay enabled
+        // Force autoplay via iframe URL swap
         if (!iframe.src.includes('autoplay=1')) {
           iframe.src = baseFeedUrl + "&autoplay=1";
         }
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection) heroSection.classList.remove('is-playing');
         document.body.classList.remove('is-playing');
 
-        // Stop playback by resetting iframe without autoplay
+        // Stop playback by resetting iframe
         iframe.src = baseFeedUrl;
       }
     });
@@ -55,10 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
         fireBtn.textContent = '▶ FIRE IT UP';
       }
       if (heroSection) heroSection.classList.remove('is-playing');
-      document.body.classList.add('is-playing'); // wait, body is-playing reset:
       document.body.classList.remove('is-playing');
       if (iframe) {
-        iframe.src = baseFeedUrl; // reset stream
+        iframe.src = baseFeedUrl; 
       }
     });
   }
@@ -71,31 +70,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (dragHandle && beautyPlayer) {
     dragHandle.addEventListener('pointerdown', (e) => {
       if (e.target.closest('#mcd-beauty-close')) return;
-      
       isDragging = true;
       beautyPlayer.classList.add('is-dragging');
-      
       startX = e.clientX;
       startY = e.clientY;
-      
       const rect = beautyPlayer.getBoundingClientRect();
       beautyPlayer.style.bottom = 'auto';
       beautyPlayer.style.right = 'auto';
       beautyPlayer.style.top = rect.top + 'px';
       beautyPlayer.style.left = rect.left + 'px';
-      
       initialX = rect.left;
       initialY = rect.top;
-      
       dragHandle.setPointerCapture(e.pointerId);
     });
 
     dragHandle.addEventListener('pointermove', (e) => {
       if (!isDragging) return;
-      
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      
       beautyPlayer.style.top = (initialY + dy) + 'px';
       beautyPlayer.style.left = (initialX + dx) + 'px';
     });
