@@ -1,5 +1,5 @@
 /* =========================================
-   MAD CATS DEN - PLAYER & INTERACTION SCRIPT V10
+   MAD CATS DEN - PLAYER & INTERACTION SCRIPT V11
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -53,22 +53,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (iframe && window.Mixcloud) {
     widget = Mixcloud.PlayerWidget(iframe);
     
-    setInterval(() => {
-      if (isPlaying && widget) {
-        widget.getPosition().then((pos) => {
-          if (pos > 0) localStorage.setItem('mcd_tape_position', pos);
-        });
-      }
-    }, 5000);
+    // Track play state in background so we don't break the user interaction thread
+    widget.ready.then(() => {
+      setInterval(() => {
+        if (isPlaying && widget) {
+          widget.getPosition().then((pos) => {
+            if (pos > 0) localStorage.setItem('mcd_tape_position', pos);
+          });
+        }
+      }, 5000);
+    });
   }
 
   if (fireBtn && beautyPlayer && widget) {
-    fireBtn.addEventListener('click', async () => {
+    // Crucial fix: removed 'async' here so widget.play() executes directly from the click event
+    fireBtn.addEventListener('click', () => {
       if (!beautyPlayer.classList.contains('show')) {
         beautyPlayer.classList.add('show');
       }
-
-      await widget.ready;
 
       if (!isPlaying) {
         isPlaying = true;
@@ -78,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection) heroSection.classList.add('is-playing');
         document.body.classList.add('is-playing');
 
+        // Play synchronously on click to bypass strict autoplay blocking
         widget.play().then(() => {
           if (!hasResumed) {
             const savedPos = localStorage.getItem('mcd_tape_position');
