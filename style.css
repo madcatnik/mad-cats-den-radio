@@ -282,11 +282,11 @@ body::after{
 }
 .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi:active{transform:rotate(-1deg) scale(1.02) translate(2px,2px) !important;box-shadow:0 0 0 var(--black) !important;}
 
-/* --- THE LABEL MAKER FORM --- */
+/* --- THE LABEL MAKER FORM (TILTED PAPER) --- */
 .mcd-backroom-form {
   display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;
-  background: var(--cream); padding: 14px; border: 3px solid var(--black);
-  border-radius: 14px; box-shadow: 5px 5px 0 var(--black); transform: rotate(-0.5deg);
+  background: #F0F0DA; padding: 14px; border: 3px solid #050505;
+  border-radius: 14px; box-shadow: 5px 5px 0 #050505; transform: rotate(-0.5deg);
   position: relative; transition: all 0.2s ease;
 }
 .mcd-backroom-form:focus-within { 
@@ -303,16 +303,25 @@ body::after{
   box-shadow: 2px 2px 0 rgba(0,0,0,0.5), inset 0 0 6px rgba(0,0,0,0.9);
   border-bottom: 3px solid #222; border-right: 2px solid #222;
 }
+/* Lowercase typewriter placeholders */
 .mcd-label-tape::placeholder { color: rgba(240, 240, 218, 0.7); text-transform: lowercase; }
 .mcd-label-tape:focus { background: #0a0a0a; box-shadow: 3px 3px 0 var(--mint); transform: translate(-1px, -1px); }
 .mcd-textarea { resize: vertical; min-height: 70px; }
 
-/* Updated Submit Button - Cream text on black, 4px shadow, hover flips to cream background with black text */
+/* Glowing Slot Wrapper & Submit Button */
+.mcd-form-submit-wrap {
+  position: relative; margin-top: 4px; width: 100%;
+}
+.mcd-form-submit-wrap::before {
+  content: ""; position: absolute; top: -8px; left: 10%; right: 10%;
+  height: 3px; background: var(--mint); border-radius: 2px; box-shadow: 0 0 8px var(--mint);
+}
+
 .mcd-submit-btn {
   background: var(--black); color: var(--cream); font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
   font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; border: 3px solid var(--black);
   border-radius: 0; padding: 11px 14px; cursor: pointer; box-shadow: 4px 4px 0 var(--black); 
-  transition: all 0.12s ease; width: 100%; text-align: center;
+  transition: all 0.12s ease; width: 100%; text-align: center; display: block; margin: 0;
 }
 .mcd-submit-btn:hover { 
   background: var(--cream); color: var(--black); 
@@ -321,6 +330,13 @@ body::after{
 .mcd-submit-btn:active { 
   transform: translate(4px, 4px) !important; 
   box-shadow: 0 0 0 var(--black) !important; 
+}
+
+/* Anti-spam microcopy */
+.mcd-microcopy {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  color: rgba(0,0,0,0.7); text-align: center; margin-top: 8px;
+  letter-spacing: 0.05em; text-transform: lowercase;
 }
 
 /* --- TAPE DECK PLAYER --- */
@@ -342,35 +358,35 @@ body::after{
 #mcd-beauty-player.is-dragging iframe{pointer-events:none}
 #mcd-beauty-player .dot{width:10px;height:10px;background:var(--brick);border-radius:50%;box-shadow:0 0 0 2px var(--black), 0 0 8px rgba(204,45,48,0.7);animation:liveDotPulseBrick 3.6s ease-in-out infinite;flex-shrink:0}
 
-/* TAPE ROLLING Pulse Animation */
-@keyframes tapePulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+/* Pulsing Tape Rolling Pill */
+#mcd-beauty-player .pill{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;
+  background:var(--black);color:var(--cream);border:2px solid var(--black);
+  border-radius:4px;padding:2px 6px;white-space:nowrap; transition: opacity 0.3s;
 }
 #mcd-beauty-player.is-playing .pill {
-  animation: tapePulse 2s ease-in-out infinite;
+  animation: pillBlink 2.5s ease-in-out infinite;
 }
+@keyframes pillBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-#mcd-beauty-player .pill{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;background:var(--black);color:var(--cream);border:2px solid var(--black);border-radius:4px;padding:2px 6px;white-space:nowrap}
-
-/* Eject Hover Red */
+/* Mechanical Kill Switch */
 #mcd-beauty-close{
   background:var(--cream);color:var(--black);border:2px solid var(--black);border-radius:4px;
   padding:4px 8px; display:flex;align-items:center;justify-content:center;
   font-family: 'Barlow Condensed', sans-serif; font-weight:800; font-size:11px;
-  cursor:pointer;box-shadow:0 3px 0 var(--black);margin-left:4px; transition: all 0.1s ease;
+  cursor:pointer;box-shadow:0 3px 0 var(--black);margin-left:4px; transition: all 0.15s ease;
 }
-#mcd-beauty-close:hover {
-  background: var(--brick); color: var(--cream);
+#mcd-beauty-close:hover{
+  background: var(--brick); color: var(--cream); box-shadow: 0 3px 0 var(--black);
 }
 #mcd-beauty-close:active{transform:translateY(3px);box-shadow:0 0 0 var(--black);}
 
 /* VU Meter Hiss Effect */
-.vu-meter { height: 4px; width: 100%; background: #050505; position: relative; overflow: hidden; display: none; }
+.vu-meter { height: 8px; width: 100%; background: #1a1a1a; position: relative; overflow: hidden; display: none; }
 #mcd-beauty-player.is-playing .vu-meter { display: block; }
 #mcd-beauty-player.is-playing .vu-meter::after {
   content: ""; position: absolute; top: 0; left: 0; width: 200%; height: 100%;
-  background: repeating-linear-gradient(90deg, var(--mint) 0%, var(--mint) 4px, #050505 4px, #050505 8px);
+  background: repeating-linear-gradient(90deg, var(--mint) 0%, var(--mint) 4px, #1a1a1a 4px, #1a1a1a 8px);
   animation: tapeHiss 0.4s linear infinite;
 }
 @keyframes tapeHiss {
@@ -425,8 +441,9 @@ body::after{
   #mcd-main{padding:10px 14px 12px;gap:18px}
   .mcd-grid-2{grid-template-columns:1fr;gap:12px}
   
-  #mcd-footer{margin-bottom:24px; padding: 0 12px;}
-  #mcd-footer div{font-size:9.5px; padding:8px 12px; max-width: 100%; line-height: 1.4;}
+  /* FOOTER CLEARANCE FIX */
+  #mcd-footer{margin-bottom:16px}
+  #mcd-footer div{font-size:9.5px;padding:8px 12px; margin-bottom:24px;}
   
   .mcd-support-row--den.mcd-row-social{flex-wrap:wrap;gap:8px;justify-content:center}
   /* Restore flow for mobile pills so they can scatter */

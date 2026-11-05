@@ -1,5 +1,5 @@
 /* =========================================
-   MAD CATS DEN - PLAYER & INTERACTION SCRIPT V11
+   MAD CATS DEN - PLAYER & INTERACTION SCRIPT V12 (TUBE WARM UP)
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -50,11 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
   let widget = null;
   let hasResumed = false;
 
-  if (iframe && window.Mixcloud) {
+  if (iframe && window.Mixcloud && fireBtn) {
     widget = Mixcloud.PlayerWidget(iframe);
     
-    // Track play state in background so we don't break the user interaction thread
+    // TUBE WARM UP: Disable button until Mixcloud API is fully booted
+    fireBtn.textContent = '⏳ WARMING TUBES...';
+    fireBtn.style.opacity = '0.6';
+    fireBtn.style.pointerEvents = 'none';
+
     widget.ready.then(() => {
+      // The API is ready. Light up the button.
+      fireBtn.textContent = '▶ FIRE IT UP';
+      fireBtn.style.opacity = '1';
+      fireBtn.style.pointerEvents = 'auto';
+
+      // Start memory tracker
       setInterval(() => {
         if (isPlaying && widget) {
           widget.getPosition().then((pos) => {
@@ -63,10 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, 5000);
     });
-  }
 
-  if (fireBtn && beautyPlayer && widget) {
-    // Crucial fix: removed 'async' here so widget.play() executes directly from the click event
     fireBtn.addEventListener('click', () => {
       if (!beautyPlayer.classList.contains('show')) {
         beautyPlayer.classList.add('show');
@@ -80,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection) heroSection.classList.add('is-playing');
         document.body.classList.add('is-playing');
 
-        // Play synchronously on click to bypass strict autoplay blocking
+        // Play synchronously on click
         widget.play().then(() => {
           if (!hasResumed) {
             const savedPos = localStorage.getItem('mcd_tape_position');
@@ -91,7 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             hasResumed = true;
           }
-        }).catch(e => console.log('Browser blocked direct API play', e));
+        }).catch(e => {
+            console.log('Browser blocked direct API play', e);
+            // Fallback: If blocked, the UI is still open, user just hits play on the tape deck.
+        });
         
       } else {
         isPlaying = false;
