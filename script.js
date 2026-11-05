@@ -1,8 +1,45 @@
 /* =========================================
-   MAD CATS DEN - PLAYER & INTERACTION SCRIPT
+   MAD CATS DEN - PLAYER & INTERACTION SCRIPT V10
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
+  
+  // 1. AJAX FORM SUBMISSION
+  const contactForm = document.querySelector('form[name="backroom-howls"]');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const submitBtn = contactForm.querySelector('.mcd-submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'SLIDING...';
+
+      const formData = new FormData(contactForm);
+      formData.append('form-name', contactForm.getAttribute('name'));
+      const searchParams = new URLSearchParams(formData);
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: searchParams.toString()
+      })
+      .then((response) => {
+        if (response.ok) {
+          submitBtn.textContent = '✦ DELIVERED ✦';
+          contactForm.reset();
+        } else {
+          submitBtn.textContent = 'ERROR - TRY AGAIN';
+        }
+        setTimeout(() => { submitBtn.textContent = originalText; }, 4000);
+      })
+      .catch((error) => {
+        submitBtn.textContent = 'ERROR - TRY AGAIN';
+        setTimeout(() => { submitBtn.textContent = originalText; }, 4000);
+      });
+    });
+  }
+
+  // 2. MIXCLOUD PLAYER (API, Ignition & Tape Memory)
   const fireBtn = document.getElementById('mcd-h-fire');
   const beautyPlayer = document.getElementById('mcd-beauty-player');
   const beautyClose = document.getElementById('mcd-beauty-close');
@@ -10,14 +47,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const iframe = document.getElementById('mcd-mixcloud');
   
   let isPlaying = false;
-  const baseFeedUrl = "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2F29-05-25-oinoxoos-rnr-thursday-dedicated-kostas-geros%2F";
+  let widget = null;
+  let hasResumed = false;
 
-  if (fireBtn && beautyPlayer && iframe) {
-    fireBtn.addEventListener('click', () => {
-      // Make sure popup is visible
+  if (iframe && window.Mixcloud) {
+    widget = Mixcloud.PlayerWidget(iframe);
+    
+    setInterval(() => {
+      if (isPlaying && widget) {
+        widget.getPosition().then((pos) => {
+          if (pos > 0) localStorage.setItem('mcd_tape_position', pos);
+        });
+      }
+    }, 5000);
+  }
+
+  if (fireBtn && beautyPlayer && widget) {
+    fireBtn.addEventListener('click', async () => {
       if (!beautyPlayer.classList.contains('show')) {
         beautyPlayer.classList.add('show');
       }
+
+      await widget.ready;
 
       if (!isPlaying) {
         isPlaying = true;
@@ -27,10 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection) heroSection.classList.add('is-playing');
         document.body.classList.add('is-playing');
 
-        // Force autoplay via iframe URL swap
-        if (!iframe.src.includes('autoplay=1')) {
-          iframe.src = baseFeedUrl + "&autoplay=1";
-        }
+        widget.play().then(() => {
+          if (!hasResumed) {
+            const savedPos = localStorage.getItem('mcd_tape_position');
+            if (savedPos && parseFloat(savedPos) > 3) {
+              setTimeout(() => {
+                widget.seek(parseFloat(savedPos));
+              }, 600);
+            }
+            hasResumed = true;
+          }
+        }).catch(e => console.log('Browser blocked direct API play', e));
+        
       } else {
         isPlaying = false;
         fireBtn.classList.remove('is-playing');
@@ -39,14 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection) heroSection.classList.remove('is-playing');
         document.body.classList.remove('is-playing');
 
-        // Stop playback by resetting iframe
-        iframe.src = baseFeedUrl;
+        widget.pause();
       }
     });
   }
 
-  // Close Beauty Player
-  if (beautyClose && beautyPlayer) {
+  if (beautyClose && beautyPlayer && widget) {
     beautyClose.addEventListener('click', () => {
       beautyPlayer.classList.remove('show');
       isPlaying = false;
@@ -56,24 +113,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (heroSection) heroSection.classList.remove('is-playing');
       document.body.classList.remove('is-playing');
-      if (iframe) {
-        iframe.src = baseFeedUrl; 
-      }
+      
+      widget.pause();
     });
   }
 
-  // --- DRAGGABLE PLAYER LOGIC ---
+  // 3. DRAGGABLE TAPE DECK LOGIC (Desktop only)
   const dragHandle = beautyPlayer ? beautyPlayer.querySelector('.head') : null;
   let isDragging = false;
   let startX, startY, initialX, initialY;
+  const isMobile = () => window.innerWidth <= 768;
 
   if (dragHandle && beautyPlayer) {
     dragHandle.addEventListener('pointerdown', (e) => {
+      if (isMobile()) return;
       if (e.target.closest('#mcd-beauty-close')) return;
+      
       isDragging = true;
       beautyPlayer.classList.add('is-dragging');
       startX = e.clientX;
       startY = e.clientY;
+      
       const rect = beautyPlayer.getBoundingClientRect();
       beautyPlayer.style.bottom = 'auto';
       beautyPlayer.style.right = 'auto';
@@ -81,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
       beautyPlayer.style.left = rect.left + 'px';
       initialX = rect.left;
       initialY = rect.top;
+      
       dragHandle.setPointerCapture(e.pointerId);
     });
 
@@ -96,9 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isDragging) return;
       isDragging = false;
       beautyPlayer.classList.remove('is-dragging');
-      try {
-        dragHandle.releasePointerCapture(e.pointerId);
-      } catch (err) {}
+      try { dragHandle.releasePointerCapture(e.pointerId); } catch (err) {}
     });
   }
 });
