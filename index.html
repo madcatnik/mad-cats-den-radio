@@ -7,7 +7,7 @@
 <meta name="description" content="MAD CATS DEN — Basement radio + zine broadcasting from Athens. Low ceiling, high volume.">
 <meta name="theme-color" content="#10120F">
 
-<link rel="stylesheet" href="./style.css?v=final-master-v10">
+<link rel="stylesheet" href="./style.css?v=short-singleline-v15">
 
 <link rel="icon" type="image/x-icon" href="./favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -21,12 +21,13 @@
 <meta property="og:description" content="Basement radio + zine broadcasting from Athens. Low ceiling, high volume.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://madcatsdenradio.com">
-<meta property="og:image" content="https://madcatsdenradio.com/og-image.jpg">
+<meta property="og:image" content="https://madcatsdenradio.com/og-image-1200x630.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/webp">
 <meta property="og:image:alt" content="MAD CATS DEN — Basement Radio + Zine">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://madcatsdenradio.com/og-image.jpg">
+<meta name="twitter:image" content="https://madcatsdenradio.com/og-image-1200x630.webp">
 <link rel="canonical" href="https://madcatsdenradio.com/">
 
 <script type="application/ld+json">
@@ -58,6 +59,48 @@
   ]
 }
 </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicEvent",
+  "name": "THE 3 HAUNTED CHORDS - Live at Oinoxoos Bar",
+  "startDate": "2026-12-18T22:30:00+02:00",
+  "endDate": "2026-12-19T01:30:00+02:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "Oinoxoos Bar",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Ag. Sofias 7",
+      "addressLocality": "Nea Filadelfia",
+      "addressRegion": "Attica",
+      "addressCountry": "GR"
+    }
+  },
+  "image": ["https://madcatsdenradio.com/og-image-1200x630.webp"],
+  "description": "Greek rockabilly all-nighter - The Three Haunted Chords live + DJ set by Politis N. Free entry. Trouble looks good in the moonlight.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://madcatsdenradio.com/"
+  },
+  "performer": {
+    "@type": "MusicGroup",
+    "name": "The Three Haunted Chords"
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "MAD CATS DEN",
+    "url": "https://madcatsdenradio.com/"
+  }
+}
+</script>
+
 </head>
 <body>
 <a href="#main" class="mcd-skip" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;background:#F0F0DA;color:#050505;padding:8px 12px;z-index:9999;">Skip to content</a>
@@ -201,13 +244,18 @@
       <button id="mcd-beauty-close" aria-label="Eject tape">⏏ EJECT</button>
     </div>
   </div>
+    <div class="mcd-now-spinning" id="mcd-now-spinning">
+    <div class="mcd-now-spinning-inner">
+      <span id="mcd-now-spinning-text">✦ LOADING TAPE... LOW CEILING HIGH VOLUME — JUST BASEMENT SIGNAL ✦</span>
+    </div>
+  </div>
   <div class="vu-meter"></div>
-  <iframe title="MAD CATS DEN Mixcloud player" id="mcd-mixcloud" width="100%" height="60" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2F29-05-25-oinoxoos-rnr-thursday-dedicated-kostas-geros%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
+  <iframe title="MAD CATS DEN Mixcloud player" id="mcd-mixcloud" width="100%" height="60" scrolling="no" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2F29-05-25-oinoxoos-rnr-thursday-dedicated-kostas-geros%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
 </div>
 
 <div id="mcd-toast" role="status" aria-live="polite"></div>
 
 <script src="https://widget.mixcloud.com/media/js/widgetApi.js"></script>
-<script src="./script.js?v=final-master-10" defer></script>
+<script src="./script.js?v=short-singleline-v15" defer></script>
 </body>
 </html>
