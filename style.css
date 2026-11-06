@@ -125,9 +125,9 @@ body::after{
 
 /* Fluid Typo */
 .mcd-hero-kicker{
-  font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:0.2em; 
+  font-family:'IBM Plex Mono',monospace; font-size:12px !important; font-weight:700; letter-spacing:0.08em !important;
   color:var(--mint); margin-bottom:12px; text-align:center;
-  text-wrap: balance; white-space: normal; max-width: 90vw; line-height: 1.3;
+  white-space:nowrap !important; max-width:none; line-height:1.3;
 }
 .mad-line{
   font-family:'Alfa Slab One',cursive; line-height:0.88; letter-spacing:-0.02em;
@@ -324,76 +324,23 @@ body::after{
 }
 
 /* --- TAPE DECK PLAYER --- */
-/* --- TAPE DECK PLAYER - SHORTER + SINGLE LINE TICKER --- */
 #mcd-beauty-player{
-  position:fixed; bottom:16px; right:16px; width:420px; height:auto; min-height:auto;
+  position:fixed; bottom:16px; right:16px; width:460px; height:auto; min-height:104px;
   background:var(--ink); border:3px solid var(--black); border-radius:8px; box-shadow:6px 6px 0 var(--black);
   z-index:10002; overflow:hidden; display:none; flex-direction:column; transform:rotate(-0.4deg);
 }
 #mcd-beauty-player.show{display:flex}
+
+/* Player Header - Torn Zine Tape Style */
 #mcd-beauty-player .head{
   background:var(--cream);
-  border-bottom:2px solid var(--black); padding:6px 12px;
+  border-bottom:3px solid var(--black); padding:10px 14px;
   display:flex; align-items:center; justify-content:space-between; gap:8px; cursor:grab; touch-action:none; user-select:none;
 }
 #mcd-beauty-player .head:active{cursor:grabbing}
 #mcd-beauty-player.is-dragging{opacity:0.98;box-shadow:12px 12px 0 var(--black);transition:none;cursor:grabbing}
 #mcd-beauty-player.is-dragging iframe{pointer-events:none}
-#mcd-beauty-player .dot{width:8px;height:8px;background:var(--brick);border-radius:50%;box-shadow:0 0 0 2px var(--black), 0 0 8px rgba(204,45,48,0.7);animation:liveDotPulseBrick 3.6s ease-in-out infinite;flex-shrink:0}
-
-/* TICKER - SINGLE LINE, CREAM, NO WRAP */
-.mcd-now-spinning{
-  background:var(--cream) !important;
-  border-bottom:2px solid var(--black);
-  height:22px !important;
-  min-height:22px !important;
-  max-height:22px !important;
-  overflow:hidden !important;
-  position:relative;
-  display:flex !important;
-  align-items:center;
-  white-space:nowrap !important;
-  flex-shrink:0;
-  z-index:3;
-  line-height:1;
-}
-.mcd-now-spinning-inner{
-  display:inline-flex !important;
-  white-space:nowrap !important;
-  flex-wrap:nowrap !important;
-  animation:mcdTapeScroll 22s linear infinite;
-  will-change:transform;
-}
-#mcd-beauty-player.is-playing .mcd-now-spinning-inner{ animation-play-state:running; }
-#mcd-beauty-player:not(.is-playing) .mcd-now-spinning-inner{ animation-play-state:paused; }
-#mcd-now-spinning-text{
-  font-family:'Barlow Condensed', sans-serif;
-  font-weight:800;
-  font-size:10px !important;
-  letter-spacing:0.07em;
-  text-transform:uppercase;
-  color:var(--black) !important;
-  white-space:nowrap !important;
-  display:inline-block !important;
-  padding-right:50px;
-  line-height:22px;
-  overflow:visible;
-}
-@keyframes mcdTapeScroll{
-  0%{ transform:translateX(0); }
-  100%{ transform:translateX(-50%); }
-}
-.mcd-now-spinning::before{
-  content:"";
-  position:absolute;
-  left:0; top:0; bottom:0;
-  width:4px;
-  background:var(--brick);
-  border-right:1px solid var(--black);
-  z-index:4;
-}
-
-#mcd-beauty-player .dot{width:8px;height:8px;background:var(--brick);border-radius:50%;box-shadow:0 0 0 2px var(--black), 0 0 8px rgba(204,45,48,0.7);animation:liveDotPulseBrick 3.6s ease-in-out infinite;flex-shrink:0}
+#mcd-beauty-player .dot{width:10px;height:10px;background:var(--brick);border-radius:50%;box-shadow:0 0 0 2px var(--black), 0 0 8px rgba(204,45,48,0.7);animation:liveDotPulseBrick 3.6s ease-in-out infinite;flex-shrink:0}
 
 /* TAPE ROLLING Pulse Animation */
 @keyframes tapePulse {
@@ -419,7 +366,7 @@ body::after{
 #mcd-beauty-close:active{transform:translateY(3px);box-shadow:0 0 0 var(--black);}
 
 /* VU Meter Hiss Effect */
-.vu-meter { height: 2px; width: 100%; background: #050505; position: relative; overflow: hidden; display: none; }
+.vu-meter { height: 4px; width: 100%; background: #050505; position: relative; overflow: hidden; display: none; }
 #mcd-beauty-player.is-playing .vu-meter { display: block; }
 #mcd-beauty-player.is-playing .vu-meter::after {
   content: ""; position: absolute; top: 0; left: 0; width: 200%; height: 100%;
@@ -431,7 +378,7 @@ body::after{
   100% { transform: translateX(-16px); }
 }
 
-#mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--cream);min-height:60px;overflow:hidden;scrollbar-width:none;-ms-overflow-style:none}
+#mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--black)}
 
 #mcd-footer{width:100%;display:flex;justify-content:center;align-items:center;padding:12px;margin-top:12px;background:transparent}
 #mcd-footer div {
@@ -505,5 +452,111 @@ body::after{
 }
 @media(prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none !important;transition:none !important} }
 
-#mcd-beauty-player iframe::-webkit-scrollbar{ display:none; width:0; height:0; }
-#mcd-mixcloud{ overflow:hidden; }
+.mcd-coming{
+  background:var(--cream);
+  color:var(--brick);
+  text-shadow:1px 1px 0 var(--black);
+  padding:2px 10px;
+  border:2px solid var(--black);
+  box-shadow:2px 2px 0 var(--black);
+  display:inline-block;
+  transform:rotate(-1deg);
+  font-size:0.92em;
+  line-height:1.1;
+  white-space:nowrap;
+}
+/* GLOW - subtler */
+.mcd-hero-mascot-wrap{ filter: drop-shadow(0 0 12px rgba(204,45,48,0.35)) drop-shadow(0 0 24px rgba(204,45,48,0.18)) !important; }
+.mcd-hero-mascot-wrap::before{ content:""; position:absolute; inset:-8px; border-radius:50%; background: radial-gradient(circle, rgba(204,45,48,0.22) 0%, rgba(204,45,48,0.08) 45%, transparent 70%); z-index:-1; filter: blur(6px); }
+
+.mcd-footer--full{ width:100% !important; max-width:none !important; background:transparent !important; border:none !important; padding:12px 16px !important; text-align:center; display:block; }
+.mcd-footer-line1{ font-family:'Barlow Condensed', sans-serif; font-weight:800; font-size:13px; letter-spacing:0.12em; color:var(--cream); margin-bottom:4px; }
+.mcd-footer-line2{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.08em; color:var(--cream); opacity:0.9; }
+#mcd-footer{ width:100% !important; max-width:none !important; margin-left:0 !important; margin-right:0 !important; }
+
+/* FOOTER NO BORDER v36 */
+#mcd-footer, .mcd-footer--full{ border:none !important; border-top:none !important; border-bottom:none !important; box-shadow:none !important; outline:none !important; background:transparent !important; }
+#mcd-footer div, .mcd-footer--full div{ border:none !important; box-shadow:none !important; outline:none !important; background:transparent !important; transform:none !important; }
+.mcd-footer-line1, .mcd-footer-line2{ background:transparent !important; border:none !important; box-shadow:none !important; }
+
+/* FISTFUL brick red 26px */
+.mcd-card--zine .mcd-manifesto{ color:var(--brick) !important; font-size:26px !important; text-shadow:2px 2px 0 var(--black) !important; }
+
+.mcd-genre-tags{ font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--black); text-align:center; border-top:2px solid var(--black); border-bottom:2px solid var(--black); padding:8px 4px; margin:0; line-height:1.6; }
+
+/* GOOD CARDS v36 - pills on RIGHT, not bottom center */
+/* Revert bad v35 column layout */
+.mcd-card--zine .mcd-grid-2{ gap:12px !important; margin-top:0 !important; margin-bottom:0 !important; }
+.mcd-card--zine .mcd-grid-2 > div{
+  display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:space-between !important;
+  gap:10px !important; padding:10px 12px !important; min-height:0 !important; text-align:left !important;
+}
+.mcd-card--zine .mcd-grid-2 > div > div:first-child{ flex:1 1 auto !important; text-align:left !important; }
+.mcd-card--zine .mcd-grid-2 > div .mcd-s-pill--den{
+  flex-shrink:0 !important; margin:0 !important; align-self:center !important;
+}
+/* Balanced spacing without making cards huge - even 12px gaps */
+.mcd-card--zine .mcd-zine-intro{ display:flex; flex-direction:column; gap:12px; margin:0 !important; padding:0 !important; }
+.mcd-card--zine .mcd-manifesto{ margin:0 !important; }
+.mcd-card--zine .mcd-card-text{ margin:0 !important; font-size:14px !important; line-height:1.65 !important; }
+.mcd-genre-tags{ margin:0 !important; padding:8px 4px !important; }
+
+/* FOLLOW mint star red */
+.mcd-follow-heading{ color:var(--mint) !important; }
+.mcd-follow-star{ color:var(--brick) !important; }
+.mcd-follow-divider{ height:2px; background:var(--mint); margin:14px 0 10px 0; width:100%; }
+
+/* PILL COLORS v36 */
+.mcd-card--zine .mcd-grid-2 > div:nth-child(1) .mcd-s-pill--den, .mcd-card--zine .mcd-grid-2 > div:nth-child(3) .mcd-s-pill--den{ background:var(--mint) !important; color:var(--black) !important; border:2px solid var(--black) !important; }
+.mcd-card--zine .mcd-grid-2 > div:nth-child(2) .mcd-s-pill--den, .mcd-card--zine .mcd-grid-2 > div:nth-child(6) .mcd-s-pill--den{ background:var(--brick) !important; color:var(--cream) !important; border:2px solid var(--black) !important; }
+.mcd-card--zine .mcd-grid-2 > div:nth-child(4) .mcd-s-pill--den{ background:var(--black) !important; color:var(--cream) !important; border:2px solid var(--black) !important; }
+.mcd-card--zine .mcd-grid-2 > div:nth-child(5) .mcd-s-pill--den{ background:var(--cream) !important; color:var(--black) !important; border:2px solid var(--black) !important; }
+
+.mcd-3hc-stamp-wrap{ text-align:center; margin:12px 0 12px 0; padding:0; }
+.mcd-3hc-stamp{ width:90px !important; height:auto; display:inline-block; background:transparent !important; border:none !important; padding:0 !important; transform:rotate(-4deg); box-shadow:none !important; }
+
+/* TAPE REMOVED */
+.mcd-support-head--den::before, .mcd-support-head--den::after, .mcd-support-block--den::before{ display:none !important; }
+.mcd-support-head--den .mcd-tape, .mcd-support-block--den .mcd-tape{ display:none !important; }
+
+/* CONTACT v36 */
+.mcd-follow-heading{ font-family:'Barlow Condensed', sans-serif; font-weight:800; font-size:13px; letter-spacing:0.14em; text-align:center; margin-bottom:10px; }
+.mcd-support-row--den.mcd-row-social{ gap:10px !important; justify-content:center !important; }
+.mcd-support-row--den.mcd-row-social .mcd-s-pill--den{ flex:1 1 0 !important; min-width:0 !important; justify-content:center !important; background:var(--cream) !important; color:var(--black) !important; border:2px solid var(--black) !important; font-size:11px !important; padding:8px 4px !important; text-align:center; white-space:nowrap; }
+.mcd-submit-btn, button.mcd-submit-btn{ background:var(--brick) !important; color:var(--cream) !important; border:2px solid var(--black) !important; text-shadow:1px 1px 0 var(--black) !important; }
+.mcd-support-block--den input::placeholder{ text-transform:uppercase !important; }
+
+.mcd-now-spinning{ background:var(--cream) !important; border-bottom:2px solid var(--black); height:22px !important; overflow:hidden !important; display:flex !important; align-items:center; white-space:nowrap !important; }
+.mcd-now-spinning-inner{ display:inline-flex !important; white-space:nowrap !important; animation:mcdTapeScroll 22s linear infinite; }
+#mcd-now-spinning-text{ font-weight:800; font-size:10px !important; color:var(--black) !important; white-space:nowrap !important; display:inline-block !important; padding-right:50px; line-height:22px; }
+@keyframes mcdTapeScroll{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+#mcd-beauty-player iframe{ background:var(--cream); overflow:hidden; scrollbar-width:none; }
+
+/* HAUNTED +1px */
+.mcd-card--gig .mcd-support-block--den p, .mcd-card--gig .mcd-support-block--den div{ font-size:14px !important; line-height:1.65 !important; }
+
+/* LAYOUT v36 */
+@media(min-width:600px){
+  .mcd-two-col{ display:grid !important; grid-template-columns:1fr 1fr !important; gap:14px !important; align-items:stretch !important; flex-direction:row !important; }
+  .mcd-card--gig{ order:1 !important; }
+  .mcd-card--zine{ order:2 !important; }
+  #mcd-hero{ flex-direction:row !important; }
+}
+@media(max-width:599px){
+  .mcd-two-col{ display:flex !important; flex-direction:column !important; }
+  .mcd-card--zine{ order:1 !important; }
+  .mcd-card--gig{ order:2 !important; }
+  #mcd-hero{ flex-direction:column !important; height:auto !important; min-height:400px !important; gap:24px !important; padding:16px 12px !important; }
+  .mcd-live-dot{ display:none !important; }
+  #mcd-main{ gap:28px !important; padding:10px 12px 12px !important; }
+  .mcd-hero-kicker{ white-space:normal !important; letter-spacing:0.08em !important; font-size:11px !important; text-align:center; }
+  .mcd-support-row--den.mcd-row-social{ flex-wrap:wrap !important; gap:8px !important; }
+  .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{ flex:1 1 30% !important; font-size:10px !important; padding:7px 2px !important; }
+  .mcd-3hc-stamp{ width:70px !important; }
+  .mcd-card--zine .mcd-manifesto{ font-size:22px !important; }
+  .mcd-genre-tags{ font-size:10px !important; line-height:1.8 !important; }
+  .mcd-coming{ font-size:0.85em !important; padding:2px 8px !important; }
+  #mcd-footer{ padding:10px 12px !important; }
+  .mcd-footer-line1{ font-size:11px !important; }
+  .mcd-footer-line2{ font-size:9px !important; }
+}
