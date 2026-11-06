@@ -1,5 +1,5 @@
 /* =========================================
-   MAD CATS DEN - PLAYER & INTERACTION SCRIPT V12 (TUBE WARM UP)
+   MAD CATS DEN - PLAYER & INTERACTION SCRIPT V10
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -50,34 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
   let widget = null;
   let hasResumed = false;
 
-  if (iframe && window.Mixcloud && fireBtn) {
+  if (iframe && window.Mixcloud) {
     widget = Mixcloud.PlayerWidget(iframe);
     
-    // TUBE WARM UP: Disable button until Mixcloud API is fully booted
-    fireBtn.textContent = '⏳ WARMING TUBES...';
-    fireBtn.style.opacity = '0.6';
-    fireBtn.style.pointerEvents = 'none';
+    setInterval(() => {
+      if (isPlaying && widget) {
+        widget.getPosition().then((pos) => {
+          if (pos > 0) localStorage.setItem('mcd_tape_position', pos);
+        });
+      }
+    }, 5000);
+  }
 
-    widget.ready.then(() => {
-      // The API is ready. Light up the button.
-      fireBtn.textContent = '▶ FIRE IT UP';
-      fireBtn.style.opacity = '1';
-      fireBtn.style.pointerEvents = 'auto';
-
-      // Start memory tracker
-      setInterval(() => {
-        if (isPlaying && widget) {
-          widget.getPosition().then((pos) => {
-            if (pos > 0) localStorage.setItem('mcd_tape_position', pos);
-          });
-        }
-      }, 5000);
-    });
-
-    fireBtn.addEventListener('click', () => {
+  if (fireBtn && beautyPlayer && widget) {
+    fireBtn.addEventListener('click', async () => {
       if (!beautyPlayer.classList.contains('show')) {
         beautyPlayer.classList.add('show');
       }
+
+      await widget.ready;
 
       if (!isPlaying) {
         isPlaying = true;
@@ -87,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSection) heroSection.classList.add('is-playing');
         document.body.classList.add('is-playing');
 
-        // Play synchronously on click
         widget.play().then(() => {
           if (!hasResumed) {
             const savedPos = localStorage.getItem('mcd_tape_position');
@@ -98,10 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             hasResumed = true;
           }
-        }).catch(e => {
-            console.log('Browser blocked direct API play', e);
-            // Fallback: If blocked, the UI is still open, user just hits play on the tape deck.
-        });
+        }).catch(e => console.log('Browser blocked direct API play', e));
         
       } else {
         isPlaying = false;
