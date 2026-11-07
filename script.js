@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroSection = document.getElementById('mcd-hero');
   const iframe = document.getElementById('mcd-mixcloud');
   const nowSpinningEl = document.getElementById('mcd-now-spinning-text');
-  let isPlaying = false, widget = null, apiLoading = false;
+  let isPlaying = false, widget = null, apiLoading = false, hasResumed = false;
   if (nowSpinningEl) nowSpinningEl.textContent = `\u2726 ${STATION_SLOGAN} \u2726 ${STATION_SLOGAN} \u2726`;
   function fireHTML(icon, label){
     return '<span class="mcd-play-symbol" aria-hidden="true">' + icon + '</span><span class="mcd-fire-label"> ' + label + '</span>';
@@ -45,6 +45,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Create widget immediately - HTML already loads widgetApi.js before this script, so window.Mixcloud is there
   ensureMixcloudAPI(()=>{ getWidget(); });
+  // V46 TAPE MEMORY - save position every 5s while playing, so leaving + coming back resumes where you left
+  function saveTapePosition(){
+    const w = getWidget();
+    if (!w || !isPlaying) return;
+    try {
+      const p = w.getPosition();
+      if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem('mcd_tape_position', String(pos)); } catch(e){} } }).catch(()=>{});
+    } catch(e){}
+  }
+  setInterval(saveTapePosition, 5000);
+  // Save on leave too, so last seconds aren't lost
+  window.addEventListener('beforeunload', saveTapePosition);
   function setPlayingUI(on){
     isPlaying = on;
     if (fireBtn) { fireBtn.classList.toggle('is-playing', on); fireBtn.innerHTML = on ? fireHTML('\uD83D\uDC80', 'KEEP IT WILD') : fireHTML('\u25B6', 'FIRE IT UP'); }
@@ -55,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (fireBtn && beautyPlayer) {
     fireBtn.addEventListener('click', () => {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
-      if (isPlaying) { setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
+      if (isPlaying) { saveTapePosition(); setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
       fireBtn.innerHTML = fireHTML('\u25B6', 'LOADING TAPE...');
       // 1. Try sync play FIRST - keeps the Chrome/Safari user gesture
       const syncWidget = getWidget();
@@ -70,8 +82,29 @@ document.addEventListener('DOMContentLoaded', () => {
             // Always re-play after ready - this is the one that actually starts audio
             try {
               const p2 = w.play();
-              if (p2 && p2.then) p2.then(()=>{ setPlayingUI(true); }).catch(()=>{ setPlayingUI(true); });
-              else setPlayingUI(true);
+              if (p2 && p2.then) p2.then(()=>{
+                setPlayingUI(true);
+                // V46 TAPE MEMORY - resume once per page load, if you left and came back
+                if (!hasResumed) {
+                  hasResumed = true;
+                  try {
+                    const saved = localStorage.getItem('mcd_tape_position');
+                    if (saved && parseFloat(saved) > 3) {
+                      setTimeout(()=>{ try { w.seek(parseFloat(saved)); } catch(e){} }, 600);
+                    }
+                  } catch(e){}
+                }
+              }).catch(()=>{ setPlayingUI(true); });
+              else {
+                setPlayingUI(true);
+                if (!hasResumed) {
+                  hasResumed = true;
+                  try {
+                    const saved = localStorage.getItem('mcd_tape_position');
+                    if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w.seek(parseFloat(saved)); } catch(e){} }, 600); }
+                  } catch(e){}
+                }
+              }
             } catch(e){ setPlayingUI(true); }
           }).catch(()=>{ setPlayingUI(true); });
         } catch(e){ setPlayingUI(true); }
@@ -82,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (beautyClose && beautyPlayer) {
     beautyClose.addEventListener('click', () => {
       beautyPlayer.classList.remove('show');
+      saveTapePosition();
       // Reset any drag position so next open docks back to bottom-right on desktop
       beautyPlayer.style.top = ''; beautyPlayer.style.left = ''; beautyPlayer.style.bottom = ''; beautyPlayer.style.right = '';
       setPlayingUI(false);

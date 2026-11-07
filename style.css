@@ -567,3 +567,23 @@ body::after{
 
 /* CLEAN v40 - ONE follow-divider rule, green line gone everywhere */
 .mcd-follow-divider{ display:none !important; height:0 !important; margin:0 !important; padding:0 !important; background:transparent !important; border:none !important; }
+
+/* V46 - FOOTER: 2 lines stacked, not 2 columns. Desktop + mobile same. */
+#mcd-footer, #mcd-footer.mcd-footer--full{
+  display:flex !important; flex-direction:column !important;
+  justify-content:center !important; align-items:center !important;
+  gap:4px !important; text-align:center !important;
+  width:100% !important; max-width:none !important;
+}
+#mcd-footer .mcd-footer-line1, #mcd-footer .mcd-footer-line2{
+  display:block !important; width:100% !important; max-width:720px !important;
+  text-align:center !important; margin:0 auto !important; padding:0 !important;
+}
+#mcd-footer .mcd-footer-line2{
+  line-height:1.6 !important; text-wrap:balance !important;
+}
+@media(max-width:599px){
+  #mcd-footer{ padding:12px 12px !important; gap:6px !important; }
+  #mcd-footer .mcd-footer-line1{ font-size:11px !important; }
+  #mcd-footer .mcd-footer-line2{ font-size:9px !important; line-height:1.7 !important; max-width:320px !important; }
+}
