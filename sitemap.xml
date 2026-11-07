@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://madcatsdenradio.com/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://madcatsdenradio.com/og-image-1200x630.webp</image:loc>
+      <image:title>MAD CATS DEN — 24/7 Rockabilly Radio + Zine from Athens GR</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://madcatsdenradio.com/hero-cat-original.webp</image:loc>
+      <image:title>MAD CATS DEN cat — Real Gone Rock &amp; Roll</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://madcatsdenradio.com/gig-poster.webp</image:loc>
+      <image:title>THE 3 HAUNTED CHORDS — Live at Oinoxoos Bar, 18.12.26</image:title>
+    </image:image>
   </url>
 </urlset>

@@ -84,7 +84,13 @@ body::after{
   border:3px solid var(--black); border-radius:14px; box-shadow:3px 3px 0 var(--black);
   font-family:'Alfa Slab One',cursive; font-size:17px; padding:10px 18px;
   transform:rotate(1deg); white-space:nowrap; cursor:pointer; transition:all 0.15s ease;
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
 }
+.mcd-play-symbol{
+  display:inline-block; font-size:22px; line-height:1;
+  transform:translateY(1px); vertical-align:-1px;
+}
+.mcd-fire-label{ display:inline-block; line-height:1; }
 #mcd-h-fire:hover{transform:rotate(1deg) translate(-1px,-1px);box-shadow:4px 4px 0 var(--black)}
 #mcd-h-fire:active{transform:rotate(1deg) translate(2px,2px) !important;box-shadow:0 0 0 var(--black) !important}
 #mcd-h-fire.is-playing{
@@ -524,6 +530,9 @@ body::after{
   #mcd-hero{ flex-direction:column !important; height:auto !important; min-height:400px !important; gap:24px !important; padding:16px 12px !important; }
   .mcd-live-dot{ display:none !important; }
   #mcd-main{ gap:28px !important; padding:10px 12px 12px !important; }
+  #mcd-header-player{ padding:6px 8px 8px !important; }
+  #mcd-h-fire{ font-size:14px !important; padding:7px 10px !important; border-width:2px !important; border-radius:10px !important; box-shadow:2px 2px 0 var(--black) !important; gap:5px !important; }
+  .mcd-play-symbol{ font-size:18px !important; }
   .mcd-hero-kicker{ white-space:normal !important; font-size:11px !important; letter-spacing:0.06em !important; line-height:1.7 !important; padding:0 8px; text-align:center; }
   .mcd-kicker-line1, .mcd-kicker-line2{ display:block !important; white-space:normal !important; text-align:center; }
   .mcd-kicker-sep{ display:none !important; }
@@ -539,7 +548,7 @@ body::after{
   .mcd-support-row--den.mcd-row-social{ border-top:none !important; }
   .mcd-support-row--den.mcd-row-social{ flex-wrap:wrap !important; gap:8px !important; }
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{ flex:1 1 30% !important; font-size:10px !important; padding:7px 2px !important; }
-  .mcd-3hc-stamp{ width:110px !important; height:auto; display:inline-block; background:transparent !important; border:none !important; padding:0 !important; transform:rotate(-4deg); box-shadow:none !important; }
+  .mcd-3hc-stamp{ width:85px !important; height:auto; display:inline-block; background:transparent !important; border:none !important; padding:0 !important; transform:rotate(-4deg); box-shadow:none !important; }
   .mcd-card--zine .mcd-manifesto{ font-size:22px !important; }
   #mcd-footer{ padding:10px 12px !important; }
   .mcd-footer-line1{ font-size:11px !important; }
@@ -551,8 +560,6 @@ body::after{
 /* GREEN LINE GONE EVERYWHERE v39 - desktop + mobile */
 .mcd-follow-heading{ border-top:none !important; }
 .mcd-support-row--den.mcd-row-social{ border-top:none !important; }
-
-@media(max-width:599px){ .mcd-3hc-stamp{ width:85px !important; } }
 
 /* CLEAN v40 - ONE follow-divider rule, green line gone everywhere */
 .mcd-follow-divider{ display:none !important; height:0 !important; margin:0 !important; padding:0 !important; background:transparent !important; border:none !important; }
