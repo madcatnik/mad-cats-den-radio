@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!w || !isPlaying) return;
     try {
       const p = w.getPosition();
-      if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem('mcd_tape_position', String(pos)); } catch(e){} } }).catch(()=>{});
+      if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem('mcd_tape_position_ape-tape-1', String(pos)); } catch(e){} } }).catch(()=>{});
     } catch(e){}
   }
   setInterval(saveTapePosition, 5000);
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!hasResumed) {
                   hasResumed = true;
                   try {
-                    const saved = localStorage.getItem('mcd_tape_position');
+                    const saved = localStorage.getItem('mcd_tape_position_ape-tape-1');
                     if (saved && parseFloat(saved) > 3) {
                       setTimeout(()=>{ try { w.seek(parseFloat(saved)); } catch(e){} }, 600);
                     }
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!hasResumed) {
                   hasResumed = true;
                   try {
-                    const saved = localStorage.getItem('mcd_tape_position');
+                    const saved = localStorage.getItem('mcd_tape_position_ape-tape-1');
                     if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w.seek(parseFloat(saved)); } catch(e){} }, 600); }
                   } catch(e){}
                 }
