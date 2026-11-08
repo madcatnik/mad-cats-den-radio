@@ -12,12 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const list = pool.length ? pool : TAPES;
     return list[Math.floor(Math.random()*list.length)];
   }
-  let currentTapeId = null;
-  try { currentTapeId = localStorage.getItem('mcd_current_tape'); } catch(e){}
-  if (!currentTapeId || !TAPES.some(t=>t.id===currentTapeId)) {
-    currentTapeId = pickRandomTape(null).id;
-    try { localStorage.setItem('mcd_current_tape', currentTapeId); } catch(e){}
-  }
+  // V49 FIX: Shuffle on every fresh load - always pick random, don't stick to stored tape.
+  // Stored tape was why it kept starting on Oinoxoos after first pick.
+  let currentTapeId = pickRandomTape(null).id;
+  try { localStorage.setItem('mcd_current_tape', currentTapeId); } catch(e){}
   function buildFeedUrl(tape){
     return 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2F' + tape.slug + '%2F';
   }
@@ -44,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroSection = document.getElementById('mcd-hero');
   const iframe = document.getElementById('mcd-mixcloud');
   const nowSpinningEl = document.getElementById('mcd-now-spinning-text');
-  let isPlaying = false, widget = null, apiLoading = false, hasResumed = false, endedAttachedFor = null;
+  let isPlaying = false, widget = null, apiLoading = false, hasResumed = false, endedAttachedFor = null, hasAutoNexted = false;
   function updateTicker(){
     const tape = getTapeById(currentTapeId);
     if (nowSpinningEl) nowSpinningEl.textContent = `\u2726 NOW SPINNING: ${tape.label} \u2726 ${STATION_SLOGAN} \u2726`;
@@ -83,7 +81,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem(tapePosKey(), String(pos)); } catch(e){} } }).catch(()=>{});
     } catch(e){}
   }
-  setInterval(saveTapePosition, 5000);
+  // V49 FIX: Auto-next via polling - Mixcloud ended event is unreliable, it just loops same tape.
+  // Every 5s, if we're within 10s of the end, jump to a different random tape before it loops.
+  function checkForTapeEnd(){
+    const w = getWidget();
+    if (!w || !isPlaying || hasAutoNexted) return;
+    try {
+      const pPos = w.getPosition();
+      const pDur = w.getDuration();
+      if (pPos && pDur && pPos.then && pDur.then) {
+        Promise.all([pPos, pDur]).then(([pos, dur])=>{
+          if (pos && dur && dur > 30 && (dur - pos) < 10) {
+            hasAutoNexted = true;
+            nextTape(true);
+          }
+        }).catch(()=>{});
+      }
+    } catch(e){}
+  }
+  setInterval(()=>{ saveTapePosition(); checkForTapeEnd(); }, 5000);
   window.addEventListener('beforeunload', saveTapePosition);
   function attachEnded(){
     const w = getWidget();
@@ -107,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroSection) heroSection.classList.toggle('is-playing', on);
     document.body.classList.toggle('is-playing', on);
   }
-  function playCurrentTape(){
+  function playCurrentTape(){ hasAutoNexted = false;
     if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
     if (fireBtn) fireBtn.innerHTML = fireHTML('\u25B6', 'LOADING TAPE...');
     const syncWidget = getWidget();
@@ -158,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const next = pickRandomTape(currentTapeId);
     currentTapeId = next.id;
     try { localStorage.setItem('mcd_current_tape', currentTapeId); } catch(e){}
-    hasResumed = false; endedAttachedFor = null; widget = null;
+    hasResumed = false; endedAttachedFor = null; hasAutoNexted = false; widget = null;
     updateTicker();
     if (iframe) iframe.setAttribute('src', buildFeedUrl(next));
     setPlayingUI(false);
