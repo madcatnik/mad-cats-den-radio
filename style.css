@@ -587,19 +587,3 @@ body::after{
   #mcd-footer .mcd-footer-line1{ font-size:11px !important; }
   #mcd-footer .mcd-footer-line2{ font-size:9px !important; line-height:1.7 !important; max-width:320px !important; }
 }
-
-/* V48 - NEXT TAPE button, shuffle */
-#mcd-next-tape{
-  background:var(--mint);color:var(--black);border:2px solid var(--black);border-radius:4px;
-  padding:4px 8px; display:flex;align-items:center;justify-content:center;
-  font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:11px;
-  cursor:pointer;box-shadow:0 3px 0 var(--black);margin-left:4px; transition:all 0.1s ease;
-  white-space:nowrap;
-}
-#mcd-next-tape:hover{ background:var(--black); color:var(--mint); }
-#mcd-next-tape:active{ transform:translateY(3px); box-shadow:0 0 0 var(--black); }
-@media(max-width:768px){
-  #mcd-beauty-player .pill{ display:none !important; }
-  #mcd-next-tape{ font-size:10px !important; padding:4px 6px !important; }
-  #mcd-beauty-close{ font-size:10px !important; padding:4px 6px !important; }
-}
