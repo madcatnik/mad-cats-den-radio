@@ -602,3 +602,49 @@ html,body{max-width:100%;overflow-x:clip}
   #mcd-hero.is-playing .mcd-hero-glow--mint,#mcd-hero.is-playing .mcd-hero-glow--brick{transform:scale(1.15)}
   #mcd-hero.is-playing .mcd-hero-cat{animation:none}
 }
+/* === V49 MOBILE HEADER ONLY — paste this at the VERY BOTTOM of your current style.css, save, test on Live Server === */
+/* Desktop: zero change. Mobile (<=768px): hide MCD stamp + TRANSMITTING / LIVE WIRES, keep only bigger FIRE IT UP */
+@media(max-width:768px){
+  #mcd-header-player{
+    justify-content:center;
+    padding:8px 10px 10px;
+    min-height:auto;
+  }
+  .mcd-stamp-logo{
+    display:none !important;
+  }
+  .mcd-h-center{
+    display:none !important;
+  }
+  .mcd-h-right{
+    width:100%;
+    margin:0;
+    justify-content:center;
+    gap:0;
+  }
+  .mcd-live-dot,
+  .mcd-transmitting-txt{
+    display:none !important;
+  }
+  #mcd-h-fire{
+    width:100%;
+    max-width:100%;
+    font-size:20px;
+    padding:14px 18px;
+    transform:none;
+    text-align:center;
+  }
+  #mcd-h-fire:hover,
+  #mcd-h-fire:active,
+  #mcd-h-fire.is-playing{
+    transform:none;
+  }
+  #mcd-header-player.is-playing .mcd-stamp-logo{
+    display:none;
+  }
+  #mcd-header-player.is-playing .mcd-h-right{
+    width:100%;
+    justify-content:center;
+    margin:0;
+  }
+}
