@@ -384,7 +384,7 @@ body::after{
   100% { transform: translateX(-16px); }
 }
 
-#mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--black);touch-action:pan-x;overscroll-behavior:contain}
+#mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--black);touch-action:pan-y;overscroll-behavior:contain}
 
 #mcd-footer{width:100%;display:flex;justify-content:center;align-items:center;padding:12px;margin-top:12px;background:transparent}
 #mcd-footer div {
@@ -445,7 +445,7 @@ body::after{
     bottom:0; right:0; left:0; width:100%; max-width:100%; border-radius:8px 8px 0 0; transform:none; touch-action:pan-y; overscroll-behavior:contain; padding-bottom:env(safe-area-inset-bottom, 0px);
   }
   #mcd-beauty-player .head{touch-action:pan-y;cursor:default}
-  #mcd-beauty-player iframe{touch-action:pan-x} 
+  #mcd-beauty-player iframe{touch-action:pan-y} 
     border-bottom:none; box-shadow:0 -4px 0 var(--black);
   }
 }
@@ -678,3 +678,21 @@ html,body{max-width:100%;overflow-x:clip}
 #mcd-hero.is-playing .mcd-hero-glow--mint{ opacity:0.95 !important; filter:blur(40px) !important; transform:scale(1.5) !important; transition:all 0.5s ease !important; }
 #mcd-hero.is-playing .mcd-hero-glow--brick{ opacity:1 !important; filter:blur(44px) !important; transform:scale(1.55) !important; transition:all 0.5s ease !important; }
 #mcd-hero.is-playing .mcd-hero-cat{ box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 48px rgba(204,45,48,0.85), 0 0 80px rgba(155,219,193,0.55) !important; }
+
+/* === V51 MIXCLOUD SEEK FIX — horizontal drag goes to Mixcloud for seek, vertical scrolls page === */
+#mcd-beauty-player iframe{
+  touch-action: pan-y !important;
+  pointer-events: auto !important;
+}
+@media(max-width:768px){
+  #mcd-beauty-player iframe{
+    touch-action: pan-y !important;
+    pointer-events: auto !important;
+  }
+  #mcd-beauty-player{
+    touch-action: pan-y !important;
+  }
+  #mcd-beauty-player .head{
+    touch-action: pan-y !important;
+  }
+}
