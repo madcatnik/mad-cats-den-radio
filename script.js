@@ -1,3 +1,4 @@
+/* PLAYER V48-READY — CORRECT v47 base (Ape Tape Mix 1 + Pinterest) — desktop drag only */
 /* PLAYER V44 - FIX: audio must play on FIRE IT UP (desktop + mobile) + restore desktop drag */
 document.addEventListener('DOMContentLoaded', () => {
   const STATION_SLOGAN = "LOW CEILING HIGH VOLUME — NO SPONSORS — NO ALGORITHM — JUST BASEMENT SIGNAL — ATHENS GR — EST 2026";
@@ -125,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. DRAGGABLE TAPE DECK - RESTORED from V11, desktop only. Mobile stays docked bottom.
   const dragHandle = beautyPlayer ? beautyPlayer.querySelector('.head') : null;
   let isDragging = false, startX, startY, initialX, initialY;
-  const isMobile = () => window.innerWidth <= 768;
+  const isMobile = () => window.innerWidth <= 768 || window.matchMedia('(pointer: coarse)').matches;
   if (dragHandle && beautyPlayer) {
     dragHandle.addEventListener('pointerdown', (e) => {
       if (isMobile()) return;
