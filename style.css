@@ -385,6 +385,7 @@ body::after{
 }
 
 #mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--black);touch-action:pan-y;overscroll-behavior:contain}
+#mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--black);touch-action:pan-y;overscroll-behavior:contain}
 
 #mcd-footer{width:100%;display:flex;justify-content:center;align-items:center;padding:12px;margin-top:12px;background:transparent}
 #mcd-footer div {
@@ -445,6 +446,7 @@ body::after{
     bottom:0; right:0; left:0; width:100%; max-width:100%; border-radius:8px 8px 0 0; transform:none; touch-action:pan-y; overscroll-behavior:contain; padding-bottom:env(safe-area-inset-bottom, 0px);
   }
   #mcd-beauty-player .head{touch-action:pan-y;cursor:default}
+  #mcd-beauty-player iframe{touch-action:pan-y} 
   #mcd-beauty-player iframe{touch-action:pan-y} 
     border-bottom:none; box-shadow:0 -4px 0 var(--black);
   }
