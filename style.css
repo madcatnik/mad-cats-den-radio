@@ -2084,3 +2084,42 @@ body{
     text-align:center !important;
   }
 }
+
+/* === V116 — MOBILE ONLY: intro -1px + tighter + TROUBLE -1px + more breathing === */
+/* Desktop untouched. */
+/* 1. Paragraph (intro + genre): was 13px / 1.65 on mobile, now 12px / 1.4, still centered. Wraps less: 6 rows -> ~5 rows, tighter. NOT 11px — 11px mono on phone gets hard to read, 12px is the floor. Genre line-height 1.9 -> 1.5 to match tighter paragraph. */
+@media(max-width:768px){
+  .mcd-card--zine .mcd-card-text{
+    font-size:12px !important;
+    line-height:1.4 !important;
+  }
+  .mcd-card--zine .mcd-genre-tags{
+    line-height:1.5 !important;
+  }
+  /* 2. TROUBLE: was 12px / padding 16px 12px, now 11px / padding 18px 12px — -1px font +2px top/bottom padding. Same 2 lines, same stars, just more air, not squeezed. */
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    font-size:11px !important;
+    padding:18px 12px !important;
+  }
+}
+
+/* === V117 — Intro one paragraph + TROUBLE not touching border, MOBILE ONLY === */
+/* 1. Intro is now one continuous paragraph in HTML (no <br>), so it flows naturally, no forced break. Desktop + mobile both flow, still centered. */
+/* 2. TROUBLE was touching dashed border: nowrap + 11px + 0.03em spacing + 12px side padding + narrow container. Fix: font 11px -> 10px, spacing 0.03em -> 0 (text narrower), side padding 12px -> 16px (more air), container wider 0 8px -> 0 4px + width calc 100%-8px -> 100%-4px. Net gap grows ~8-10px, still 2 lines, same stars. */
+@media(max-width:768px){
+  .mcd-row-kofi{
+    padding:0 4px !important;
+  }
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    font-size:10px !important;
+    letter-spacing:0 !important;
+    padding:18px 16px !important;
+    width:calc(100% - 4px) !important;
+    max-width:calc(100% - 4px) !important;
+  }
+}
+
+/* === V118 — Intro wording only: Radio -> Web Radio + skull === */
+/* No layout change, same one-paragraph flow from V117. */
