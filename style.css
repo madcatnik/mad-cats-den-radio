@@ -1485,3 +1485,361 @@ html,body{max-width:100%;overflow-x:clip}
   .mcd-card--gig .mcd-3hc-stamp-wrap{ max-width:150px !important; }
   .mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:140px !important; }
 }
+
+/* === V90 MOBILE ONLY — 3+4 + TROUBLE pill — desktop untouched === */
+@media(max-width:768px){
+  /* 3: DROP A LINE — second star was dropping alone to line 2. Smaller, tighter, stays on one line. */
+  .mcd-form-title{
+    font-size:11px !important;
+    letter-spacing:0 !important;
+    line-height:1.3 !important;
+    white-space:nowrap !important;
+    text-align:center !important;
+  }
+  .mcd-form-title .mcd-star-red{
+    display:inline-block !important;
+    flex-shrink:0 !important;
+  }
+  /* 4: Card headers — FULL ZINE COMING SOON! + KEEP THE DEN NO SPONSORS were wrapping messy. Stack clean, pills nowrap. */
+  .mcd-card--zine .mcd-card-head{
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:6px !important;
+  }
+  .mcd-card--zine .mcd-card-head h2{
+    font-size:18px !important;
+    line-height:1.2 !important;
+  }
+  .mcd-card--zine .mcd-card-head .mcd-coming,
+  .mcd-card--zine .mcd-card-head .mcd-card-pill{
+    white-space:nowrap !important;
+    font-size:11px !important;
+  }
+  .mcd-support-head{
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:6px !important;
+  }
+  .mcd-support-head-title{
+    font-size:14px !important;
+    line-height:1.2 !important;
+  }
+  .mcd-support-head-pill{
+    white-space:nowrap !important;
+    font-size:9px !important;
+  }
+  /* TROUBLE pill — was wrapping to 3 lines on mobile. Smaller, tighter, 2 lines max. */
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    font-size:14px !important;
+    line-height:1.25 !important;
+    padding:10px 12px !important;
+    text-align:center !important;
+    white-space:normal !important;
+  }
+}
+
+/* === V91 MOBILE ONLY — exact breaks you asked — desktop untouched === */
+.mcd-head-mobile{ display:none !important; }
+.mcd-trouble-mobile{ display:none !important; }
+.mcd-manifesto-line1, .mcd-manifesto-line2{ display:inline; }
+.mcd-footer-line2-a, .mcd-footer-line2-b, .mcd-footer-line2-sep{ display:inline; }
+@media(max-width:768px){
+  /* 1. FULL ZINE — Row1 FULL ZINE & 24/7 RADIO, Row2 COMING SOON! + SPRING 2027 */
+  .mcd-head-desktop{ display:none !important; }
+  .mcd-head-mobile{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:6px !important;
+    background:#CC2D30 !important;
+    padding:8px 12px !important;
+    border-bottom:3px solid #050505 !important;
+  }
+  .mcd-head-row1{
+    font-family:'Alfa Slab One',cursive !important;
+    font-style:italic !important;
+    font-size:20px !important;
+    line-height:1.1 !important;
+    color:#F0F0DA !important;
+  }
+  .mcd-head-row2{
+    display:flex !important;
+    gap:8px !important;
+    align-items:center !important;
+    flex-wrap:nowrap !important;
+  }
+  .mcd-head-row2 .mcd-coming{ white-space:nowrap !important; }
+  .mcd-head-row2 .mcd-card-pill{ white-space:nowrap !important; }
+  /* 2. FISTFUL — Row1 A FISTFUL OF, Row2 ROCKABILLY TRUTH */
+  .mcd-manifesto-line1{ display:block !important; }
+  .mcd-manifesto-line2{ display:block !important; }
+  /* 3. Mobile — hide COMING SOON labels on minis, too much info in small space */
+  .mcd-mini::after{ display:none !important; }
+  /* 4. NEXT ALL-NIGHTER — Row1 NEXT ALL-NIGHTER ✦ LIVE, Row2 FRI 18.12.26 • 22:30 */
+  .mcd-card--gig .mcd-card-head{
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:6px !important;
+  }
+  .mcd-card--gig .mcd-card-head h2{
+    font-size:20px !important;
+    line-height:1.2 !important;
+  }
+  .mcd-card--gig .mcd-card-head .mcd-date-pill{
+    align-self:flex-start !important;
+    white-space:nowrap !important;
+  }
+  /* 5. THE THREE HAUNTED CHORDS header +1px on mobile */
+  .mcd-card--gig .mcd-torn .mcd-card-title{
+    font-size:19px !important;
+  }
+  /* 6. TROUBLE — Row1 ✦ ✦ TROUBLE NEEDS FUEL, Row2 GREASE THE JUKEBOX ✦ ✦ */
+  .mcd-trouble-desktop{ display:none !important; }
+  .mcd-trouble-mobile{ display:block !important; }
+  .mcd-trouble-line1, .mcd-trouble-line2{
+    display:block !important;
+    text-align:center !important;
+  }
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    font-size:18px !important;
+    line-height:1.3 !important;
+    padding:14px 12px !important;
+  }
+  /* Footer — 3 rows on mobile */
+  .mcd-footer-line2-a{ display:block !important; }
+  .mcd-footer-line2-sep{ display:none !important; }
+  .mcd-footer-line2-b{ display:block !important; margin-top:4px !important; }
+}
+
+/* === V92 MOBILE ONLY — TROUBLE pill 2 lines exactly, not 4 === */
+/* V91 set 18px, too wide for Alfa Slab on 390px, so each line broke in the middle: TROUBLE / NEEDS FUEL / GREASE THE / JUKEBOX. */
+/* Fix: 14px + nowrap per line + tighter padding, so Row1 ✦ ✦ TROUBLE NEEDS FUEL and Row2 GREASE THE JUKEBOX ✦ ✦ each stay on one line. */
+@media(max-width:768px){
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    font-size:14px !important;
+    line-height:1.35 !important;
+    padding:12px 8px !important;
+  }
+  .mcd-trouble-line1, .mcd-trouble-line2{
+    display:block !important;
+    white-space:nowrap !important;
+    text-align:center !important;
+  }
+}
+
+/* === V93 MOBILE ONLY — THREE HAUNTED CHORDS -2px to 17px, one line === */
+/* Was 19px (V91 +1), you wanted -1px from original 18px = 17px, so -2px from now. 17px + nowrap fits one line in the mint box on 390px. */
+@media(max-width:768px){
+  .mcd-card--gig .mcd-torn .mcd-card-title{
+    font-size:17px !important;
+    white-space:nowrap !important;
+    line-height:1.1 !important;
+  }
+}
+
+/* === V94 MOBILE ONLY — TROUBLE pill going off screen === */
+/* Was width 100% + scale(1.02) + 7px shadow + rotate, so right edge went past the screen on 390px. Pull it in. */
+@media(max-width:768px){
+  .mcd-row-kofi{
+    padding:0 8px !important;
+    box-sizing:border-box !important;
+    margin:12px auto !important;
+    max-width:100% !important;
+    overflow:visible !important;
+  }
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    width:calc(100% - 8px) !important;
+    max-width:calc(100% - 8px) !important;
+    margin:0 auto !important;
+    box-sizing:border-box !important;
+    transform:rotate(-1deg) scale(1) !important;
+    box-shadow:4px 4px 0 #050505 !important;
+  }
+}
+
+/* === V95 MOBILE ONLY — Top bar Option A, two rows === */
+/* Row1: MCD pill left + ● TRANSMITTING right. Row2: FIRE IT UP full-width below. */
+/* CSS-only: .mcd-h-right becomes display:contents on mobile, so its children (dot + TRANSMITTING + FIRE IT UP) become direct flex children of the header and can be ordered. No HTML/JS change, player still works. */
+@media(max-width:768px){
+  #mcd-header-player{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    justify-content:flex-start !important;
+    align-items:center !important;
+    gap:8px !important;
+    padding:10px 12px 12px !important;
+  }
+  .mcd-stamp-logo{
+    display:inline-flex !important;
+    order:1 !important;
+    flex:0 1 auto !important;
+    padding:5px 10px !important;
+    box-shadow:3px 3px 0 #050505 !important;
+  }
+  .mcd-stamp-logo .mcd-text{ font-size:14px !important; }
+  .mcd-stamp-logo .mcd-sub{ font-size:8.5px !important; }
+  .mcd-h-center{ display:none !important; }
+  .mcd-h-right{
+    display:contents !important;
+  }
+  .mcd-live-dot{
+    display:inline-block !important;
+    order:2 !important;
+    margin-left:auto !important;
+  }
+  .mcd-transmitting-txt{
+    display:inline !important;
+    order:3 !important;
+    font-size:11px !important;
+    letter-spacing:0.12em !important;
+  }
+  #mcd-h-fire{
+    order:4 !important;
+    flex:0 0 100% !important;
+    width:100% !important;
+    max-width:100% !important;
+    font-size:20px !important;
+    padding:14px 18px !important;
+    text-align:center !important;
+    transform:none !important;
+  }
+  /* When playing, hide brand + transmitting, button takes full width as before */
+  #mcd-header-player.is-playing .mcd-stamp-logo,
+  #mcd-header-player.is-playing .mcd-live-dot,
+  #mcd-header-player.is-playing .mcd-transmitting-txt{
+    display:none !important;
+  }
+  #mcd-header-player.is-playing #mcd-h-fire{
+    flex:0 0 100% !important;
+  }
+}
+
+/* === V96 MOBILE ONLY — Top bar polish, 3 bits === */
+@media(max-width:768px){
+  /* 2. Header height — gap 8px -> 6px, padding a touch tighter, less tall */
+  #mcd-header-player{
+    gap:6px !important;
+    padding:8px 12px 10px !important;
+  }
+  /* 1. Row1 alignment — MCD pill vs TRANSMITTING, centre them properly */
+  .mcd-stamp-logo{
+    align-self:center !important;
+  }
+  .mcd-live-dot{
+    align-self:center !important;
+    margin-top:1px !important;
+  }
+  .mcd-transmitting-txt{
+    align-self:center !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    line-height:1.2 !important;
+    padding-top:1px !important;
+  }
+  /* 3. FIRE IT UP weight — play triangle +1px */
+  #mcd-h-fire .mcd-play-symbol{
+    font-size:19px !important;
+  }
+}
+
+/* === V97 MOBILE ONLY — Row1 no pill, centred, no TRANSMITTING. Row2 FIRE IT UP untouched === */
+@media(max-width:768px){
+  /* Row1: centre, no pill */
+  #mcd-header-player{
+    justify-content:center !important;
+  }
+  .mcd-stamp-logo{
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+    transform:none !important;
+    padding:0 !important;
+    margin:0 auto !important;
+    justify-content:center !important;
+    width:100% !important;
+  }
+  .mcd-stamp-logo .mcd-text{
+    color:#050505 !important;
+  }
+  .mcd-stamp-logo .mcd-star{
+    color:#CC2D30 !important;
+  }
+  .mcd-stamp-logo .mcd-sub{
+    color:#050505 !important;
+  }
+  /* No TRANSMITTING on mobile Row1 */
+  .mcd-live-dot,
+  .mcd-transmitting-txt{
+    display:none !important;
+  }
+  /* Row2 FIRE IT UP — no change, keep V96 as is */
+}
+
+/* === V98 MOBILE ONLY — DEN RULES tape, pull in from edge === */
+/* Was left:-14px, so on 390px it sat ~6px from screen edge, felt like falling off. Now left:8px inside the cat wrap, bottom -6px, tilt -2deg -> -1deg, so it sits nicer. */
+@media(max-width:768px){
+  .mcd-hero-mascot-wrap .mcd-tape--bottom{
+    left:8px !important;
+    bottom:-6px !important;
+    transform:rotate(-1deg) !important;
+  }
+}
+
+/* === V99 MOBILE ONLY — TROUBLE -1px, less tight === */
+/* Was 14px, very tight on 390px. Now 13px, same 2 lines, more breathing room. */
+@media(max-width:768px){
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    font-size:13px !important;
+  }
+}
+
+/* === V100 MOBILE ONLY — DEN +2px === */
+/* Was 80px min on mobile, now 82px. Subtle, still fits one line on 390px, just pops a touch more. */
+@media(max-width:768px){
+  .den-line{
+    font-size:82px !important;
+  }
+}
+
+/* === V101 MOBILE ONLY — TROUBLE less tight + FULL ZINE hierarchy === */
+@media(max-width:768px){
+  /* TROUBLE: 13px -> 12px, more line-height, a touch more letter-spacing, lighter shadow, more padding — so letters don't touch */
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    font-size:12px !important;
+    line-height:1.45 !important;
+    letter-spacing:0.03em !important;
+    padding:14px 10px !important;
+    text-shadow:1px 1px 0 #050505 !important;
+  }
+  /* FULL ZINE hierarchy: COMING SOON! stays main, SPRING 2027 becomes secondary */
+  .mcd-head-row2 .mcd-coming{
+    font-size:12px !important;
+  }
+  .mcd-head-row2 .mcd-card-pill{
+    font-size:11px !important;
+    opacity:0.92 !important;
+  }
+  .mcd-head-row2{
+    gap:10px !important;
+  }
+}
+
+/* === V102 MOBILE ONLY — FULL ZINE rows swapped === */
+/* Was Row1 FULL ZINE, Row2 COMING SOON! + SPRING. Now Row1 COMING SOON! + SPRING, Row2 FULL ZINE. CSS order swap, no HTML change. */
+@media(max-width:768px){
+  .mcd-head-mobile{
+    display:flex !important;
+    flex-direction:column !important;
+  }
+  .mcd-head-row2{
+    order:1 !important;
+  }
+  .mcd-head-row1{
+    order:2 !important;
+  }
+}
