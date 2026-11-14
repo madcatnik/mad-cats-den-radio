@@ -1843,3 +1843,244 @@ html,body{max-width:100%;overflow-x:clip}
     order:2 !important;
   }
 }
+
+/* === V103 — Mobile seek fix + Desktop sync (JS) + TROUBLE container +2px === */
+@media(max-width:768px){
+  /* TROUBLE container +2px: padding 14px 10px -> 16px 12px, so container is 2px bigger each side */
+  .mcd-row-kofi .mcd-kofi,
+  .mcd-s-pill--den.mcd-kofi{
+    padding:16px 12px !important;
+  }
+  /* Seek: harden touch-action so dragging seek can't scroll page on mobile */
+  #mcd-seek-wrap,
+  #mcd-seek-track{
+    touch-action:none !important;
+    overscroll-behavior:none !important;
+  }
+  #mcd-beauty-player{
+    overscroll-behavior:contain !important;
+  }
+}
+
+/* === V104 — Footer to Player gap 4-5px, desktop + mobile === */
+/* Was: body 120px + footer 170px = 290px black below footer, player only ~112px tall, so ~160px dead gap. */
+/* Now: footer back to normal 12px, body padding only when player is shown, sized to player height + 5px gap. */
+#mcd-footer{
+  padding-bottom:12px !important;
+}
+body{
+  padding-bottom:0 !important;
+}
+body:has(#mcd-beauty-player.show){
+  padding-bottom:133px !important; /* desktop: player ~112px + bottom 16px + 5px gap = 133px */
+}
+@media(max-width:768px){
+  #mcd-footer{
+    padding-bottom:12px !important;
+  }
+  body:has(#mcd-beauty-player.show){
+    padding-bottom:140px !important; /* mobile: player docked bottom:0, ~135px tall + 5px gap, includes safe-area */
+  }
+  #mcd-beauty-player{
+    bottom:0 !important;
+  }
+}
+
+/* === V105 — Footer gap fix: V104 was 25px short, player covered footer by ~20px === */
+/* Real playing height: head 47 + now-spinning 24 + VU 6 + seek 48 + iframe hairline 6 + borders 6 = ~137px. + bottom 16 + gap 5 = 158px body padding. */
+/* Pre-play height is taller: iframe 60 + tap 30, seek 0 = ~167px, so need 188px before hairline. */
+body:has(#mcd-beauty-player.show){
+  padding-bottom:188px !important; /* before hairline: taller player */
+}
+body:has(#mcd-beauty-player.show.is-hairline){
+  padding-bottom:158px !important; /* playing: 137px + 16px bottom + 5px gap = 158px */
+}
+body{
+  transition:padding-bottom 1.2s ease-in-out !important;
+}
+@media(max-width:768px){
+  body:has(#mcd-beauty-player.show){
+    padding-bottom:192px !important; /* mobile pre-play: + safe-area */
+  }
+  body:has(#mcd-beauty-player.show.is-hairline){
+    padding-bottom:162px !important; /* mobile playing: 137px + safe-area ~20px + 5px gap */
+  }
+}
+
+/* === V106 — WHAT'S BREWING — kill 6x COMING SOON, one header instead === */
+/* COMING SOON was .mcd-mini::after — was only hidden on mobile, now hidden everywhere */
+.mcd-mini::after{
+  display:none !important;
+  content:none !important;
+}
+/* One header above the 6 cards — mint pill, black text, hard shadow, left-aligned, slight zine tilt */
+.mcd-brewing{
+  display:inline-flex;
+  align-items:center;
+  align-self:flex-start;
+  background:var(--mint) !important;
+  color:#050505 !important;
+  border:2.5px solid #050505 !important;
+  box-shadow:3px 3px 0 #050505 !important;
+  padding:4px 10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:0.14em;
+  transform:rotate(-2deg);
+  margin:4px 0 12px 0;
+  white-space:nowrap;
+}
+@media(max-width:768px){
+  .mcd-brewing{
+    font-size:11.5px;
+    padding:3px 8px;
+    margin:2px 0 10px 0;
+  }
+}
+
+/* === V107 — BREWING centered + VOTE black = 3 colours x2 each === */
+/* Was left-aligned, now centered over the 2-col grid. Size stays 13px / 11.5px mobile — small intro, not a second big title. */
+.mcd-brewing{
+  align-self:center !important;
+  margin:4px auto 12px auto !important;
+}
+@media(max-width:768px){
+  .mcd-brewing{
+    margin:2px auto 10px auto !important;
+  }
+}
+
+/* === V108 — Zine intro -1px + 2 rows === */
+/* Was 14px, now 13px. HTML splits into 2 rows with <br>: Row1 Midnight howls... notes. Row2 Radio runs 24/7... Spring 2027. */
+.mcd-card--zine .mcd-card-text{
+  font-size:13px !important;
+}
+
+/* === V109 — 3HC smaller + genre faded border + genre -1px + ROCK & ROLL === */
+/* 1. 3HC: 160px -> 140px desktop, 140px -> 120px mobile, wrap 170->150 / 150->130. Same border/shadow/tilt/torn, just smaller, balances cards. */
+.mcd-card--gig .mcd-3hc-stamp-wrap{
+  max-width:150px !important;
+}
+.mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp{
+  width:140px !important;
+}
+@media(max-width:768px){
+  .mcd-card--gig .mcd-3hc-stamp-wrap{ max-width:130px !important; }
+  .mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:120px !important; }
+}
+/* 2. Genre strip: border faded a bit — 3px solid #050505 -> 3px solid rgba(5,5,5,0.62), shadow faded same so it stays matched, not a hard black box. */
+.mcd-card--zine .mcd-genre-tags{
+  border:3px solid rgba(5,5,5,0.62) !important;
+  border-top:3px solid rgba(5,5,5,0.62) !important;
+  border-bottom:3px solid rgba(5,5,5,0.62) !important;
+  box-shadow:4px 4px 0 rgba(5,5,5,0.62) !important;
+}
+/* 3. Genre text: 11px -> 10px desktop, 9.5px -> 8.5px mobile */
+.mcd-card--zine .mcd-genre-tags{
+  font-size:10px !important;
+}
+@media(max-width:599px){
+  .mcd-card--zine .mcd-genre-tags{
+    font-size:8.5px !important;
+  }
+}
+
+/* === V110 — Bring elements closer, safe tightening only (no font/size/layout change) === */
+/* Screenshot 1 — ZINE: big gaps between intro -> genre -> BREWING */
+/* Was: intro gap 12px, genre margin 14px 4px 16px + padding 10px 8px, brewing margin 4px auto 12px */
+/* Now: intro gap 8px, genre margin 8px 4px 8px + padding 8px 8px, brewing margin 2px auto 8px — saves ~22px, all closer */
+.mcd-card--zine .mcd-zine-intro{
+  gap:8px !important;
+}
+.mcd-card--zine .mcd-genre-tags{
+  margin:8px 4px 8px 4px !important;
+  padding:8px 8px !important;
+}
+.mcd-brewing{
+  margin:2px auto 8px auto !important;
+}
+@media(max-width:768px){
+  .mcd-brewing{
+    margin:2px auto 8px auto !important;
+  }
+}
+/* Screenshot 2 — GIG / 3HC: huge cream gap between 3HC stamp and REAL GONE line */
+/* Cause: note has margin-top:auto (pushes it to card bottom) + card stretches to match taller zine card. */
+/* Fix: note margin-top auto -> 6px, so it sits right under the stamp, not at the bottom. Stamp margin tighter too. */
+/* Zine tightening above already makes both cards shorter, so this gap shrinks twice. */
+.mcd-card--gig .mcd-3hc-stamp-wrap{
+  margin:6px auto 0 auto !important;
+}
+.mcd-card--gig .mcd-card-note{
+  margin-top:6px !important;
+  padding:6px 12px 2px 12px !important;
+}
+
+/* === V111 — Header center + TRANSMITTING to 12px, desktop only === */
+/* Center: was LIVE WIRES COMING 2027 at 13px / 0.14em, now FULL SCHEDULE + LIVE WIRES • 2027 at 12px / 0.12em — longer line, -1px keeps same width, same balance. */
+/* TRANSMITTING: was 13px, now 12px to match center, same font/weight/spacing, dot unchanged. */
+/* Desktop only (min-width:769px) — mobile stays as is: center hidden, TRANSMITTING stays 11px in row1. */
+@media(min-width:769px){
+  .mcd-h-center span{
+    font-size:12px !important;
+    letter-spacing:0.12em !important;
+  }
+  .mcd-transmitting-txt{
+    font-size:12px !important;
+    letter-spacing:0.12em !important;
+  }
+}
+
+/* === V112 — Left card pill -> mint box -4px === */
+/* Was: container padding 12px top + inner 4px = 16px, plus flex center extra. Now container top 12px -> 8px, saves 4px, pill sits closer to mint box. Safe, no font/layout change. */
+.mcd-card--gig .mcd-card-body > div:last-child{
+  padding-top:8px !important;
+}
+
+/* === V113 — Left card pill -> mint box, REAL fix === */
+/* V112 only cut padding 12px->8px, but container had justify-content:center + flex:1, so centering ate half of it — invisible on Live Server. */
+/* Now: justify-content center -> flex-start, so mint box sits at top, close to pill. Padding-top 8px stays. */
+/* Net: gap was ~16px padding + ~10px centering = ~26px, now ~12px (8px + 4px inner) — visible. */
+.mcd-card--gig .mcd-card-body > div:last-child{
+  padding-top:8px !important;
+  justify-content:flex-start !important;
+}
+
+/* === V114 — Intro + genre as ONE paragraph, 3 rows centered, NO container === */
+/* Was: intro 2 rows + genre in cream card (bg, 3px border, shadow, torn, padding 8px, margin 8px). Now: kill the box, keep 3 rows as one centered paragraph. */
+/* CSS only, HTML unchanged, so we can revert in one version if we don't like it. */
+.mcd-card--zine .mcd-zine-intro{
+  gap:6px !important;
+  text-align:center !important;
+}
+.mcd-card--zine .mcd-card-text{
+  text-align:center !important;
+}
+.mcd-card--zine .mcd-genre-tags{
+  background:transparent !important;
+  background-image:none !important;
+  border:none !important;
+  border-top:none !important;
+  border-bottom:none !important;
+  border-radius:0 !important;
+  clip-path:none !important;
+  box-shadow:none !important;
+  transform:none !important;
+  padding:0 !important;
+  margin:0 !important;
+  text-align:center !important;
+  font-size:10px !important;
+  line-height:1.6 !important;
+}
+@media(max-width:599px){
+  .mcd-card--zine .mcd-genre-tags{
+    font-size:8.5px !important;
+    line-height:1.9 !important;
+    padding:0 !important;
+    margin:0 !important;
+  }
+  .mcd-card--zine .mcd-card-text{
+    text-align:center !important;
+  }
+}

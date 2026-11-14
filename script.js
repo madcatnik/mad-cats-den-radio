@@ -104,23 +104,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if(seekCur) seekCur.textContent = fmtTime(pos);
   }
   function seekFromEvent(e){
-    if(!widget || !seekDuration || !seekTrack) return;
+    const wSeek = getWidget() || widget;
+    if(!wSeek || !seekDuration || !seekTrack) return;
     const rect = seekTrack.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
     const clamped = Math.max(0, Math.min(1, x));
     const target = clamped * seekDuration;
     setSeekUI(target);
-    try { widget.seek(target); } catch(err){}
+    try { wSeek.seek(target); } catch(err){}
   }
-  if(seekTrack && widget){
-    widget.ready.then(() => {
-      widget.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
-    }).catch(()=>{});
+  if(seekTrack){
+    // V103 FIX: attach seek even if widget is null at load — widget loads async, so guard on widget broke seek on mobile (page scrolled instead)
+    const wSeekInit = getWidget();
+    if(wSeekInit){ wSeekInit.ready.then(() => {
+      wSeekInit.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
+    }).catch(()=>{}); }
     setInterval(() => {
-      if(!isSeeking && widget){
-        widget.getPosition().then((p) => { setSeekUI(p || 0); if (p > 0 && beautyPlayer) beautyPlayer.classList.add('is-hairline'); }).catch(()=>{});
+      if(!isSeeking){
+        const wPoll = getWidget();
+        if(wPoll){
+        wPoll.getPosition().then((p) => { setSeekUI(p || 0); if (p > 0 && beautyPlayer) beautyPlayer.classList.add('is-hairline'); }).catch(()=>{});
         if(!seekDuration){
-          widget.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
+          wPoll.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
+        }
         }
       }
     }, 500);
@@ -130,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
     seekTrack.addEventListener('pointerup', endSeek);
     seekTrack.addEventListener('pointercancel', endSeek);
   }
-  if (fireBtn && beautyPlayer) {
-    fireBtn.addEventListener('click', () => {
+  function handleFireClick(){
+    if (fireBtn && beautyPlayer) {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
       if (isPlaying) { saveTapePosition(); setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
       fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
@@ -188,8 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
           }).catch(()=>{});
         } catch(e){}
       });
-    });
+    }
   }
+  if (fireBtn && beautyPlayer) { fireBtn.addEventListener('click', handleFireClick); }
   if (beautyClose && beautyPlayer) {
     beautyClose.addEventListener('click', () => {
       beautyPlayer.classList.remove('show');
@@ -202,9 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (beautyPlay && fireBtn) {
+    // V103 SYNC FIX: call handleFireClick directly, not fireBtn.click() — synthetic click is blocked by browsers, so desktop play did nothing
     beautyPlay.addEventListener('click', (e) => {
       e.stopPropagation();
-      fireBtn.click();
+      handleFireClick();
     });
   }
   // 3. DRAGGABLE TAPE DECK - RESTORED from V11, desktop only. Mobile stays docked bottom.
