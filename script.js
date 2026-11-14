@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     isPlaying = on;
     
   if (fireBtn) { fireBtn.classList.toggle('is-playing', on); fireBtn.innerHTML = on ? fireHTML('\uD83D\uDC80', 'KEEP IT WILD') : fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); }
-    if (beautyPlay) beautyPlay.textContent = on ? '⏸ PAUSE' : '▶ PLAY';
+    if (beautyPlay) beautyPlay.textContent = on ? '⏸︎ PAUSE' : '▶︎ PLAY';
     if (beautyPlayer) { beautyPlayer.classList.toggle('is-playing', on); if (on) beautyPlayer.classList.add('is-hairline'); }
     if (heroSection) heroSection.classList.toggle('is-playing', on);
     document.body.classList.toggle('is-playing', on);
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(() => {
               // Autoplay blocked or not ready — don't fake PAUSE. Wait for second direct tap.
               fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
-              if (beautyPlay) beautyPlay.textContent = '▶ PLAY';
+              if (beautyPlay) beautyPlay.textContent = '▶︎ PLAY';
             });
           } else {
             // No promise (older API) — assume it worked, but verify via position in 800ms

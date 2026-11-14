@@ -927,3 +927,19 @@ html,body{max-width:100%;overflow-x:clip}
     box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 28px rgba(204,45,48,0.70), 0 0 44px rgba(155,219,193,0.40) !important;
   }
 }
+
+/* === V70 DEN STYLE SYMBOLS — mobile only, desktop unchanged === */
+/* iOS forces PLAY / PAUSE / EJECT to blue emoji unless we add FE0E (done in HTML/JS) + font-variant-emoji:text + Den colours. */
+/* PLAY is red button, so triangle/bars stay cream. EJECT is cream button, so eject stays black. */
+@media(max-width:768px){
+  #mcd-beauty-play, #mcd-beauty-close{
+    font-variant-emoji:text !important;
+    -webkit-text-fill-color:currentColor !important;
+  }
+  #mcd-beauty-play{
+    color:#F0F0DA !important;
+  }
+  #mcd-beauty-close{
+    color:#050505 !important;
+  }
+}
