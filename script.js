@@ -47,6 +47,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Create widget immediately - HTML already loads widgetApi.js before this script, so window.Mixcloud is there
   ensureMixcloudAPI(()=>{ getWidget(); });
+  // V68 SYNC VIA EVENTS — not polling. When you tap Mixcloud's own ▶/⏸ inside iframe, Mixcloud fires play/pause events. We listen and sync our buttons + cat glow.
+  // Polling position>0 caused jam: after pause, position is still >0, so polling kept flipping back to playing.
+  ensureMixcloudAPI(()=>{
+    const w = getWidget();
+    if (!w) return;
+    try {
+      w.ready.then(()=>{
+        try { if (w.events && w.events.play && w.events.play.on) w.events.play.on(()=>{ setPlayingUI(true); }); } catch(e){}
+        try { if (w.events && w.events.pause && w.events.pause.on) w.events.pause.on(()=>{ setPlayingUI(false); }); } catch(e){}
+        try { if (w.events && w.events.ended && w.events.ended.on) w.events.ended.on(()=>{ setPlayingUI(false); }); } catch(e){}
+      }).catch(()=>{});
+    } catch(e){}
+  });
   // V46 TAPE MEMORY - save position every 5s while playing, so leaving + coming back resumes where you left
   function saveTapePosition(){
     const w = getWidget();
@@ -64,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
   if (fireBtn) { fireBtn.classList.toggle('is-playing', on); fireBtn.innerHTML = on ? fireHTML('\uD83D\uDC80', 'KEEP IT WILD') : fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); }
     if (beautyPlay) beautyPlay.textContent = on ? '⏸ PAUSE' : '▶ PLAY';
-    if (beautyPlayer) beautyPlayer.classList.toggle('is-playing', on);
+    if (beautyPlayer) { beautyPlayer.classList.toggle('is-playing', on); if (on) beautyPlayer.classList.add('is-hairline'); }
     if (heroSection) heroSection.classList.toggle('is-playing', on);
     document.body.classList.toggle('is-playing', on);
   }
@@ -105,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).catch(()=>{});
     setInterval(() => {
       if(!isSeeking && widget){
-        widget.getPosition().then((p) => { setSeekUI(p || 0); }).catch(()=>{});
+        widget.getPosition().then((p) => { setSeekUI(p || 0); if (p > 0 && beautyPlayer) beautyPlayer.classList.add('is-hairline'); }).catch(()=>{});
         if(!seekDuration){
           widget.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
         }
@@ -122,46 +135,58 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
       if (isPlaying) { saveTapePosition(); setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
       fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
-      // 1. Try sync play FIRST - keeps the Chrome/Safari user gesture
-      const syncWidget = getWidget();
-      if (syncWidget) { try { const p = syncWidget.play(); if (p && p.catch) p.catch(()=>{}); } catch(e){} }
-      // 2. FIX V44: ALWAYS play again after ready. Mixcloud ignores play() before ready,
-      // so the old V41 "if sync played, don't play again" left the popup open but silent.
+      // V59 — DIRECT GESTURE ONLY. On live (not localhost) browsers block play() that is not directly from the tap.
+      // Old code did play() inside ready.then (async) + forced PAUSE after 1500ms even if play failed — so UI said PAUSE, seek stayed 0:00, no audio.
+      // Now: try sync play (direct gesture). If widget not ready yet, don't force PAUSE — show TAP PLAY and wait for second direct tap, which will succeed because widget is ready by then.
+      const w0 = getWidget();
+      let played = false;
+      if (w0) {
+        try {
+          const p0 = w0.play();
+          if (p0 && p0.then) {
+            p0.then(() => {
+              played = true;
+              setPlayingUI(true);
+              if (!hasResumed) {
+                hasResumed = true;
+                try {
+                  const saved = localStorage.getItem('mcd_tape_position_ape-tape-1');
+                  if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w0.seek(parseFloat(saved)); } catch(e){} }, 600); }
+                } catch(e){}
+              }
+            }).catch(() => {
+              // Autoplay blocked or not ready — don't fake PAUSE. Wait for second direct tap.
+              fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
+              if (beautyPlay) beautyPlay.textContent = '▶ PLAY';
+            });
+          } else {
+            // No promise (older API) — assume it worked, but verify via position in 800ms
+            setTimeout(() => {
+              try {
+                w0.getPosition().then((pos) => {
+                  if (pos > 0) { /* don't fake playing — wait for Mixcloud play event */ } else { fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); }
+                }).catch(() => { fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); });
+              } catch(e){ fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); }
+            }, 800);
+          }
+        } catch(e){
+          fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
+        }
+      } else {
+        fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
+      }
+      // If widget becomes ready later, do NOT auto-play (blocked on live). Just update button so next tap works.
       ensureMixcloudAPI(()=>{
         const w = getWidget();
-        if (!w) { fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); return; }
+        if (!w) return;
         try {
-          w.ready.then(()=>{
-            // Always re-play after ready - this is the one that actually starts audio
-            try {
-              const p2 = w.play();
-              if (p2 && p2.then) p2.then(()=>{
-                setPlayingUI(true);
-                // V46 TAPE MEMORY - resume once per page load, if you left and came back
-                if (!hasResumed) {
-                  hasResumed = true;
-                  try {
-                    const saved = localStorage.getItem('mcd_tape_position_ape-tape-1');
-                    if (saved && parseFloat(saved) > 3) {
-                      setTimeout(()=>{ try { w.seek(parseFloat(saved)); } catch(e){} }, 600);
-                    }
-                  } catch(e){}
-                }
-              }).catch(()=>{ setPlayingUI(true); });
-              else {
-                setPlayingUI(true);
-                if (!hasResumed) {
-                  hasResumed = true;
-                  try {
-                    const saved = localStorage.getItem('mcd_tape_position_ape-tape-1');
-                    if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w.seek(parseFloat(saved)); } catch(e){} }, 600); }
-                  } catch(e){}
-                }
-              }
-            } catch(e){ setPlayingUI(true); }
-          }).catch(()=>{ setPlayingUI(true); });
-        } catch(e){ setPlayingUI(true); }
-        setTimeout(()=>{ if (fireBtn.textContent && fireBtn.textContent.indexOf('LOADING TAPE') !== -1) setPlayingUI(true); }, 1500);
+          w.ready.then(() => {
+            // Widget ready — if user already tapped and we're still on LOADING, prompt second tap
+            if (fireBtn.textContent && fireBtn.textContent.indexOf('LOADING TAPE') !== -1) {
+              fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
+            }
+          }).catch(()=>{});
+        } catch(e){}
       });
     });
   }
