@@ -8,7 +8,7 @@
 <meta name="description" content="Low ceiling, high volume. Real gone Rock & Roll, no paywall, just tape hiss. Est. 2026.">
 <meta name="theme-color" content="#10120F">
 
-<link rel="stylesheet" href="./style.css?v=v50-all-together">
+<link rel="stylesheet" href="./style.css?v=v55-red-buttons">
 
 <link rel="icon" type="image/x-icon" href="./favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -250,16 +250,25 @@
     </div>
     <div style="display:flex;align-items:center;gap:6px">
       <span class="pill">TAPE ROLLING</span>
+      <button id="mcd-beauty-play" aria-label="Play or pause">▶ PLAY</button>
       <button id="mcd-beauty-close" aria-label="Eject tape">⏏ EJECT</button>
     </div>
   </div>
   <div class="mcd-now-spinning" id="mcd-now-spinning"><div class="mcd-now-spinning-inner"><span id="mcd-now-spinning-text">✦ LOADING TAPE... LOW CEILING HIGH VOLUME — JUST BASEMENT SIGNAL ✦</span></div></div><div class="vu-meter"></div>
+  <!-- SEEK ONLY — custom bar outside Mixcloud iframe, so mobile drag can't scroll page -->
+  <div id="mcd-seek-wrap" aria-label="Seek tape">
+    <div id="mcd-seek-track">
+      <div id="mcd-seek-fill"></div>
+      <div id="mcd-seek-thumb"></div>
+    </div>
+    <div id="mcd-seek-times"><span id="mcd-seek-cur">0:00</span><span>DRAG TO SEEK • TAPE</span><span id="mcd-seek-dur">--:--</span></div>
+  </div>
   <iframe title="MAD CATS DEN Mixcloud player" id="mcd-mixcloud" width="100%" height="60" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2Fmad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
 </div>
 
 <div id="mcd-toast" role="status" aria-live="polite"></div>
 
 <script src="https://widget.mixcloud.com/media/js/widgetApi.js"></script>
-<script src="./script.js?v=v50-all-together" defer></script>
+<script src="./script.js?v=v55-red-buttons" defer></script>
 </body>
 </html>

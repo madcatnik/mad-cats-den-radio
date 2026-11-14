@@ -384,7 +384,7 @@ body::after{
   100% { transform: translateX(-16px); }
 }
 
-#mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--black);touch-action:pan-x;overscroll-behavior:contain}
+#mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--black);touch-action:pan-y;overscroll-behavior:contain}
 
 #mcd-footer{width:100%;display:flex;justify-content:center;align-items:center;padding:12px;margin-top:12px;background:transparent}
 #mcd-footer div {
@@ -445,7 +445,7 @@ body::after{
     bottom:0; right:0; left:0; width:100%; max-width:100%; border-radius:8px 8px 0 0; transform:none; touch-action:pan-y; overscroll-behavior:contain; padding-bottom:env(safe-area-inset-bottom, 0px);
   }
   #mcd-beauty-player .head{touch-action:pan-y;cursor:default}
-  #mcd-beauty-player iframe{touch-action:pan-x} 
+  #mcd-beauty-player iframe{touch-action:pan-y} 
     border-bottom:none; box-shadow:0 -4px 0 var(--black);
   }
 }
@@ -678,3 +678,77 @@ html,body{max-width:100%;overflow-x:clip}
 #mcd-hero.is-playing .mcd-hero-glow--mint{ opacity:0.95 !important; filter:blur(40px) !important; transform:scale(1.5) !important; transition:all 0.5s ease !important; }
 #mcd-hero.is-playing .mcd-hero-glow--brick{ opacity:1 !important; filter:blur(44px) !important; transform:scale(1.55) !important; transition:all 0.5s ease !important; }
 #mcd-hero.is-playing .mcd-hero-cat{ box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 48px rgba(204,45,48,0.85), 0 0 80px rgba(155,219,193,0.55) !important; }
+
+/* === SEEK ONLY — custom seek bar, touch-action:none so drag can't scroll page === */
+#mcd-seek-wrap{ background:#050505; padding:8px 10px 6px; border-top:2px solid #050505; touch-action:none; user-select:none; -webkit-user-select:none; }
+#mcd-seek-track{ position:relative; height:14px; background:#2a2a2a; border:2px solid #050505; border-radius:8px; cursor:pointer; touch-action:none; }
+#mcd-seek-fill{ position:absolute; left:0; top:0; bottom:0; width:0%; background:#CC2D30; border-radius:6px; }
+#mcd-seek-thumb{ position:absolute; top:50%; left:0%; width:18px; height:18px; background:#F0F0DA; border:2px solid #050505; border-radius:50%; transform:translate(-50%, -50%); box-shadow:2px 2px 0 #050505; pointer-events:none; }
+#mcd-seek-times{ display:flex; justify-content:space-between; align-items:center; font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700; color:#F0F0DA; letter-spacing:0.08em; margin-top:4px; }
+#mcd-beauty-player iframe{ touch-action:pan-y !important; pointer-events:auto !important; }
+@media(max-width:768px){
+  #mcd-seek-wrap{ padding:10px 12px 8px; }
+  #mcd-seek-track{ height:18px; }
+  #mcd-seek-thumb{ width:22px; height:22px; }
+  #mcd-beauty-player iframe{ touch-action:pan-y !important; }
+}
+
+/* === V54 — ONLY OUR SEEK — hide Mixcloud's grey bar, keep only our red bar === */
+/* Mixcloud iframe stays in DOM and keeps playing audio, just invisible. No duplicate bar. */
+#mcd-beauty-player iframe{
+  height:0 !important;
+  min-height:0 !important;
+  flex:0 0 0 !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  border:0 !important;
+  overflow:hidden !important;
+}
+#mcd-beauty-play{
+  background:#F0F0DA; color:#050505; border:2px solid #050505; border-radius:4px;
+  padding:4px 8px; display:flex; align-items:center; justify-content:center;
+  font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:11px;
+  cursor:pointer; box-shadow:0 3px 0 #050505; margin-left:4px; transition:all 0.1s ease;
+  white-space:nowrap;
+}
+#mcd-beauty-play:active{ transform:translateY(3px); box-shadow:0 0 0 #050505; }
+#mcd-beauty-player.is-playing #mcd-beauty-play{ background:#CC2D30; color:#F0F0DA; }
+
+/* === V55 A+A — RED BUTTONS — safe, CSS only, no JS, no seek change === */
+/* 1. Player PLAY/PAUSE: always red, both PLAY and PAUSE, bigger, so you can spot it next to cream EJECT */
+/* EJECT stays cream, only PLAY/PAUSE is red */
+#mcd-beauty-play{
+  background:#CC2D30 !important;
+  color:#F0F0DA !important;
+  border:2px solid #050505 !important;
+  padding:6px 10px !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  letter-spacing:0.04em !important;
+  box-shadow:0 3px 0 #050505 !important;
+}
+#mcd-beauty-player.is-playing #mcd-beauty-play{
+  background:#CC2D30 !important;
+  color:#F0F0DA !important;
+  box-shadow:0 3px 0 #050505, 0 0 14px rgba(204,45,48,0.65) !important;
+}
+/* 2. FIRE IT UP on mobile only: solid red on cream header, so cream-on-cream washout is gone */
+/* Desktop stays as it is — cream button pops on dark hero. Mobile header is cream, so button must be red. */
+@media(max-width:768px){
+  #mcd-h-fire{
+    background:#CC2D30 !important;
+    color:#F0F0DA !important;
+    border:3px solid #050505 !important;
+    box-shadow:4px 4px 0 #050505 !important;
+  }
+  #mcd-h-fire .mcd-play-symbol{
+    color:#F0F0DA !important;
+  }
+  #mcd-h-fire .mcd-fire-label{
+    color:#F0F0DA !important;
+  }
+  #mcd-h-fire.is-playing{
+    background:#CC2D30 !important;
+    color:#F0F0DA !important;
+  }
+}
