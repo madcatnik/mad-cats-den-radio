@@ -648,3 +648,33 @@ html,body{max-width:100%;overflow-x:clip}
     margin:0;
   }
 }
+
+/* === V49 MOBILE HEADER ONLY — included here so full replacement keeps it === */
+@media(max-width:768px){
+  #mcd-header-player{ justify-content:center; padding:8px 10px 10px; min-height:auto; }
+  .mcd-stamp-logo{ display:none !important; }
+  .mcd-h-center{ display:none !important; }
+  .mcd-h-right{ width:100%; margin:0; justify-content:center; gap:0; }
+  .mcd-live-dot, .mcd-transmitting-txt{ display:none !important; }
+  #mcd-h-fire{ width:100%; max-width:100%; font-size:20px; padding:14px 18px; transform:none; text-align:center; }
+  #mcd-h-fire:hover, #mcd-h-fire:active, #mcd-h-fire.is-playing{ transform:none; }
+  #mcd-header-player.is-playing .mcd-stamp-logo{ display:none; }
+  #mcd-header-player.is-playing .mcd-h-right{ width:100%; justify-content:center; margin:0; }
+}
+
+/* === V50 ALL-TOGETHER — button narrower + no blue emoji + no red bar + tighter bottom + hero gap + stronger glow === */
+@media(max-width:768px){
+  #mcd-header-player{ justify-content:center; padding:8px 10px 10px; }
+  #mcd-h-fire{ width:92%; max-width:420px; margin:0 auto; font-size:20px; padding:14px 18px; text-align:center; }
+  #mcd-h-fire{ color:#CC2D30; font-variant-emoji:text; }
+  .mcd-play-symbol{ font-variant-emoji:text; color:#CC2D30; }
+  #mcd-header-player::after{ display:none !important; }
+  #mcd-footer{ font-size:10px !important; padding:4px 0 !important; white-space:nowrap; overflow:hidden; }
+  #mcd-beauty-player .head{ padding:6px 8px !important; }
+  #mcd-beauty-player{ padding-bottom:0 !important; }
+  #mcd-hero{ padding-bottom:28px !important; }
+  .mcd-hero-titles{ padding-bottom:12px; }
+}
+#mcd-hero.is-playing .mcd-hero-glow--mint{ opacity:0.95 !important; filter:blur(40px) !important; transform:scale(1.5) !important; transition:all 0.5s ease !important; }
+#mcd-hero.is-playing .mcd-hero-glow--brick{ opacity:1 !important; filter:blur(44px) !important; transform:scale(1.55) !important; transition:all 0.5s ease !important; }
+#mcd-hero.is-playing .mcd-hero-cat{ box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 48px rgba(204,45,48,0.85), 0 0 80px rgba(155,219,193,0.55) !important; }

@@ -1,4 +1,4 @@
-/* PLAYER V48-READY — CORRECT v47 base (Ape Tape Mix 1 + Pinterest) — desktop drag only */
+/* PLAYER V50-ALL-TOGETHER — CORRECT v47 base (Ape Tape Mix 1 + Pinterest) — desktop drag only */
 /* PLAYER V44 - FIX: audio must play on FIRE IT UP (desktop + mobile) + restore desktop drag */
 document.addEventListener('DOMContentLoaded', () => {
   const STATION_SLOGAN = "LOW CEILING HIGH VOLUME — NO SPONSORS — NO ALGORITHM — JUST BASEMENT SIGNAL — ATHENS GR — EST 2026";
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('beforeunload', saveTapePosition);
   function setPlayingUI(on){
     isPlaying = on;
-    if (fireBtn) { fireBtn.classList.toggle('is-playing', on); fireBtn.innerHTML = on ? fireHTML('\uD83D\uDC80', 'KEEP IT WILD') : fireHTML('\u25B6', 'FIRE IT UP'); }
+    if (fireBtn) { fireBtn.classList.toggle('is-playing', on); fireBtn.innerHTML = on ? fireHTML('\uD83D\uDC80', 'KEEP IT WILD') : fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); }
     if (beautyPlayer) beautyPlayer.classList.toggle('is-playing', on);
     if (heroSection) heroSection.classList.toggle('is-playing', on);
     document.body.classList.toggle('is-playing', on);
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fireBtn.addEventListener('click', () => {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
       if (isPlaying) { saveTapePosition(); setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
-      fireBtn.innerHTML = fireHTML('\u25B6', 'LOADING TAPE...');
+      fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
       // 1. Try sync play FIRST - keeps the Chrome/Safari user gesture
       const syncWidget = getWidget();
       if (syncWidget) { try { const p = syncWidget.play(); if (p && p.catch) p.catch(()=>{}); } catch(e){} }
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // so the old V41 "if sync played, don't play again" left the popup open but silent.
       ensureMixcloudAPI(()=>{
         const w = getWidget();
-        if (!w) { fireBtn.innerHTML = fireHTML('\u25B6', 'FIRE IT UP'); return; }
+        if (!w) { fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); return; }
         try {
           w.ready.then(()=>{
             // Always re-play after ready - this is the one that actually starts audio
