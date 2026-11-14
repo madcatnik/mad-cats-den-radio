@@ -943,3 +943,545 @@ html,body{max-width:100%;overflow-x:clip}
     color:#050505 !important;
   }
 }
+
+/* === V71 ZINE + FOOTER + TINY POLISH — safe, HTML/CSS only, no player JS === */
+/* 2. Zine minis: Not clickable + COMING SOON */
+.mcd-mini{
+  cursor:default !important;
+  pointer-events:none !important;
+}
+.mcd-mini:hover{
+  transform:none !important;
+  box-shadow:4px 4px 0 var(--black) !important;
+}
+.mcd-mini:active{
+  transform:none !important;
+  box-shadow:4px 4px 0 var(--black) !important;
+  background:var(--cream) !important;
+}
+.mcd-mini::after{
+  content:"COMING SOON";
+  position:absolute;
+  top:-9px;
+  right:10px;
+  background:#CC2D30;
+  color:#F0F0DA;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-size:9px;
+  letter-spacing:0.12em;
+  padding:2px 6px;
+  border:2px solid #050505;
+  box-shadow:2px 2px 0 #050505;
+  transform:rotate(-2deg);
+  z-index:5;
+}
+/* Keep the original tilt on minis, but COMING SOON badge stays readable */
+.mcd-mini:nth-child(1), .mcd-mini:nth-child(2), .mcd-mini:nth-child(3), .mcd-mini:nth-child(4), .mcd-mini:nth-child(5), .mcd-mini:nth-child(6){
+  transform:rotate(-0.5deg);
+}
+/* 3. Footer: Socials + Back to Top */
+.mcd-footer-socials{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  align-items:center;
+  margin-top:10px;
+}
+.mcd-footer-socials a, .mcd-footer-socials button{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-decoration:none;
+  background:var(--cream);
+  color:#050505;
+  border:2px solid #050505;
+  border-radius:6px;
+  padding:6px 10px;
+  box-shadow:2px 2px 0 #050505;
+  cursor:pointer;
+}
+.mcd-footer-socials a:hover, .mcd-footer-socials button:hover{
+  background:#CC2D30;
+  color:#F0F0DA;
+}
+#mcd-back-to-top{
+  background:#CC2D30 !important;
+  color:#F0F0DA !important;
+}
+/* 5a. Word break: Keep ROCKABILLY together */
+.mcd-manifesto{
+  word-break:keep-all !important;
+  overflow-wrap:normal !important;
+  hyphens:none !important;
+}
+.mcd-nowrap{
+  white-space:nowrap !important;
+}
+/* 5b. Marquee / Ko-fi pill spacing: Tighter, less vertical space */
+.mcd-support-row--den.mcd-row-kofi{
+  margin:12px auto !important;
+}
+.mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi{
+  font-size:16px !important;
+  padding:12px 16px !important;
+  line-height:1.2 !important;
+  box-shadow:5px 5px 0 var(--black) !important;
+}
+.mcd-kofi{
+  font-size:16px !important;
+  padding:12px 16px !important;
+  line-height:1.2 !important;
+}
+
+/* === V72 FOOTER READABLE + MINT SHADOWS + KOFI BACK — safe, CSS only, no player JS === */
+/* 1. Footer readable even when player is next to it: give it bottom space so fixed player doesn't cover it, and a real pill background */
+#mcd-footer{
+  padding-bottom:170px !important;
+}
+.mcd-footer-line1{
+  display:inline-block !important;
+  background:#050505 !important;
+  color:#F0F0DA !important;
+  border:2px solid #050505 !important;
+  border-radius:8px !important;
+  padding:6px 12px !important;
+  box-shadow:4px 4px 0 #9BDBC1 !important;
+}
+.mcd-footer-line2{
+  margin-top:10px !important;
+  text-shadow:1px 1px 0 #050505 !important;
+}
+/* 2. Ko-fi pill back to big — V71 made it 16px/12px, bring back 22px/22px */
+.mcd-support-row--den.mcd-row-kofi{
+  margin:24px auto !important;
+}
+.mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi{
+  font-size:22px !important;
+  padding:22px 24px !important;
+  line-height:1.1 !important;
+  box-shadow:7px 7px 0 #050505 !important;
+}
+.mcd-kofi{
+  font-size:22px !important;
+  padding:22px 24px !important;
+  line-height:1.1 !important;
+}
+/* 3. Social pills: cream pill, mint shadow — was black shadow, now mint, pops on black */
+.mcd-support-row--den.mcd-row-social .mcd-s-pill--den{
+  background:var(--cream) !important;
+  color:#050505 !important;
+  box-shadow:4px 4px 0 #9BDBC1 !important;
+}
+.mcd-support-row--den.mcd-row-social .mcd-s-pill--den:hover{
+  box-shadow:5px 5px 0 #9BDBC1 !important;
+}
+
+/* === V73 HEADER MINT SHADOW — safe, CSS only, no player JS === */
+/* Header stamp MCD ✦ RADIO+ZINE EST.2026 is already a black pill, was black shadow, now mint shadow like footer */
+.mcd-stamp-logo{
+  box-shadow:4px 4px 0 #9BDBC1 !important;
+}
+
+/* === V74 DEN BIGGER — hero only, CSS only, no player JS === */
+/* Was: clamp(68px, 11vw, 124px). Now: clamp(80px, 13vw, 148px) — bigger on mobile too, but still fits. MAD CATS stays same, so DEN owns the hero. */
+.den-line{
+  font-size:clamp(80px, 13vw, 148px) !important;
+  line-height:0.82 !important;
+  letter-spacing:-0.03em !important;
+  text-shadow:3px 3px 0 var(--black) !important;
+  margin-top:2px !important;
+}
+@media(min-width:600px){
+  .den-line{ font-size:148px !important; }
+}
+
+/* === V75 3HC GLOW + BASEMENT +1px + RED STARS — safe, CSS only, no player JS === */
+/* 1. 3HC stamp: bit of red glow — drop-shadow follows the stamp shape, not a square box */
+.mcd-3hc-stamp{
+  filter:drop-shadow(0 0 10px rgba(204,45,48,0.55)) drop-shadow(0 0 20px rgba(204,45,48,0.25)) !important;
+}
+/* 2. Basement signal text: +1px — was 11px, now 12px, reads better */
+.mcd-support-body .mcd-support-text{
+  font-size:12px !important;
+  line-height:1.6 !important;
+}
+/* 3. DROP A LINE stars red — yes, agree, red stars pop on the dark support block */
+.mcd-star-red{
+  color:#CC2D30 !important;
+}
+
+/* === V76 3HC GLOW BLACK — try, CSS only, no player JS === */
+/* Was red glow in V75. Now black glow — print style, hard offset like the rest of the Den, less neon. */
+/* Keep V75 red stars + basement +1px, only the stamp glow changes. */
+.mcd-3hc-stamp{
+  filter:drop-shadow(4px 4px 0 rgba(5,5,5,0.85)) drop-shadow(0 0 10px rgba(5,5,5,0.35)) !important;
+}
+
+/* === V77 3HC HARD SHADOW + TILT — no glow, CSS only, no player JS === */
+/* Was glow in V75/V76. Now Den print: hard offset shadow, no blur, + slight tilt like the minis/cards. */
+.mcd-3hc-stamp{
+  filter:drop-shadow(4px 4px 0 rgba(5,5,5,0.9)) !important;
+  transform:rotate(-2deg) !important;
+}
+.mcd-3hc-stamp-wrap{
+  transform:rotate(-1deg);
+}
+
+/* === V78 3HC RED OUTLINE — flat, no glow, CSS only, no player JS === */
+/* Was hard shadow + tilt in V77. Now option 5: flat, 3px solid red border, ties stamp to DEN red, no glow, no shadow. */
+.mcd-3hc-stamp{
+  filter:none !important;
+  transform:none !important;
+  border:3px solid #CC2D30 !important;
+  border-radius:12px !important;
+  padding:6px !important;
+  background:#F0F0DA !important;
+  box-shadow:none !important;
+}
+.mcd-3hc-stamp-wrap{
+  transform:none !important;
+}
+
+/* === V79 3HC FADED RED + ROUND + VINTAGE — the one, CSS only, no player JS === */
+/* Faded red border ~50% opacity, worn, not fresh paint. Round corners 14px. Vintage paper: warm tint + faint grain via layered gradients. Tilt + hard shadow kept from V77. */
+.mcd-3hc-stamp-wrap{
+  background:#EDEBD6 !important;
+  background-image:
+    radial-gradient(rgba(5,5,5,0.055) 1px, transparent 1.2px),
+    radial-gradient(rgba(204,45,48,0.04) 1px, transparent 1.2px),
+    linear-gradient(180deg, rgba(255,255,255,0.22), rgba(120,90,40,0.10)) !important;
+  background-size:7px 7px, 11px 11px, 100% 100% !important;
+  background-position:0 0, 3px 5px, 0 0 !important;
+  border:3px solid rgba(204,45,48,0.55) !important;
+  border-radius:14px !important;
+  padding:8px !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-2deg) !important;
+  overflow:hidden !important;
+}
+.mcd-3hc-stamp{
+  filter:contrast(1.06) sepia(0.14) saturate(0.92) !important;
+  transform:none !important;
+  border:none !important;
+  border-radius:8px !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:0.97 !important;
+}
+
+/* === V80 3HC FIX — stamp IS the card, not the outer box === */
+/* V79 bug: .mcd-3hc-stamp-wrap was display:block full-width, so it became a wide dotted card and the tiny stamp floated inside. */
+/* Fix: wrap shrinks to fit the stamp (fit-content + align-self:center), so the faded red border + vintage + tilt + hard shadow sit ON the stamp itself. */
+.mcd-3hc-stamp-wrap{
+  align-self:center !important;
+  display:block !important;
+  width:fit-content !important;
+  max-width:240px !important;
+  margin:14px auto 4px auto !important;
+  background:#EDEBD6 !important;
+  background-image:
+    radial-gradient(rgba(5,5,5,0.055) 1px, transparent 1.2px),
+    radial-gradient(rgba(204,45,48,0.04) 1px, transparent 1.2px),
+    linear-gradient(180deg, rgba(255,255,255,0.22), rgba(120,90,40,0.10)) !important;
+  background-size:7px 7px, 11px 11px, 100% 100% !important;
+  background-position:0 0, 3px 5px, 0 0 !important;
+  border:3px solid rgba(204,45,48,0.55) !important;
+  border-radius:14px !important;
+  padding:10px !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-2deg) !important;
+  overflow:hidden !important;
+  text-align:center !important;
+}
+.mcd-3hc-stamp-wrap .mcd-3hc-stamp{
+  width:180px !important;
+  height:auto !important;
+  display:block !important;
+  margin:0 auto !important;
+  filter:contrast(1.06) sepia(0.14) saturate(0.92) !important;
+  transform:none !important;
+  border:none !important;
+  border-radius:8px !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:0.97 !important;
+}
+@media(max-width:768px){
+  .mcd-3hc-stamp-wrap{ max-width:200px !important; }
+  .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:160px !important; }
+}
+
+/* === V81 3HC REAL MOCKUP — use the approved image, not CSS fake === */
+/* V80 bug: CSS border + grain sat BEHIND the flat PNG, so it looked pale pink + clean. */
+/* Fix: the image itself now HAS the faded red distressed border + vintage grain + tilt + hard shadow baked in. So CSS must be clean — no extra border, no extra background, no extra shadow, or it doubles up. */
+.mcd-3hc-stamp-wrap{
+  align-self:center !important;
+  display:block !important;
+  width:fit-content !important;
+  max-width:260px !important;
+  margin:14px auto 4px auto !important;
+  background:transparent !important;
+  background-image:none !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  box-shadow:none !important;
+  transform:none !important;
+  overflow:visible !important;
+  text-align:center !important;
+}
+.mcd-3hc-stamp-wrap .mcd-3hc-stamp{
+  width:230px !important;
+  height:auto !important;
+  display:block !important;
+  margin:0 auto !important;
+  filter:none !important;
+  transform:none !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+}
+@media(max-width:768px){
+  .mcd-3hc-stamp-wrap{ max-width:220px !important; }
+  .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:200px !important; }
+}
+
+/* === V82 REVERT — original logo, tilt + hard shadow, no border, no texture === */
+/* Back to the band's real logo. No fake red border, no grain. Just the clean stamp, tilted, with a hard Den shadow. */
+.mcd-3hc-stamp-wrap{
+  align-self:center !important;
+  display:block !important;
+  width:fit-content !important;
+  max-width:240px !important;
+  margin:14px auto 6px auto !important;
+  background:transparent !important;
+  background-image:none !important;
+  border:none !important;
+  border-radius:14px !important;
+  padding:0 !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-2deg) !important;
+  overflow:hidden !important;
+  text-align:center !important;
+}
+.mcd-3hc-stamp-wrap .mcd-3hc-stamp{
+  width:230px !important;
+  height:auto !important;
+  display:block !important;
+  margin:0 auto !important;
+  filter:none !important;
+  transform:none !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+}
+@media(max-width:768px){
+  .mcd-3hc-stamp-wrap{ max-width:210px !important; }
+  .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:200px !important; }
+}
+
+/* === V83 3HC MATCH MINT BOX — same border + shadow as the mint container above === */
+/* Mint box: border:3px solid #050505 + box-shadow:4px 4px 0 #050505. */
+/* V82 had no border, so the shadow read as a stray line on right/bottom. Add the border, shadow now matches. */
+.mcd-3hc-stamp-wrap{
+  align-self:center !important;
+  display:block !important;
+  width:fit-content !important;
+  max-width:240px !important;
+  margin:14px auto 6px auto !important;
+  background:transparent !important;
+  background-image:none !important;
+  border:3px solid #050505 !important;
+  border-radius:14px !important;
+  padding:0 !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-2deg) !important;
+  overflow:hidden !important;
+  text-align:center !important;
+}
+.mcd-3hc-stamp-wrap .mcd-3hc-stamp{
+  width:230px !important;
+  height:auto !important;
+  display:block !important;
+  margin:0 auto !important;
+  filter:none !important;
+  transform:none !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+}
+@media(max-width:768px){
+  .mcd-3hc-stamp-wrap{ max-width:210px !important; }
+  .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:200px !important; }
+}
+
+/* === V84 3HC MATCH MINT EXACT — same tilt + same torn edge + same shadow === */
+/* Mint box above: rotate(-0.3deg), border 3px, shadow 4px 4px 0, clip-path torn polygon, no radius. */
+/* V83 had rotate(-2deg) + radius 14px, so its shadow tilted and looked like a double line on the right. Fix: same tilt, same torn edge, same shadow. */
+.mcd-3hc-stamp-wrap{
+  align-self:center !important;
+  display:block !important;
+  width:fit-content !important;
+  max-width:240px !important;
+  margin:14px auto 6px auto !important;
+  background:transparent !important;
+  background-image:none !important;
+  border:3px solid #050505 !important;
+  border-radius:0 !important;
+  clip-path:polygon(0 2%, 100% 0, 98% 96%, 2% 100%) !important;
+  padding:0 !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-0.3deg) !important;
+  overflow:hidden !important;
+  text-align:center !important;
+}
+.mcd-3hc-stamp-wrap .mcd-3hc-stamp{
+  width:230px !important;
+  height:auto !important;
+  display:block !important;
+  margin:0 auto !important;
+  filter:none !important;
+  transform:none !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+}
+@media(max-width:768px){
+  .mcd-3hc-stamp-wrap{ max-width:210px !important; }
+  .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:200px !important; }
+}
+
+/* === V85 3HC SMALLER — tighten the card, kill the blank space === */
+/* V84 stamp was 230px, too big for the card, pushed left card tall, right zine card stretched with blank at bottom. */
+/* Fix: stamp 160px desktop / 140px mobile, tighter margins, same mint-match border + shadow + tilt + torn edge. */
+.mcd-3hc-stamp-wrap{
+  align-self:center !important;
+  display:block !important;
+  width:fit-content !important;
+  max-width:170px !important;
+  margin:8px auto 2px auto !important;
+  background:transparent !important;
+  background-image:none !important;
+  border:3px solid #050505 !important;
+  border-radius:0 !important;
+  clip-path:polygon(0 2%, 100% 0, 98% 96%, 2% 100%) !important;
+  padding:0 !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-0.3deg) !important;
+  overflow:hidden !important;
+  text-align:center !important;
+}
+.mcd-3hc-stamp-wrap .mcd-3hc-stamp{
+  width:160px !important;
+  height:auto !important;
+  display:block !important;
+  margin:0 auto !important;
+  filter:none !important;
+  transform:none !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+}
+@media(max-width:768px){
+  .mcd-3hc-stamp-wrap{ max-width:150px !important; }
+  .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:140px !important; }
+}
+
+/* === V86 GENRE STRIP AS CARD — same style as mint box + 3HC card === */
+/* Was: just 2px top/bottom lines, flat, no shadow. Now: full card — mint bg, 3px border, 4px hard shadow, torn edge, -0.3deg tilt, like the mint box + 3HC. */
+.mcd-genre-tags{
+  background:#9BDBC1 !important;
+  border:3px solid #050505 !important;
+  border-radius:0 !important;
+  clip-path:polygon(0 2%, 100% 0, 98% 96%, 2% 100%) !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-0.3deg) !important;
+  padding:10px 8px !important;
+  margin:14px 4px 16px 4px !important;
+}
+
+/* === V87 GENRE STRIP CREAM — same card, no mint === */
+/* V86 was mint #9BDBC1, too much mint with the left mint box. Now cream #F0F0DA, keeps border + shadow + torn edge + tilt. */
+.mcd-genre-tags{
+  background:#F0F0DA !important;
+  border:3px solid #050505 !important;
+  border-radius:0 !important;
+  clip-path:polygon(0 2%, 100% 0, 98% 96%, 2% 100%) !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-0.3deg) !important;
+  padding:10px 8px !important;
+  margin:14px 4px 16px 4px !important;
+}
+
+/* === V88 GENRE DEN + REMOVE MINT LINE — CSS only, no player JS === */
+/* Genre strip stays cream card from V87. Mint glowing line above SLIDE IT UNDER removed in HTML — it was neon, fought with the red button, not Den print. */
+
+/* === V89 FINAL — genre cream card + 3HC smaller torn, high specificity to beat stacked layers === */
+/* Use .mcd-card--zine / .mcd-card--gig prefix so this wins over all earlier single-class .mcd-genre-tags / .mcd-3hc-stamp-wrap rules, even with !important. */
+.mcd-card--zine .mcd-genre-tags{
+  background:#F0F0DA !important;
+  border:3px solid #050505 !important;
+  border-top:3px solid #050505 !important;
+  border-bottom:3px solid #050505 !important;
+  border-radius:0 !important;
+  clip-path:polygon(0 2%, 100% 0, 98% 96%, 2% 100%) !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-0.3deg) !important;
+  padding:10px 8px !important;
+  margin:14px 4px 16px 4px !important;
+}
+.mcd-card--gig .mcd-3hc-stamp-wrap{
+  align-self:center !important;
+  display:block !important;
+  width:fit-content !important;
+  max-width:170px !important;
+  margin:8px auto 2px auto !important;
+  background:transparent !important;
+  background-image:none !important;
+  border:3px solid #050505 !important;
+  border-radius:0 !important;
+  clip-path:polygon(0 2%, 100% 0, 98% 96%, 2% 100%) !important;
+  padding:0 !important;
+  box-shadow:4px 4px 0 #050505 !important;
+  transform:rotate(-0.3deg) !important;
+  overflow:hidden !important;
+  text-align:center !important;
+}
+.mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp{
+  width:160px !important;
+  height:auto !important;
+  display:block !important;
+  margin:0 auto !important;
+  filter:none !important;
+  transform:none !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+}
+@media(max-width:768px){
+  .mcd-card--gig .mcd-3hc-stamp-wrap{ max-width:150px !important; }
+  .mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:140px !important; }
+}
