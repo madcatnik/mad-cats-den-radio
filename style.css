@@ -2125,3 +2125,13 @@ body{
 /* No layout change, same one-paragraph flow from V117. */
 
 /* === V119 — Random player + new FB, no CSS change, JS+HTML only === */
+
+/* === V120 — Autoplay next tape, loop. JS only, no CSS change === */
+
+/* === V121 — Autoplay fallback: detect end by position, not only ended event === */
+
+/* === V122 — Symptom A fix: drop isPlaying check, Mixcloud fires pause first so ended was blocked === */
+
+/* === V123 — use widget.load(feed,true) not iframe swap, keeps play gesture === */
+
+/* === V124 — auto-advance always starts at 0:00, clear next tape saved position === */
