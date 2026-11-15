@@ -23,9 +23,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const beautyPlay = document.getElementById('mcd-beauty-play');
   const heroSection = document.getElementById('mcd-hero');
   const iframe = document.getElementById('mcd-mixcloud');
+  // V119 — RANDOM ONCE PER VISIT, no list on site. Pool of tapes, pick one on load, keep it till reload. FIRE IT UP plays that pick.
+  const MCD_TAPES = [
+    {id:'ape-tape-1', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
+    {id:'ape-tape-2', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-2-raw-rockabilly-teddy-boy-rock-n-roll-wild-surf/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
+  ];
+  const MCD_TAPE = MCD_TAPES[Math.floor(Math.random() * MCD_TAPES.length)];
+  const MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
+  if (iframe) {
+    const pickSrc = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed);
+    if (iframe.getAttribute('src') !== pickSrc) iframe.setAttribute('src', pickSrc);
+  }
   const nowSpinningEl = document.getElementById('mcd-now-spinning-text');
   let isPlaying = false, widget = null, apiLoading = false, hasResumed = false;
-  if (nowSpinningEl) nowSpinningEl.textContent = `\u2726 ${STATION_SLOGAN} \u2726 ${STATION_SLOGAN} \u2726`;
+  if (nowSpinningEl) nowSpinningEl.textContent = `\u2726 NOW SPINNING: ${MCD_TAPE.label} \u2726 ${STATION_SLOGAN} \u2726`;
   function fireHTML(icon, label){
     return '<span class="mcd-play-symbol" aria-hidden="true">' + icon + '</span><span class="mcd-fire-label"> ' + label + '</span>';
   }
@@ -66,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!w || !isPlaying) return;
     try {
       const p = w.getPosition();
-      if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem('mcd_tape_position_ape-tape-1', String(pos)); } catch(e){} } }).catch(()=>{});
+      if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem(MCD_TAPE_KEY, String(pos)); } catch(e){} } }).catch(()=>{});
     } catch(e){}
   }
   setInterval(saveTapePosition, 5000);
@@ -156,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
               if (!hasResumed) {
                 hasResumed = true;
                 try {
-                  const saved = localStorage.getItem('mcd_tape_position_ape-tape-1');
+                  const saved = localStorage.getItem(MCD_TAPE_KEY);
                   if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w0.seek(parseFloat(saved)); } catch(e){} }, 600); }
                 } catch(e){}
               }
