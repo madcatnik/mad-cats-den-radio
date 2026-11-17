@@ -2205,3 +2205,17 @@ body{
     padding: 3px 10px !important;
   }
 }
+
+/* === V135 CLEAN from V130 — only Mixcloud iframe scrollbar, page scrolling untouched === */
+/* Tiny bar under 111:15 is the Mixcloud iframe inside the player, not the page */
+#mcd-mixcloud, #mcd-beauty-player iframe {
+  display: block !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  scrollbar-width: none !important;
+}
+#mcd-mixcloud::-webkit-scrollbar, #mcd-beauty-player iframe::-webkit-scrollbar {
+  display: none !important; width: 0 !important; height: 0 !important;
+}
+#mcd-beauty-player { overflow: hidden !important; }
+/* No html/body overflow lock — wheel scrolling stays as V130 */
