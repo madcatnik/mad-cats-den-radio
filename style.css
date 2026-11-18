@@ -2219,3 +2219,17 @@ body{
 }
 #mcd-beauty-player { overflow: hidden !important; }
 /* No html/body overflow lock — wheel scrolling stays as V130 */
+
+/* === V136 — WIDE SCREEN FIX — the real bug: old V48 rule set max-width:100% globally, stretching desktop === */
+/* That rule was for mobile only, but it overrode the 1200px cap on desktop. Restore cap on desktop only. */
+@media (min-width: 769px) {
+  #mcd-header-player, #mcd-hero, #mcd-main {
+    max-width: 1200px !important;
+    width: calc(100% - 16px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+  /* TROUBLE stays as V130 — dark shadow, old size, not touched */
+}
+/* No html/body overflow lock — wheel scrolling stays as V130 */
