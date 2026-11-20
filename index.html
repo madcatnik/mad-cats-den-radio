@@ -1,15 +1,45 @@
-<!-- V136 WIDE FIX — desktop capped 1200px -->
+<!-- V138 SEO + LINK SHARE — V137 base + H1/Title/Description + RadioStation schema + OG JPG + site_name/locale — NO player help line, NO visual change -->
 <!-- MAD CATS DEN v48-READY — CORRECT live v47 base (Pinterest + Ape Tape Mix 1) + mobile stability + player seek, zero visual changes when CSS loads -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MAD CATS DEN — 24/7 Rockabilly Radio + Zine from Athens GR</title>
-<meta name="description" content="Low ceiling, high volume. Real gone Rock & Roll, no paywall, just tape hiss. Est. 2026.">
+<title>MAD CATS DEN, Rockabilly Radio 24/7 + Zine, Athens GR</title>
+<meta name="description" content="Rockabilly Radio + Zine — broadcasting from a basement. Real gone R&amp;R, low ceiling, high volume, no paywall, just tape hiss.">
 <meta name="theme-color" content="#10120F">
 
 <link rel="stylesheet" href="./style.css?v=v130-follow-smaller">
+
+<!-- V137 1360 CAP: capped at 1360, centred, black sides. Overrides 1200 cap in style.css without touching it. Safe: only max-width + centring. -->
+<style>
+  #mcd-header-player,
+  #main,
+  #mcd-footer {
+    max-width: 1360px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  body { background: #000; }
+  /* V137 SEEK TOUCH FIX: dragging seek on mobile must seek, not scroll page */
+  #mcd-seek-wrap,
+  #mcd-seek-track,
+  #mcd-seek-thumb {
+    touch-action: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+  #mcd-seek-thumb {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  #mcd-seek-track {
+    min-height: 22px !important;
+  }
+  /* V138 H1: keep hero visual identical, H1 inherits hero type */
+  .mcd-hero-h1 { font-size: inherit !important; font-weight: inherit !important; letter-spacing: inherit !important; text-transform: inherit !important; }
+  .mcd-hero-h1 .mad-line, .mcd-hero-h1 .den-line { display: block; }
+</style>
 
 <link rel="icon" type="image/x-icon" href="./favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -19,19 +49,27 @@
 <link rel="icon" type="image/png" sizes="512x512" href="./android-chrome-512x512.png">
 <link rel="manifest" href="./site.webmanifest">
 
-<meta property="og:title" content="MAD CATS DEN — 24/7 Rockabilly Radio + Zine from Athens GR">
-<meta property="og:description" content="Low ceiling, high volume. Real gone Rock & Roll, no paywall, just tape hiss. Est. 2026.">
+<meta property="og:title" content="MAD CATS DEN, Rockabilly Radio 24/7 + Zine, Athens GR">
+<meta property="og:description" content="Rockabilly Radio + Zine — broadcasting from a basement. Real gone R&amp;R, low ceiling, high volume, no paywall, just tape hiss.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://madcatsdenradio.com">
+<meta property="og:site_name" content="MAD CATS DEN">
+<meta property="og:locale" content="en_GR">
+<meta property="og:image" content="https://madcatsdenradio.com/og-image-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="MAD CATS DEN, Rockabilly Radio 24/7 + Zine, Athens GR">
 <meta property="og:image" content="https://madcatsdenradio.com/og-image-1200x630.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/webp">
-<meta property="og:image:alt" content="MAD CATS DEN — 24/7 Rockabilly Radio + Zine from Athens GR">
+<meta property="og:image:alt" content="MAD CATS DEN, Rockabilly Radio 24/7 + Zine, Athens GR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="MAD CATS DEN — 24/7 Rockabilly Radio + Zine from Athens GR">
-<meta name="twitter:description" content="Low ceiling, high volume. Real gone Rock & Roll, no paywall, just tape hiss. Est. 2026.">
-<meta name="twitter:image" content="https://madcatsdenradio.com/og-image-1200x630.webp">
+<meta name="twitter:title" content="MAD CATS DEN, Rockabilly Radio 24/7 + Zine, Athens GR">
+<meta name="twitter:description" content="Rockabilly Radio + Zine — broadcasting from a basement. Real gone R&amp;R, low ceiling, high volume, no paywall, just tape hiss.">
+<meta name="twitter:image" content="https://madcatsdenradio.com/og-image-1200x630.jpg">
+<meta name="twitter:image:alt" content="MAD CATS DEN, Rockabilly Radio 24/7 + Zine, Athens GR">
 <link rel="canonical" href="https://madcatsdenradio.com/">
 
 <script type="application/ld+json">
@@ -42,7 +80,7 @@
   "alternateName": "MCD Radio+Zine",
   "url": "https://madcatsdenradio.com/",
   "logo": "https://madcatsdenradio.com/android-chrome-512x512.png",
-  "description": "Low ceiling, high volume. Real gone Rock & Roll, no paywall, just tape hiss. Est. 2026.",
+  "description": "Rockabilly Radio + Zine — broadcasting from a basement. Real gone R&amp;R, low ceiling, high volume, no paywall, just tape hiss.",
   "foundingDate": "2026",
   "location": {
     "@type": "Place",
@@ -54,6 +92,43 @@
       "addressRegion": "Attica",
       "addressCountry": "GR"
     }
+  },
+  "sameAs": [
+    "https://www.instagram.com/madcatnik",
+    "https://www.facebook.com/madcatsdenradio",
+    "https://www.mixcloud.com/madcatnik",
+    "https://youtube.com/@madcatsdenradio?si=O_CwHmCKFkWFQPAz"
+  ]
+}
+</script>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RadioStation",
+  "name": "MAD CATS DEN",
+  "alternateName": "MAD CATS DEN, Rockabilly Radio 24/7, Athens GR",
+  "url": "https://madcatsdenradio.com/",
+  "description": "Rockabilly Radio + Zine — broadcasting from a basement. Real gone R&R, low ceiling, high volume, no paywall, just tape hiss.",
+  "broadcastDisplayName": "MAD CATS DEN Radio",
+  "broadcastTimezone": "Europe/Athens",
+  "inLanguage": "en",
+  "genre": ["Rockabilly", "Rock & Roll", "1950s Rock & Roll"],
+  "areaServed": {
+    "@type": "Place",
+    "name": "Athens, Greece",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Athens",
+      "addressRegion": "Attica",
+      "addressCountry": "GR"
+    }
+  },
+  "parentOrganization": {
+    "@type": "Organization",
+    "name": "MAD CATS DEN",
+    "url": "https://madcatsdenradio.com/"
   },
   "sameAs": [
     "https://www.instagram.com/madcatnik",
@@ -130,8 +205,7 @@
   </div>
   <div class="mcd-hero-titles">
     <div class="mcd-hero-kicker"><span class="mcd-kicker-line1">BROADCASTING FROM A BASEMENT</span><span class="mcd-kicker-sep"> • </span><span class="mcd-kicker-line2">LOW CEILING • HIGH VOLUME</span></div>
-    <div class="mad-line" style="user-select: none; -webkit-user-select: none;">MAD CATS</div>
-    <div class="den-line" style="user-select: none; -webkit-user-select: none;">DEN</div>
+    <h1 class="mcd-hero-h1" style="margin:0; padding:0; font:inherit; line-height:inherit;"><span class="mad-line" style="user-select: none; -webkit-user-select: none;">MAD CATS</span><span class="den-line" style="user-select: none; -webkit-user-select: none;">DEN</span><span style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">, Rockabilly Radio 24/7, Athens GR</span></h1>
   </div>
 </section>
 
@@ -270,7 +344,7 @@
     <div id="mcd-seek-times"><span id="mcd-seek-cur">0:00</span><span>DRAG TO SEEK • TAPE</span><span id="mcd-seek-dur">--:--</span></div>
   </div>
   <div id="mcd-tap-to-start"><div class="mcd-tap-scroll"><span>PRESS PLAY TO START</span></div></div>
-  <iframe title="MAD CATS DEN Mixcloud player" id="mcd-mixcloud" width="100%" height="60" scrolling="no" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2Fmad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
+  <iframe title="MAD CATS DEN Mixcloud player" id="mcd-mixcloud" width="100%" height="60" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2Fmad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
 </div>
 
 <div id="mcd-toast" role="status" aria-live="polite"></div>
