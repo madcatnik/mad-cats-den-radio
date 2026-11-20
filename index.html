@@ -1,3 +1,4 @@
+<!-- V140 SEEK UNLOCK — V139 CSS kept, JS blocking removed (that locked seek) --> 
 <!-- V139 SEEK MOBILE FIX — V138 base + stronger seek touch fix (wrap + fill + times, touchstart/touchmove preventDefault) — NO visual change --> 
 <!-- V138 SEO + LINK SHARE — V137 base + H1/Title/Description + RadioStation schema + OG JPG + site_name/locale — NO player help line, NO visual change -->
 <!-- MAD CATS DEN v48-READY — CORRECT live v47 base (Pinterest + Ape Tape Mix 1) + mobile stability + player seek, zero visual changes when CSS loads -->
@@ -365,26 +366,7 @@
 <script src="https://widget.mixcloud.com/media/js/widgetApi.js"></script>
 <script src="./script.js?v=v130-follow-smaller" defer></script>
 
-<!-- V139 SEEK TOUCH FIX JS: stop page scroll on seek drag, even on iOS Safari -->
-<script>
-(function(){
-  var track = document.getElementById('mcd-seek-track');
-  var wrap = document.getElementById('mcd-seek-wrap');
-  if(!track || !wrap) return;
-  // Touch handlers with passive:false so preventDefault actually stops scroll
-  function stopScroll(e){
-    // Only when touching seek area - let taps still work, block drag scroll
-    if(e.cancelable) e.preventDefault();
-  }
-  // Use non-passive listeners - this is the key iOS fix
-  track.addEventListener('touchstart', stopScroll, {passive:false});
-  track.addEventListener('touchmove', stopScroll, {passive:false});
-  wrap.addEventListener('touchstart', stopScroll, {passive:false});
-  wrap.addEventListener('touchmove', stopScroll, {passive:false});
-  // Also block the parent beauty player from starting a drag when seeking
-  wrap.addEventListener('pointerdown', function(e){ e.stopPropagation(); }, true);
-})();
-</script>
+<!-- V140: NO JS blocking on seek - CSS touch-action:none does the scroll block, script.js does the seek -->
 
 </body>
 </html>
