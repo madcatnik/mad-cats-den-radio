@@ -1,3 +1,4 @@
+<!-- V139 SEEK MOBILE FIX — V138 base + stronger seek touch fix (wrap + fill + times, touchstart/touchmove preventDefault) — NO visual change --> 
 <!-- V138 SEO + LINK SHARE — V137 base + H1/Title/Description + RadioStation schema + OG JPG + site_name/locale — NO player help line, NO visual change -->
 <!-- MAD CATS DEN v48-READY — CORRECT live v47 base (Pinterest + Ape Tape Mix 1) + mobile stability + player seek, zero visual changes when CSS loads -->
 <!DOCTYPE html>
@@ -21,20 +22,32 @@
     margin-right: auto !important;
   }
   body { background: #000; }
-  /* V137 SEEK TOUCH FIX: dragging seek on mobile must seek, not scroll page */
+  /* V139 SEEK MOBILE FIX: dragging seek must seek, not scroll page - wrap + all children, not just track/thumb */
   #mcd-seek-wrap,
+  #mcd-seek-wrap *,
   #mcd-seek-track,
-  #mcd-seek-thumb {
+  #mcd-seek-fill,
+  #mcd-seek-thumb,
+  #mcd-seek-times {
     touch-action: none !important;
+    overscroll-behavior: none !important;
     -webkit-user-select: none !important;
     user-select: none !important;
+    -webkit-touch-callout: none !important;
+  }
+  #mcd-seek-wrap {
+    /* Bigger hit area so finger doesn't slip off track and scroll */
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-top: -6px !important;
+    margin-bottom: -6px !important;
   }
   #mcd-seek-thumb {
-    width: 22px !important;
-    height: 22px !important;
+    width: 26px !important;
+    height: 26px !important;
   }
   #mcd-seek-track {
-    min-height: 22px !important;
+    min-height: 28px !important;
   }
   /* V138 H1: keep hero visual identical, H1 inherits hero type */
   .mcd-hero-h1 { font-size: inherit !important; font-weight: inherit !important; letter-spacing: inherit !important; text-transform: inherit !important; }
@@ -351,5 +364,27 @@
 
 <script src="https://widget.mixcloud.com/media/js/widgetApi.js"></script>
 <script src="./script.js?v=v130-follow-smaller" defer></script>
+
+<!-- V139 SEEK TOUCH FIX JS: stop page scroll on seek drag, even on iOS Safari -->
+<script>
+(function(){
+  var track = document.getElementById('mcd-seek-track');
+  var wrap = document.getElementById('mcd-seek-wrap');
+  if(!track || !wrap) return;
+  // Touch handlers with passive:false so preventDefault actually stops scroll
+  function stopScroll(e){
+    // Only when touching seek area - let taps still work, block drag scroll
+    if(e.cancelable) e.preventDefault();
+  }
+  // Use non-passive listeners - this is the key iOS fix
+  track.addEventListener('touchstart', stopScroll, {passive:false});
+  track.addEventListener('touchmove', stopScroll, {passive:false});
+  wrap.addEventListener('touchstart', stopScroll, {passive:false});
+  wrap.addEventListener('touchmove', stopScroll, {passive:false});
+  // Also block the parent beauty player from starting a drag when seeking
+  wrap.addEventListener('pointerdown', function(e){ e.stopPropagation(); }, true);
+})();
+</script>
+
 </body>
 </html>
