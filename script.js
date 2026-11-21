@@ -37,7 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const nowSpinningEl = document.getElementById('mcd-now-spinning-text');
   let isPlaying = false, widget = null, apiLoading = false, hasResumed = false;
-  if (nowSpinningEl) nowSpinningEl.textContent = `\u2726 NOW SPINNING: ${MCD_TAPE.label} \u2726 ${STATION_SLOGAN} \u2726`;
+  // V144b — Cream marquee: LOADING -> HELP while waiting -> NOW SPINNING immediately when playing. Speed 22s (original).
+const CREAM_LOADING = "\u2726 LOADING TAPE... LOW CEILING HIGH VOLUME \u2014 JUST BASEMENT SIGNAL \u2726";
+const CREAM_HELP = "\u2726 PRESS PLAY \u2022 NO SOUND? PRESS AGAIN \u2726";
+let mcdCreamHelpTimer = null;
+function mcdCreamNowSpinning(){ return `\u2726 NOW SPINNING: ${MCD_TAPE.label} \u2726 ${STATION_SLOGAN} \u2726`; }
+if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
   function fireHTML(icon, label){
     return '<span class="mcd-play-symbol" aria-hidden="true">' + icon + '</span><span class="mcd-fire-label"> ' + label + '</span>';
   }
@@ -82,7 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
     try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
     hasResumed = true; // autoplay starts at 0, don't resume old position for this tape
     setTimeout(()=>{ mcdEnding = false; mcdLastPos = 0; }, 2000);
-    if (nowSpinningEl) nowSpinningEl.textContent = `\u2726 NOW SPINNING: ${MCD_TAPE.label} \u2726 ${STATION_SLOGAN} \u2726`;
+    if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
+  if (nowSpinningEl) nowSpinningEl.textContent = mcdCreamNowSpinning();
     if (typeof setSeekUI === 'function') { try { setSeekUI(0); } catch(e){} }
     // V123 — use widget.load(feed, true) instead of rebuilding iframe. Rebuilding iframe kills the play gesture, so new tape lands at 0:00 stuck on PAUSE. load() keeps same widget/iframe, same session, so it keeps playing.
     try { if (typeof seekDuration !== 'undefined') seekDuration = 0; } catch(e){}
@@ -144,6 +150,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function setPlayingUI(on){
     isPlaying = on;
     if (on) { mcdLastPlayingAt = Date.now(); mcdManualPause = false; }
+    // V144b — HELP only while waiting. Playing -> NOW SPINNING immediately. Paused (open) -> HELP. Closed -> LOADING.
+    if (nowSpinningEl) {
+      if (on) {
+        if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
+        nowSpinningEl.textContent = mcdCreamNowSpinning();
+      } else {
+        if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
+        if (beautyPlayer && beautyPlayer.classList.contains('show')) {
+          nowSpinningEl.textContent = CREAM_HELP;
+        } else {
+          nowSpinningEl.textContent = CREAM_LOADING;
+        }
+      }
+    }
     
   if (fireBtn) { fireBtn.classList.toggle('is-playing', on); fireBtn.innerHTML = on ? fireHTML('\uD83D\uDC80', 'KEEP IT WILD') : fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); }
     if (beautyPlay) beautyPlay.textContent = on ? '⏸︎ PAUSE' : '▶︎ PLAY';
@@ -170,7 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!seekDuration) return;
     const pct = Math.max(0, Math.min(100, (pos / seekDuration) * 100));
     if(seekFill) seekFill.style.width = pct + '%';
-    if(seekThumb) seekThumb.style.left = pct + '%';
+    // V148 — clamp thumb inside track only, no page-level overflow change
+    const thumbPct = Math.max(1.5, Math.min(98.5, pct));
+    if(seekThumb) seekThumb.style.left = thumbPct + '%';
     if(seekCur) seekCur.textContent = fmtTime(pos);
   }
   function seekFromEvent(e){
@@ -218,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
       if (isPlaying) { mcdManualPause = true; saveTapePosition(); setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
       fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
+      if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP;
       // V59 — DIRECT GESTURE ONLY. On live (not localhost) browsers block play() that is not directly from the tap.
       // Old code did play() inside ready.then (async) + forced PAUSE after 1500ms even if play failed — so UI said PAUSE, seek stayed 0:00, no audio.
       // Now: try sync play (direct gesture). If widget not ready yet, don't force PAUSE — show TAP PLAY and wait for second direct tap, which will succeed because widget is ready by then.
