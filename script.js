@@ -241,12 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 hasResumed = true;
                 try {
                   const saved = localStorage.getItem(MCD_TAPE_KEY);
-                  if (saved && parseFloat(saved) > 3) { const _sp = parseFloat(saved); mcdLastPos = _sp; setTimeout(()=>{ try { w0.seek(_sp); } catch(e){} }, 800); setTimeout(()=>{ try { w0.seek(_sp); } catch(e){} }, 1800); }
+                  if (saved && parseFloat(saved) > 3) { const _sp = parseFloat(saved); mcdLastPos = _sp; setTimeout(()=>{ try { w0.seek(_sp); } catch(e){} }, 800); }
                 } catch(e){}
               }
             }).catch(() => {
-              // Autoplay blocked / widget not ready — fallback: reload iframe with autoplay in this gesture.
+              // V171 — Autoplay blocked / widget not ready. Reload iframe with autoplay, BUT reset widget or poll reads dead widget at 0:36 forever. New iframe starts at 0, re-bind events.
               try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&autoplay=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); } } catch(e){}
+              widget = null; hasResumed = true; mcdLastPos = 0; try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
+              ensureMixcloudAPI(()=>{ const _w = getWidget(); if (_w) { try { _w.ready.then(()=>{ mcdBindWidgetEvents(_w); }).catch(()=>{}); } catch(e){} } });
               setPlayingUI(false);
             });
           } else {
@@ -263,8 +265,10 @@ document.addEventListener('DOMContentLoaded', () => {
           setPlayingUI(false);
         }
       } else {
-        // V170 — No widget (widgetApi.js blocked / not ready). Fallback: reload iframe with autoplay in this click (user gesture), Mixcloud will autoplay inside iframe. No widgetApi needed.
+        // V171 — No widget. Reload iframe with autoplay, reset widget so poll reads new iframe, not dead one at 0:36. New iframe starts at 0, re-bind.
         try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&autoplay=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP; } } catch(e){}
+        widget = null; hasResumed = true; mcdLastPos = 0; try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
+        ensureMixcloudAPI(()=>{ const _w = getWidget(); if (_w) { try { _w.ready.then(()=>{ mcdBindWidgetEvents(_w); }).catch(()=>{}); } catch(e){} } });
         setPlayingUI(false);
       }
       // If widget becomes ready later, do NOT auto-play (blocked on live). Just update button so next tap works.
