@@ -28,9 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {id:'ape-tape-1', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
     {id:'ape-tape-2', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-2-raw-rockabilly-teddy-boy-rock-n-roll-wild-surf/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
   ];
-  // V161 — Refresh resumes same tape, not new random. Random only when no last tape. Last tape is saved in saveTapePosition + on tape change.
-  let MCD_TAPE_IDX = Math.floor(Math.random() * MCD_TAPES.length);
-  try { const _last = localStorage.getItem('mcd_last_tape_id'); if (_last) { const _i = MCD_TAPES.findIndex(t => t.id === _last); if (_i !== -1) MCD_TAPE_IDX = _i; } } catch(e){}
+  // V163 — Random-on-load back, safe. Inline script in index.html (runs during parsing) already picked tape + set iframe src to that pick, so iframe is born with random src. Here we read same pick, so label == audio. Refresh: inline script already used last tape if exists, so refresh resumes same tape.
+  let MCD_TAPE_IDX = (typeof window.MCD_INITIAL_IDX === 'number' && window.MCD_INITIAL_IDX >= 0 && window.MCD_INITIAL_IDX < MCD_TAPES.length) ? window.MCD_INITIAL_IDX : 0;
   let MCD_TAPE = MCD_TAPES[MCD_TAPE_IDX];
   let MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
   if (iframe) {
@@ -143,8 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e){}
   }
   setInterval(saveTapePosition, 5000);
-  // Save on leave too, so last seconds aren't lost
-  window.addEventListener('beforeunload', saveTapePosition);
+  // Save on leave too — sync from mcdLastPos, async getPosition never finishes before unload.
+  window.addEventListener('beforeunload', () => { try { if (mcdLastPos > 0) { localStorage.setItem(MCD_TAPE_KEY, String(mcdLastPos)); localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } } catch(e){} });
   let mcdManualPause = false, mcdLastPlayingAt = 0;
   function setPlayingUI(on){
     isPlaying = on;
@@ -206,6 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (mcdLastPos > seekDuration - 5 && p < 2) { mcdOnTapeEnded(); }
           }
           mcdLastPos = p || 0;
+          // V164 — Refresh resume: save fresh position on every poll (500ms), not every 5s, so refresh keeps where you left.
+          if (isPlaying && p > 0) { try { localStorage.setItem(MCD_TAPE_KEY, String(p)); localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } catch(e){} }
         }).catch(()=>{});
         if(!seekDuration){
           wPoll.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
@@ -241,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 hasResumed = true;
                 try {
                   const saved = localStorage.getItem(MCD_TAPE_KEY);
-                  if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w0.seek(parseFloat(saved)); } catch(e){} }, 600); }
+                  if (saved && parseFloat(saved) > 3) { const _sp = parseFloat(saved); mcdLastPos = _sp; setTimeout(()=>{ try { w0.seek(_sp); } catch(e){} }, 800); setTimeout(()=>{ try { w0.seek(_sp); } catch(e){} }, 1800); }
                 } catch(e){}
               }
             }).catch(() => {
