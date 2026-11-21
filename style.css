@@ -773,13 +773,13 @@ html,body{max-width:100%;overflow-x:clip}
   transition:height 0.4s ease !important;
 }
 #mcd-beauty-player.is-hairline iframe{
-  height:6px !important;
-  min-height:6px !important;
-  flex:0 0 6px !important;
+  height:60px !important;
+  min-height:60px !important;
+  flex:0 0 60px !important;
   opacity:1 !important;
-  pointer-events:none !important;
+  pointer-events:auto !important;
   overflow:hidden !important;
-}
+} /* V173 — NO hairline. Mixcloud must stay 60px + clickable, or it blocks external play. */
 #mcd-seek-wrap{
   border-bottom:1px solid #050505 !important;
 }
@@ -788,8 +788,8 @@ html,body{max-width:100%;overflow-x:clip}
 /* At start: only Mixcloud bar visible, one bar, not two. */
 /* After first play (mobile: FIRE IT UP works, desktop: tap Mixcloud play), player gets .is-hairline, our bar appears, Mixcloud shrinks to hairline. */
 #mcd-seek-wrap{
-  display:none !important;
-}
+  display:block !important;
+} /* V173 — show Den bar, but Mixcloud stays too */
 #mcd-beauty-player.is-hairline #mcd-seek-wrap{
   display:block !important;
 }
