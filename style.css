@@ -2245,3 +2245,12 @@ body{
 #mcd-beauty-player iframe{ scrollbar-width:none; }
 #mcd-beauty-player iframe::-webkit-scrollbar{ display:none; }
 html, body{ overflow-x:clip; }
+
+/* V175 SINGLE BAR — one play, one seek: Mixcloud's. Den header keeps BASEMENT SIGNAL + TAPE ROLLING + EJECT only. */
+#mcd-beauty-player .pill{display:none !important;}
+#mcd-beauty-player.is-playing .pill{display:inline-block !important;}
+#mcd-beauty-player #mcd-beauty-play{display:none !important;}
+#mcd-seek-wrap #mcd-seek-track, #mcd-seek-wrap #mcd-seek-fill, #mcd-seek-wrap #mcd-seek-thumb{display:none !important;}
+#mcd-seek-wrap #mcd-seek-times{display:flex !important; justify-content:center !important;}
+#mcd-tap-to-start{display:none !important;}
+#mcd-beauty-player iframe{height:60px !important; min-height:60px !important; flex:0 0 60px !important; opacity:1 !important; pointer-events:auto !important; visibility:visible !important; display:block !important;}
