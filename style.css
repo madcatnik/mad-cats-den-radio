@@ -139,11 +139,11 @@ body::after{
 .den-line{
   font-family:'Alfa Slab One',cursive; line-height:0.85; letter-spacing:-0.02em;
   color:var(--brick); text-transform:uppercase; display:block; text-align:center; white-space:nowrap;
-  font-size: clamp(68px, 11vw, 124px); text-shadow: 2px 2px 0 var(--black); margin-top:4px;
+  font-size: clamp(90px, 13vw, 160px); text-shadow: 2px 2px 0 var(--black); margin-top:4px;
 }
 /* V45 - Desktop DEN always max, never shrinks with vw */
 @media(min-width:600px){
-  .den-line{ font-size:124px !important; }
+  .den-line{ font-size:160px !important; }
 }
 
 #mcd-hero.is-playing .mcd-hero-glow--mint{opacity:0.85;filter:blur(36px);transform:scale(1.35);background:radial-gradient(circle at center, rgba(155,219,193,0.85) 0%, rgba(155,219,193,0.3) 42%, transparent 70%);transition:all 0.4s ease}
@@ -509,7 +509,7 @@ body::after{
 @keyframes mcdTapeScroll{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
 #mcd-beauty-player iframe{ background:var(--cream); overflow:hidden; scrollbar-width:none; }
 .mcd-card--gig .mcd-support-block--den p, .mcd-card--gig .mcd-support-block--den div{ font-size:14px !important; line-height:1.65 !important; }
-.mcd-poster-wrap{ width:78% !important; max-width:340px !important; margin:0 auto !important; }
+.mcd-poster-wrap{ width:82% !important; max-width:365px !important; margin:0 auto !important; }
 .mcd-card--gig .mcd-support-block--den{ padding:10px 12px !important; gap:10px !important; }
 .mcd-card--gig .mcd-card-body{ gap:10px !important; }
 
@@ -547,7 +547,7 @@ body::after{
   .mcd-genre-line1, .mcd-genre-line2{ display:block !important; white-space:nowrap !important; text-align:center; }
   .mcd-genre-sep{ display:none !important; }
   .mcd-card--zine .mcd-card-head{ flex-wrap:wrap !important; }
-  .mcd-card--zine .mcd-card-head h2{ font-size:19px !important; line-height:1.25 !important; display:block !important; }
+  .mcd-card--zine .mcd-card-head h2{ font-size:21px !important; line-height:1.25 !important; display:block !important; }
   .mcd-zine-title-line1{ display:block !important; margin-bottom:6px !important; }
   .mcd-zine-title-break{ display:none !important; }
   .mcd-coming{ display:inline-block !important; margin-top:0 !important; font-size:0.88em !important; padding:2px 8px !important; }
@@ -560,8 +560,8 @@ body::after{
   #mcd-footer{ padding:10px 12px !important; }
   .mcd-footer-line1{ font-size:11px !important; }
   .mcd-footer-line2{ font-size:9px !important; }
-  .mcd-poster-wrap{ width:86% !important; max-width:320px !important; }
-  .mcd-card--gig .mcd-card-head h2{ font-size:20px !important; line-height:1.2 !important; }
+  .mcd-poster-wrap{ width:88% !important; max-width:340px !important; }
+  .mcd-card--gig .mcd-card-head h2{ font-size:22px !important; line-height:1.2 !important; }
 }
 
 /* GREEN LINE GONE EVERYWHERE v39 - desktop + mobile */
@@ -1088,14 +1088,14 @@ html,body{max-width:100%;overflow-x:clip}
 /* === V74 DEN BIGGER — hero only, CSS only, no player JS === */
 /* Was: clamp(68px, 11vw, 124px). Now: clamp(80px, 13vw, 148px) — bigger on mobile too, but still fits. MAD CATS stays same, so DEN owns the hero. */
 .den-line{
-  font-size:clamp(80px, 13vw, 148px) !important;
+  font-size:clamp(90px, 13vw, 160px) !important;
   line-height:0.82 !important;
   letter-spacing:-0.03em !important;
   text-shadow:3px 3px 0 var(--black) !important;
   margin-top:2px !important;
 }
 @media(min-width:600px){
-  .den-line{ font-size:148px !important; }
+  .den-line{ font-size:160px !important; }
 }
 
 /* === V75 3HC GLOW + BASEMENT +1px + RED STARS — safe, CSS only, no player JS === */
@@ -1507,7 +1507,7 @@ html,body{max-width:100%;overflow-x:clip}
     gap:6px !important;
   }
   .mcd-card--zine .mcd-card-head h2{
-    font-size:18px !important;
+    font-size:20px !important;
     line-height:1.2 !important;
   }
   .mcd-card--zine .mcd-card-head .mcd-coming,
@@ -1582,7 +1582,7 @@ html,body{max-width:100%;overflow-x:clip}
     gap:6px !important;
   }
   .mcd-card--gig .mcd-card-head h2{
-    font-size:20px !important;
+    font-size:22px !important;
     line-height:1.2 !important;
   }
   .mcd-card--gig .mcd-card-head .mcd-date-pill{
@@ -1801,7 +1801,7 @@ html,body{max-width:100%;overflow-x:clip}
 /* Was 80px min on mobile, now 82px. Subtle, still fits one line on 390px, just pops a touch more. */
 @media(max-width:768px){
   .den-line{
-    font-size:82px !important;
+    font-size:90px !important;
   }
 }
 
@@ -1982,7 +1982,7 @@ body{
 }
 @media(max-width:599px){
   .mcd-card--zine .mcd-genre-tags{
-    font-size:8.5px !important;
+    font-size:9.5px !important;
   }
 }
 
@@ -2070,12 +2070,12 @@ body{
   padding:0 !important;
   margin:0 !important;
   text-align:center !important;
-  font-size:10px !important;
+  font-size:11px !important;
   line-height:1.6 !important;
 }
 @media(max-width:599px){
   .mcd-card--zine .mcd-genre-tags{
-    font-size:8.5px !important;
+    font-size:9.5px !important;
     line-height:1.9 !important;
     padding:0 !important;
     margin:0 !important;
@@ -2233,3 +2233,12 @@ body{
   /* TROUBLE stays as V130 — dark shadow, old size, not touched */
 }
 /* No html/body overflow lock — wheel scrolling stays as V130 */
+
+/* === V142 — Genre +1px wrap allowed === */
+/* Was: genre had white-space:nowrap from earlier desktop rule, so +1px would squeeze. Now: normal, so it can wrap to 2 lines if it wants, centered, no overflow. */
+.mcd-card--zine .mcd-genre-tags{
+  white-space:normal !important;
+}
+.mcd-genre-line1, .mcd-genre-line2{
+  white-space:normal !important;
+}
