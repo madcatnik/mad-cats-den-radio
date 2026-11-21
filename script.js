@@ -222,8 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleFireClick(){
     if (fireBtn && beautyPlayer) {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
-      // V169 — Screenshot: Mixcloud own button plays (seek 0:36, PAUSE, TAPE ROLLING), red doesn't. Page-load widget is stale for play() on live. Drop it, make fresh one from now-loaded iframe, then play.
-      widget = null;
       if (isPlaying) { mcdManualPause = true; try { if (mcdLastPos > 0) { localStorage.setItem(MCD_TAPE_KEY, String(mcdLastPos)); } } catch(e){} setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
       fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
       if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP;
@@ -247,7 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch(e){}
               }
             }).catch(() => {
-              // Autoplay blocked or not ready — don't fake PAUSE. Wait for second direct tap. HELP shows now.
+              // Autoplay blocked / widget not ready — fallback: reload iframe with autoplay in this gesture.
+              try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&autoplay=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); } } catch(e){}
               setPlayingUI(false);
             });
           } else {
@@ -264,6 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
           setPlayingUI(false);
         }
       } else {
+        // V170 — No widget (widgetApi.js blocked / not ready). Fallback: reload iframe with autoplay in this click (user gesture), Mixcloud will autoplay inside iframe. No widgetApi needed.
+        try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&autoplay=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP; } } catch(e){}
         setPlayingUI(false);
       }
       // If widget becomes ready later, do NOT auto-play (blocked on live). Just update button so next tap works.
