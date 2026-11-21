@@ -28,8 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {id:'ape-tape-1', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
     {id:'ape-tape-2', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-2-raw-rockabilly-teddy-boy-rock-n-roll-wild-surf/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
   ];
-  // V162 — Initial tape ALWAYS Mix 1, matches HTML src. No random / no last-tape on load, so widget is ready on live and label == audio. Rotation is on tape-end (1->2->1, never same twice). Resume position still works: if you were on Mix 1, you resume Mix 1 where you left.
-  let MCD_TAPE_IDX = 0;
+  let MCD_TAPE_IDX = Math.floor(Math.random() * MCD_TAPES.length);
   let MCD_TAPE = MCD_TAPES[MCD_TAPE_IDX];
   let MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
   if (iframe) {
@@ -38,10 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const nowSpinningEl = document.getElementById('mcd-now-spinning-text');
   let isPlaying = false, widget = null, apiLoading = false, hasResumed = false;
-  const CREAM_LOADING = `\u2726 LOADING TAPE... LOW CEILING HIGH VOLUME \u2014 JUST BASEMENT SIGNAL \u2726`;
-  const CREAM_HELP = `\u2726 PRESS PLAY \u2022 NO SOUND? PRESS AGAIN \u2726`;
-  function mcdCreamNowSpinning(){ return `\u2726 NOW SPINNING: ${MCD_TAPE.label} \u2726 ${STATION_SLOGAN} \u2726`; }
-  if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
+  // V144b — Cream marquee: LOADING -> HELP while waiting -> NOW SPINNING immediately when playing. Speed 22s (original).
+const CREAM_LOADING = "\u2726 LOADING TAPE... LOW CEILING HIGH VOLUME \u2014 JUST BASEMENT SIGNAL \u2726";
+const CREAM_HELP = "\u2726 PRESS PLAY \u2022 NO SOUND? PRESS AGAIN \u2726";
+let mcdCreamHelpTimer = null;
+function mcdCreamNowSpinning(){ return `\u2726 NOW SPINNING: ${MCD_TAPE.label} \u2726 ${STATION_SLOGAN} \u2726`; }
+if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
   function fireHTML(icon, label){
     return '<span class="mcd-play-symbol" aria-hidden="true">' + icon + '</span><span class="mcd-fire-label"> ' + label + '</span>';
   }
@@ -83,10 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
     MCD_TAPE = MCD_TAPES[MCD_TAPE_IDX];
     MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
     // V124 — auto-advance must ALWAYS start at 0:00. Clear next tape's saved spot, otherwise it jumps to where you left it last time.
-    try { localStorage.removeItem(MCD_TAPE_KEY); localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } catch(e){}
+    try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
     hasResumed = true; // autoplay starts at 0, don't resume old position for this tape
     setTimeout(()=>{ mcdEnding = false; mcdLastPos = 0; }, 2000);
-    if (nowSpinningEl) nowSpinningEl.textContent = mcdCreamNowSpinning();
+    if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
+  if (nowSpinningEl) nowSpinningEl.textContent = mcdCreamNowSpinning();
     if (typeof setSeekUI === 'function') { try { setSeekUI(0); } catch(e){} }
     // V123 — use widget.load(feed, true) instead of rebuilding iframe. Rebuilding iframe kills the play gesture, so new tape lands at 0:00 stuck on PAUSE. load() keeps same widget/iframe, same session, so it keeps playing.
     try { if (typeof seekDuration !== 'undefined') seekDuration = 0; } catch(e){}
@@ -138,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!w || !isPlaying) return;
     try {
       const p = w.getPosition();
-      if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem(MCD_TAPE_KEY, String(pos)); localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } catch(e){} } }).catch(()=>{});
+      if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem(MCD_TAPE_KEY, String(pos)); } catch(e){} } }).catch(()=>{});
     } catch(e){}
   }
   setInterval(saveTapePosition, 5000);
@@ -148,7 +150,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function setPlayingUI(on){
     isPlaying = on;
     if (on) { mcdLastPlayingAt = Date.now(); mcdManualPause = false; }
-    if (nowSpinningEl) { if (on) nowSpinningEl.textContent = mcdCreamNowSpinning(); else if (beautyPlayer && beautyPlayer.classList.contains('show')) nowSpinningEl.textContent = CREAM_HELP; else nowSpinningEl.textContent = CREAM_LOADING; }
+    // V144b — HELP only while waiting. Playing -> NOW SPINNING immediately. Paused (open) -> HELP. Closed -> LOADING.
+    if (nowSpinningEl) {
+      if (on) {
+        if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
+        nowSpinningEl.textContent = mcdCreamNowSpinning();
+      } else {
+        if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
+        if (beautyPlayer && beautyPlayer.classList.contains('show')) {
+          nowSpinningEl.textContent = CREAM_HELP;
+        } else {
+          nowSpinningEl.textContent = CREAM_LOADING;
+        }
+      }
+    }
     
   if (fireBtn) { fireBtn.classList.toggle('is-playing', on); fireBtn.innerHTML = on ? fireHTML('\uD83D\uDC80', 'KEEP IT WILD') : fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); }
     if (beautyPlay) beautyPlay.textContent = on ? '⏸︎ PAUSE' : '▶︎ PLAY';
@@ -175,7 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!seekDuration) return;
     const pct = Math.max(0, Math.min(100, (pos / seekDuration) * 100));
     if(seekFill) seekFill.style.width = pct + '%';
-    if(seekThumb) seekThumb.style.left = pct + '%';
+    // V148 — clamp thumb inside track only, no page-level overflow change
+    const thumbPct = Math.max(1.5, Math.min(98.5, pct));
+    if(seekThumb) seekThumb.style.left = thumbPct + '%';
     if(seekCur) seekCur.textContent = fmtTime(pos);
   }
   function seekFromEvent(e){
@@ -244,24 +261,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch(e){}
               }
             }).catch(() => {
-              // Autoplay blocked or not ready — don't fake PAUSE. Wait for second direct tap. HELP shows now.
-              setPlayingUI(false);
+              // Autoplay blocked or not ready — don't fake PAUSE. Wait for second direct tap.
+              fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
+              if (beautyPlay) beautyPlay.textContent = '▶︎ PLAY';
             });
           } else {
             // No promise (older API) — assume it worked, but verify via position in 800ms
             setTimeout(() => {
               try {
                 w0.getPosition().then((pos) => {
-                  if (pos > 0) { /* don't fake playing — wait for Mixcloud play event */ } else { setPlayingUI(false); }
-                }).catch(() => { setPlayingUI(false); });
-              } catch(e){ setPlayingUI(false); }
+                  if (pos > 0) { /* don't fake playing — wait for Mixcloud play event */ } else { fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); }
+                }).catch(() => { fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); });
+              } catch(e){ fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); }
             }, 800);
           }
         } catch(e){
-          setPlayingUI(false);
+          fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
         }
       } else {
-        setPlayingUI(false);
+        fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
       }
       // If widget becomes ready later, do NOT auto-play (blocked on live). Just update button so next tap works.
       ensureMixcloudAPI(()=>{
