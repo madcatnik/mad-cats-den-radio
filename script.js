@@ -83,43 +83,17 @@ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
     MCD_TAPE_IDX = nextIdx;
     MCD_TAPE = MCD_TAPES[MCD_TAPE_IDX];
     MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
-    // V124 — auto-advance must ALWAYS start at 0:00. Clear next tape's saved spot, otherwise it jumps to where you left it last time.
-    try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
-    hasResumed = true; // autoplay starts at 0, don't resume old position for this tape
+    try { localStorage.removeItem(MCD_TAPE_KEY); localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } catch(e){}
+    hasResumed = true;
     setTimeout(()=>{ mcdEnding = false; mcdLastPos = 0; }, 2000);
-    if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
-  if (nowSpinningEl) nowSpinningEl.textContent = mcdCreamNowSpinning();
+    if (nowSpinningEl) nowSpinningEl.textContent = mcdCreamNowSpinning();
     if (typeof setSeekUI === 'function') { try { setSeekUI(0); } catch(e){} }
-    // V123 — use widget.load(feed, true) instead of rebuilding iframe. Rebuilding iframe kills the play gesture, so new tape lands at 0:00 stuck on PAUSE. load() keeps same widget/iframe, same session, so it keeps playing.
     try { if (typeof seekDuration !== 'undefined') seekDuration = 0; } catch(e){}
-    const w = getWidget();
-    if (w) {
-      try {
-        w.ready.then(()=>{
-          try {
-            const lp = w.load(MCD_TAPE.feed, true);
-            if (lp && lp.then) {
-              lp.then(()=>{ setPlayingUI(true); setTimeout(()=>{ try { w.seek(0); } catch(e){} if (typeof setSeekUI === 'function') { try { setSeekUI(0); } catch(e){} } }, 800); }).catch(()=>{
-                // load() resolved but play blocked — keep UI on next tape, one tap resumes it
-                setPlayingUI(false);
-                if (fireBtn) fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'TAP TO CONTINUE');
-                if (beautyPlay) beautyPlay.textContent = '▶︎ PLAY';
-              });
-            } else { setPlayingUI(true); setTimeout(()=>{ try { w.seek(0); } catch(e){} }, 800); }
-          } catch(e){
-            // Fallback: old iframe swap if load() not available
-            if (iframe) {
-              const nextSrc = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed);
-              widget = null; iframe.setAttribute('src', nextSrc);
-              ensureMixcloudAPI(()=>{ const w2 = getWidget(); if (w2) { try { w2.ready.then(()=>{ mcdBindWidgetEvents(w2); try { w2.play(); } catch(e){} }).catch(()=>{}); } catch(e){} } });
-            }
-          }
-        }).catch(()=>{});
-      } catch(e){}
-    } else if (iframe) {
-      const nextSrc = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed);
-      widget = null; iframe.setAttribute('src', nextSrc);
-    }
+    // V172 — Tape-end also uses iframe reload with autoplay, not widget.load(). Same reason as red button.
+    try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&autoplay=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); } } catch(e){}
+    widget = null;
+    setPlayingUI(true);
+    ensureMixcloudAPI(()=>{ const _w = getWidget(); if (_w) { try { _w.ready.then(()=>{ mcdBindWidgetEvents(_w); }).catch(()=>{}); } catch(e){} } });
   }
   // Create widget immediately - HTML already loads widgetApi.js before this script, so window.Mixcloud is there
   ensureMixcloudAPI(()=>{ getWidget(); });
@@ -238,62 +212,22 @@ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
   function handleFireClick(){
     if (fireBtn && beautyPlayer) {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
-      if (isPlaying) { mcdManualPause = true; saveTapePosition(); setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
+      // V172 RED-FIX — Visitors press RED, not Mixcloud sliver. Red must not depend on widget.play() (blocked / not ready on live = does nothing).
+      // Play = reload iframe with autoplay=1 in this click (user gesture). Pause = reload iframe without autoplay (stops audio). No widget API for play/pause.
+      if (isPlaying) {
+        mcdManualPause = true;
+        setPlayingUI(false);
+        try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); } } catch(e){}
+        widget = null; hasResumed = true; mcdLastPos = 0;
+        return;
+      }
       fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
       if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP;
-      // V59 — DIRECT GESTURE ONLY. On live (not localhost) browsers block play() that is not directly from the tap.
-      // Old code did play() inside ready.then (async) + forced PAUSE after 1500ms even if play failed — so UI said PAUSE, seek stayed 0:00, no audio.
-      // Now: try sync play (direct gesture). If widget not ready yet, don't force PAUSE — show TAP PLAY and wait for second direct tap, which will succeed because widget is ready by then.
-      const w0 = getWidget();
-      let played = false;
-      if (w0) {
-        try {
-          const p0 = w0.play();
-          if (p0 && p0.then) {
-            p0.then(() => {
-              played = true;
-              setPlayingUI(true);
-              if (!hasResumed) {
-                hasResumed = true;
-                try {
-                  const saved = localStorage.getItem(MCD_TAPE_KEY);
-                  if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w0.seek(parseFloat(saved)); } catch(e){} }, 600); }
-                } catch(e){}
-              }
-            }).catch(() => {
-              // Autoplay blocked or not ready — don't fake PAUSE. Wait for second direct tap.
-              fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
-              if (beautyPlay) beautyPlay.textContent = '▶︎ PLAY';
-            });
-          } else {
-            // No promise (older API) — assume it worked, but verify via position in 800ms
-            setTimeout(() => {
-              try {
-                w0.getPosition().then((pos) => {
-                  if (pos > 0) { /* don't fake playing — wait for Mixcloud play event */ } else { fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); }
-                }).catch(() => { fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); });
-              } catch(e){ fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing'); }
-            }, 800);
-          }
-        } catch(e){
-          fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
-        }
-      } else {
-        fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
-      }
-      // If widget becomes ready later, do NOT auto-play (blocked on live). Just update button so next tap works.
-      ensureMixcloudAPI(()=>{
-        const w = getWidget();
-        if (!w) return;
-        try {
-          w.ready.then(() => {
-            // Widget ready — if user already tapped and we're still on LOADING, prompt second tap
-            if (fireBtn.textContent && fireBtn.textContent.indexOf('LOADING TAPE') !== -1) {
-              fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
-            }
-          }).catch(()=>{});
-        } catch(e){}
-      });
+      try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&autoplay=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); } } catch(e){}
+      widget = null; hasResumed = true; mcdLastPos = 0;
+      // UI to playing — audio starts when new iframe loads with autoplay. Re-bind events to new widget for pause/play sync + seek display.
+      setPlayingUI(true);
+      ensureMixcloudAPI(()=>{ const _w = getWidget(); if (_w) { try { _w.ready.then(()=>{ mcdBindWidgetEvents(_w); }).catch(()=>{}); } catch(e){} } });
     }
   }
   if (fireBtn && beautyPlayer) { fireBtn.addEventListener('click', handleFireClick); }
@@ -304,7 +238,7 @@ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
       // Reset any drag position so next open docks back to bottom-right on desktop
       beautyPlayer.style.top = ''; beautyPlayer.style.left = ''; beautyPlayer.style.bottom = ''; beautyPlayer.style.right = '';
       setPlayingUI(false);
-      const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} }
+      try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); } } catch(e){} widget = null;
     });
   }
 
