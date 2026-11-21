@@ -127,20 +127,15 @@ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
   ensureMixcloudAPI(()=>{ getWidget(); });
   // V68 SYNC VIA EVENTS — not polling. When you tap Mixcloud's own ▶/⏸ inside iframe, Mixcloud fires play/pause events. We listen and sync our buttons + cat glow.
   // Polling position>0 caused jam: after pause, position is still >0, so polling kept flipping back to playing.
+  // V152 FIX — V151 called widget.load() on page load with no tap. Localhost allows it, live desktop Chrome blocks it -> widget stuck, PLAY says PAUSE, no audio.
+  // Now: don't load random on load. Just bind events. Random pick is loaded on FIRST TAP, inside the gesture, so browser allows it.
+  let mcdInitialLoadNeeded = (MCD_TAPE_IDX !== 0);
   ensureMixcloudAPI(()=>{
     const w = getWidget();
     if (!w) return;
     try {
       w.ready.then(()=>{
         mcdBindWidgetEvents(w);
-        // V151 — if random pick on load is not the HTML tape (Mix 1), swap to it via load(false). No iframe src change, no autoplay, so FIRE IT UP plays the random pick.
-        if (MCD_TAPE_IDX !== 0) {
-          try {
-            const lp = w.load(MCD_TAPE.feed, false);
-            if (lp && lp.then) lp.then(()=>{ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP; }).catch(()=>{});
-            if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP;
-          } catch(e){}
-        }
       }).catch(()=>{});
     } catch(e){}
   });
@@ -256,7 +251,26 @@ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
       // Now: try sync play (direct gesture). If widget not ready yet, don't force PAUSE — show TAP PLAY and wait for second direct tap, which will succeed because widget is ready by then.
       const w0 = getWidget();
       let played = false;
-      if (w0) {
+      // V152 — First tap: if random pick on load is not the HTML tape (Mix 1), load it NOW, inside this tap. load(feed, true) = load + play in one gesture, so live desktop allows it.
+      if (w0 && mcdInitialLoadNeeded) {
+        mcdInitialLoadNeeded = false;
+        try {
+          const lp = w0.load(MCD_TAPE.feed, true);
+          if (lp && lp.then) {
+            lp.then(()=>{ setPlayingUI(true); }).catch(()=>{
+              fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
+              if (beautyPlay) beautyPlay.textContent = '▶︎ PLAY';
+            });
+          } else { setPlayingUI(true); }
+        } catch(e){
+          fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
+        }
+        // Don't also call play() below — load(true) already plays. Skip to ensureMixcloudAPI part by returning early from this branch via flag.
+        // We still need the ensureMixcloudAPI check below, so let it fall through but prevent double play:
+        // Set a marker so the w0.play() block below is skipped.
+        var mcdDidInitialLoad = true;
+      } else { var mcdDidInitialLoad = false; }
+      if (w0 && !mcdDidInitialLoad) {
         try {
           const p0 = w0.play();
           if (p0 && p0.then) {
