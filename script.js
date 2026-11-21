@@ -222,6 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleFireClick(){
     if (fireBtn && beautyPlayer) {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
+      // V169 — Screenshot: Mixcloud own button plays (seek 0:36, PAUSE, TAPE ROLLING), red doesn't. Page-load widget is stale for play() on live. Drop it, make fresh one from now-loaded iframe, then play.
+      widget = null;
       if (isPlaying) { mcdManualPause = true; try { if (mcdLastPos > 0) { localStorage.setItem(MCD_TAPE_KEY, String(mcdLastPos)); } } catch(e){} setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
       fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
       if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP;
