@@ -28,13 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     {id:'ape-tape-1', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
     {id:'ape-tape-2', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-2-raw-rockabilly-teddy-boy-rock-n-roll-wild-surf/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
   ];
+  // V151 — Random BACK on load AND on end, but SAFE: never change iframe src on load (that made stale widget, stuck at 4:45).
+  // Pick random now, keep HTML iframe as-is (Mix 1), then swap to the random pick via widget.load() after widget is ready. Same widget, no reload.
   let MCD_TAPE_IDX = Math.floor(Math.random() * MCD_TAPES.length);
   let MCD_TAPE = MCD_TAPES[MCD_TAPE_IDX];
   let MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
-  if (iframe) {
-    const pickSrc = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed);
-    if (iframe.getAttribute('src') !== pickSrc) iframe.setAttribute('src', pickSrc);
-  }
   const nowSpinningEl = document.getElementById('mcd-now-spinning-text');
   let isPlaying = false, widget = null, apiLoading = false, hasResumed = false;
   // V144b — Cream marquee: LOADING -> HELP while waiting -> NOW SPINNING immediately when playing. Speed 22s (original).
@@ -76,7 +74,11 @@ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
     // If player was ejected / hidden, don't auto-advance
     if (beautyPlayer && !beautyPlayer.classList.contains('show')) { setPlayingUI(false); return; }
     try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
-    const nextIdx = (MCD_TAPE_IDX + 1) % MCD_TAPES.length;
+    // V151 — Random on end too, never same twice. Pick different random, not next-in-line.
+    let nextIdx = MCD_TAPE_IDX;
+    if (MCD_TAPES.length > 1) {
+      do { nextIdx = Math.floor(Math.random() * MCD_TAPES.length); } while (nextIdx === MCD_TAPE_IDX);
+    }
     mcdLoadTapeAndPlay(nextIdx);
   }
   function mcdLoadTapeAndPlay(nextIdx){
@@ -131,6 +133,14 @@ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
     try {
       w.ready.then(()=>{
         mcdBindWidgetEvents(w);
+        // V151 — if random pick on load is not the HTML tape (Mix 1), swap to it via load(false). No iframe src change, no autoplay, so FIRE IT UP plays the random pick.
+        if (MCD_TAPE_IDX !== 0) {
+          try {
+            const lp = w.load(MCD_TAPE.feed, false);
+            if (lp && lp.then) lp.then(()=>{ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP; }).catch(()=>{});
+            if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP;
+          } catch(e){}
+        }
       }).catch(()=>{});
     } catch(e){}
   });
@@ -253,13 +263,8 @@ if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
             p0.then(() => {
               played = true;
               setPlayingUI(true);
-              if (!hasResumed) {
-                hasResumed = true;
-                try {
-                  const saved = localStorage.getItem(MCD_TAPE_KEY);
-                  if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w0.seek(parseFloat(saved)); } catch(e){} }, 600); }
-                } catch(e){}
-              }
+              // V150 FIX — don't auto-seek to saved 4:45 on first play, that seek was freezing it. Start where widget is, let it roll.
+              hasResumed = true;
             }).catch(() => {
               // Autoplay blocked or not ready — don't fake PAUSE. Wait for second direct tap.
               fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); fireBtn.classList.remove('is-playing');
