@@ -263,7 +263,7 @@ body::after{
   border: 3px solid var(--black); box-shadow: 3px 3px 0 var(--black);
 }
 
-.mcd-support-row--den.mcd-row-social { flex-wrap: wrap; gap: 10px; justify-content: center; }
+.mcd-support-row--den.mcd-row-social { flex-wrap: wrap; gap: 14px; justify-content: center; }
 .mcd-support-row--den.mcd-row-social .mcd-s-pill--den { flex: 0 1 auto; padding: 8px 14px; font-size: 13px; }
 .mcd-support-row--den.mcd-row-social .mcd-s-pill--den:nth-child(1) { transform: rotate(-2deg); }
 .mcd-support-row--den.mcd-row-social .mcd-s-pill--den:nth-child(2) { transform: rotate(3deg); }
@@ -434,7 +434,7 @@ body::after{
   #mcd-footer{margin-bottom:24px; padding: 0 12px;}
   #mcd-footer div{font-size:9.5px; padding:8px 12px; max-width: 100%; line-height: 1.4;}
   
-  .mcd-support-row--den.mcd-row-social{flex-wrap:wrap;gap:8px;justify-content:center}
+  .mcd-support-row--den.mcd-row-social{flex-wrap:wrap;gap:12px;justify-content:center}
   /* Restore flow for mobile pills so they can scatter */
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{flex:0 1 auto; justify-content:center}
   
@@ -499,7 +499,7 @@ body::after{
 
 /* CONTACT + TICKER + POSTER */
 .mcd-follow-heading{ font-family:'Barlow Condensed', sans-serif; font-weight:800; font-size:13px; letter-spacing:0.14em; text-align:center; margin-bottom:10px; }
-.mcd-support-row--den.mcd-row-social{ gap:10px !important; justify-content:center !important; }
+.mcd-support-row--den.mcd-row-social{ gap:14px !important; justify-content:center !important; }
 .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{ flex:1 1 0 !important; min-width:0 !important; justify-content:center !important; background:var(--cream) !important; color:var(--black) !important; border:2px solid var(--black) !important; font-size:11px !important; padding:8px 4px !important; text-align:center; white-space:nowrap; }
 .mcd-submit-btn, button.mcd-submit-btn{ background:var(--brick) !important; color:var(--cream) !important; border:2px solid var(--black) !important; text-shadow:1px 1px 0 var(--black) !important; }
 .mcd-support-block--den input::placeholder{ text-transform:uppercase !important; }
@@ -553,7 +553,7 @@ body::after{
   .mcd-coming{ display:inline-block !important; margin-top:0 !important; font-size:0.88em !important; padding:2px 8px !important; }
   .mcd-follow-heading{ border-top:none !important; margin-top:6px !important; }
   .mcd-support-row--den.mcd-row-social{ border-top:none !important; }
-  .mcd-support-row--den.mcd-row-social{ flex-wrap:wrap !important; gap:8px !important; }
+  .mcd-support-row--den.mcd-row-social{ flex-wrap:wrap !important; gap:12px !important; }
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{ flex:1 1 30% !important; font-size:10px !important; padding:7px 2px !important; }
   .mcd-3hc-stamp{ width:95px !important; height:auto; display:inline-block; background:transparent !important; border:none !important; padding:0 !important; transform:rotate(-4deg); box-shadow:none !important; }
   .mcd-card--zine .mcd-manifesto{ font-size:20px !important; line-height:1.15 !important; text-wrap:balance !important; text-align:center !important; display:block !important; max-width:280px !important; margin:0 auto !important; }
@@ -2167,18 +2167,19 @@ body{
   font-size: 16px !important;
   letter-spacing: 0.14em !important;
   transform: rotate(-2deg) !important;
-  margin: 0 auto 4px auto !important;
+  margin: 0 auto 10px auto !important;
   white-space: nowrap !important;
   text-align: center !important;
 }
 .mcd-follow-heading .mcd-follow-star {
   color: var(--brick) !important;
+  margin-left: 2px !important;
 }
 @media (max-width: 768px) {
   .mcd-follow-heading {
     font-size: 14px !important;
     padding: 3px 10px !important;
-    margin: 0 auto 4px auto !important;
+    margin: 0 auto 10px auto !important;
   }
 }
 
@@ -2233,12 +2234,16 @@ body{
   /* TROUBLE stays as V130 — dark shadow, old size, not touched */
 }
 /* No html/body overflow lock — wheel scrolling stays as V130 */
+/* === V142 FINAL LOCKED — ROLL WITH THE CREW + BURN RUBBER + follow gap 10 + star +2 + social gap +4 === */
+.mcd-card--zine .mcd-genre-tags{ white-space:normal !important; }
+.mcd-genre-line1, .mcd-genre-line2{ white-space:normal !important; }
 
-/* === V142 — Genre +1px wrap allowed === */
-/* Was: genre had white-space:nowrap from earlier desktop rule, so +1px would squeeze. Now: normal, so it can wrap to 2 lines if it wants, centered, no overflow. */
+/* === V143 TEST — Genre +1px only, no shadow === */
 .mcd-card--zine .mcd-genre-tags{
-  white-space:normal !important;
+  font-size:12px !important;
 }
-.mcd-genre-line1, .mcd-genre-line2{
-  white-space:normal !important;
+@media(max-width:599px){
+  .mcd-card--zine .mcd-genre-tags{
+    font-size:10.5px !important;
+  }
 }
