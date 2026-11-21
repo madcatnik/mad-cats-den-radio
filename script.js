@@ -142,8 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e){}
   }
   setInterval(saveTapePosition, 5000);
-  // Save on leave too — sync from mcdLastPos, async never finishes before unload
-  window.addEventListener('beforeunload', () => { try { if (mcdLastPos > 0) { localStorage.setItem(MCD_TAPE_KEY, String(mcdLastPos)); } } catch(e){} });
+  // Save on leave too, so last seconds aren't lost
+  window.addEventListener('beforeunload', saveTapePosition);
   let mcdManualPause = false, mcdLastPlayingAt = 0;
   function setPlayingUI(on){
     isPlaying = on;
@@ -204,8 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (p >= seekDuration - 2) { mcdOnTapeEnded(); }
             else if (mcdLastPos > seekDuration - 5 && p < 2) { mcdOnTapeEnded(); }
           }
-          // V168 — pause fix: don't overwrite mcdLastPos with 0 after pause (Mixcloud returns ~0 when paused). Keep last playing pos.
-          if (isPlaying) { mcdLastPos = p || 0; if (p > 0) { try { localStorage.setItem(MCD_TAPE_KEY, String(p)); } catch(e){} } }
+          mcdLastPos = p || 0;
         }).catch(()=>{});
         if(!seekDuration){
           wPoll.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
@@ -222,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleFireClick(){
     if (fireBtn && beautyPlayer) {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
-      if (isPlaying) { mcdManualPause = true; try { if (mcdLastPos > 0) { localStorage.setItem(MCD_TAPE_KEY, String(mcdLastPos)); } } catch(e){} setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
+      if (isPlaying) { mcdManualPause = true; saveTapePosition(); setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
       fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
       if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP;
       // V59 — DIRECT GESTURE ONLY. On live (not localhost) browsers block play() that is not directly from the tap.
@@ -241,14 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 hasResumed = true;
                 try {
                   const saved = localStorage.getItem(MCD_TAPE_KEY);
-                  if (saved && parseFloat(saved) > 3) { const _sp = parseFloat(saved); mcdLastPos = _sp; setTimeout(()=>{ try { w0.seek(_sp); } catch(e){} }, 800); }
+                  if (saved && parseFloat(saved) > 3) { setTimeout(()=>{ try { w0.seek(parseFloat(saved)); } catch(e){} }, 600); }
                 } catch(e){}
               }
             }).catch(() => {
-              // V171 — Autoplay blocked / widget not ready. Reload iframe with autoplay, BUT reset widget or poll reads dead widget at 0:36 forever. New iframe starts at 0, re-bind events.
-              try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&autoplay=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); } } catch(e){}
-              widget = null; hasResumed = true; mcdLastPos = 0; try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
-              ensureMixcloudAPI(()=>{ const _w = getWidget(); if (_w) { try { _w.ready.then(()=>{ mcdBindWidgetEvents(_w); }).catch(()=>{}); } catch(e){} } });
+              // Autoplay blocked or not ready — don't fake PAUSE. Wait for second direct tap. HELP shows now.
               setPlayingUI(false);
             });
           } else {
@@ -265,10 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
           setPlayingUI(false);
         }
       } else {
-        // V171 — No widget. Reload iframe with autoplay, reset widget so poll reads new iframe, not dead one at 0:36. New iframe starts at 0, re-bind.
-        try { if (iframe) { const _src = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&autoplay=1&feed=' + encodeURIComponent(MCD_TAPE.feed); iframe.setAttribute('src', _src); if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP; } } catch(e){}
-        widget = null; hasResumed = true; mcdLastPos = 0; try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
-        ensureMixcloudAPI(()=>{ const _w = getWidget(); if (_w) { try { _w.ready.then(()=>{ mcdBindWidgetEvents(_w); }).catch(()=>{}); } catch(e){} } });
         setPlayingUI(false);
       }
       // If widget becomes ready later, do NOT auto-play (blocked on live). Just update button so next tap works.
