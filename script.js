@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {id:'ape-tape-1', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
     {id:'ape-tape-2', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-2-raw-rockabilly-teddy-boy-rock-n-roll-wild-surf/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
   ];
-  // V163 — Random-on-load back, safe. Inline script in index.html (runs during parsing) already picked tape + set iframe src to that pick, so iframe is born with random src. Here we read same pick, so label == audio. Refresh: inline script already used last tape if exists, so refresh resumes same tape.
-  let MCD_TAPE_IDX = (typeof window.MCD_INITIAL_IDX === 'number' && window.MCD_INITIAL_IDX >= 0 && window.MCD_INITIAL_IDX < MCD_TAPES.length) ? window.MCD_INITIAL_IDX : 0;
+  // V162 — Initial tape ALWAYS Mix 1, matches HTML src. No random / no last-tape on load, so widget is ready on live and label == audio. Rotation is on tape-end (1->2->1, never same twice). Resume position still works: if you were on Mix 1, you resume Mix 1 where you left.
+  let MCD_TAPE_IDX = 0;
   let MCD_TAPE = MCD_TAPES[MCD_TAPE_IDX];
   let MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
   if (iframe) {
@@ -142,8 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e){}
   }
   setInterval(saveTapePosition, 5000);
-  // Save on leave too — sync from mcdLastPos, async getPosition never finishes before unload.
-  window.addEventListener('beforeunload', () => { try { if (mcdLastPos > 0) { localStorage.setItem(MCD_TAPE_KEY, String(mcdLastPos)); localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } } catch(e){} });
+  // Save on leave too — sync from mcdLastPos, async never finishes before unload
+  window.addEventListener('beforeunload', () => { try { if (mcdLastPos > 0) { localStorage.setItem(MCD_TAPE_KEY, String(mcdLastPos)); } } catch(e){} });
   let mcdManualPause = false, mcdLastPlayingAt = 0;
   function setPlayingUI(on){
     isPlaying = on;
@@ -204,9 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (p >= seekDuration - 2) { mcdOnTapeEnded(); }
             else if (mcdLastPos > seekDuration - 5 && p < 2) { mcdOnTapeEnded(); }
           }
-          mcdLastPos = p || 0;
-          // V164 — Refresh resume: save fresh position on every poll (500ms), not every 5s, so refresh keeps where you left.
-          if (isPlaying && p > 0) { try { localStorage.setItem(MCD_TAPE_KEY, String(p)); localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } catch(e){} }
+          // V168 — pause fix: don't overwrite mcdLastPos with 0 after pause (Mixcloud returns ~0 when paused). Keep last playing pos.
+          if (isPlaying) { mcdLastPos = p || 0; if (p > 0) { try { localStorage.setItem(MCD_TAPE_KEY, String(p)); } catch(e){} } }
         }).catch(()=>{});
         if(!seekDuration){
           wPoll.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
@@ -223,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleFireClick(){
     if (fireBtn && beautyPlayer) {
       if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
-      if (isPlaying) { mcdManualPause = true; saveTapePosition(); setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
+      if (isPlaying) { mcdManualPause = true; try { if (mcdLastPos > 0) { localStorage.setItem(MCD_TAPE_KEY, String(mcdLastPos)); } } catch(e){} setPlayingUI(false); const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} } return; }
       fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'LOADING TAPE...');
       if (nowSpinningEl) nowSpinningEl.textContent = CREAM_HELP;
       // V59 — DIRECT GESTURE ONLY. On live (not localhost) browsers block play() that is not directly from the tap.
