@@ -332,7 +332,7 @@ body::after{
 /* --- TAPE DECK PLAYER --- */
 #mcd-beauty-player{
   position:fixed; bottom:16px; right:16px; width:460px; height:auto; min-height:108px;
-  background:var(--ink); border:3px solid var(--black); border-radius:8px; box-shadow:4px 4px 0 var(--black);
+  background:var(--ink); border:3px solid var(--black); border-radius:8px; box-shadow:6px 6px 0 var(--black);
   z-index:10002; overflow:hidden; display:none; flex-direction:column; transform:rotate(-0.4deg);
 }
 #mcd-beauty-player.show{display:flex}
@@ -680,7 +680,7 @@ html,body{max-width:100%;overflow-x:clip}
 #mcd-hero.is-playing .mcd-hero-cat{ box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 48px rgba(204,45,48,0.85), 0 0 80px rgba(155,219,193,0.55) !important; }
 
 /* === SEEK ONLY — custom seek bar, touch-action:none so drag can't scroll page === */
-#mcd-seek-wrap{ background:#050505; padding:8px 12px 6px; border-top:2px solid #050505; touch-action:none; user-select:none; -webkit-user-select:none; overflow:hidden; }
+#mcd-seek-wrap{ background:#050505; padding:8px 10px 6px; border-top:2px solid #050505; touch-action:none; user-select:none; -webkit-user-select:none; }
 #mcd-seek-track{ position:relative; height:14px; background:#2a2a2a; border:2px solid #050505; border-radius:8px; cursor:pointer; touch-action:none; }
 #mcd-seek-fill{ position:absolute; left:0; top:0; bottom:0; width:0%; background:#CC2D30; border-radius:6px; }
 #mcd-seek-thumb{ position:absolute; top:50%; left:0%; width:18px; height:18px; background:#F0F0DA; border:2px solid #050505; border-radius:50%; transform:translate(-50%, -50%); box-shadow:2px 2px 0 #050505; pointer-events:none; }
@@ -2237,11 +2237,13 @@ body{
 /* === V142 FINAL LOCKED — ROLL WITH THE CREW + BURN RUBBER + follow gap 10 + star +2 + social gap +4 === */
 .mcd-card--zine .mcd-genre-tags{ white-space:normal !important; }
 .mcd-genre-line1, .mcd-genre-line2{ white-space:normal !important; }
-/* === V143 — Genre +1px only === */
-.mcd-card--zine .mcd-genre-tags{ font-size:12px !important; }
-@media(max-width:599px){ .mcd-card--zine .mcd-genre-tags{ font-size:10.5px !important; } }
 
-/* === V148 — Hide sliver without breaking page scroll. Shadow stays 4px. Page uses clip, not hidden, so mouse wheel still works. === */
-#mcd-beauty-player iframe{ scrollbar-width:none; }
-#mcd-beauty-player iframe::-webkit-scrollbar{ display:none; }
-html, body{ overflow-x:clip; }
+/* === V143 TEST — Genre +1px only, no shadow === */
+.mcd-card--zine .mcd-genre-tags{
+  font-size:12px !important;
+}
+@media(max-width:599px){
+  .mcd-card--zine .mcd-genre-tags{
+    font-size:10.5px !important;
+  }
+}
