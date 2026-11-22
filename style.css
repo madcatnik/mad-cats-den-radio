@@ -1829,7 +1829,7 @@ body{
 html, body{ overflow-x:clip; }
 
 
-/* === V225 RENDERED HIDDEN — clean, no overrides, no hairline, no fake seek === */
+/* === V226 FIRE OPENS ONLY — clean, no overrides, no hairline, no fake seek === */
 #mcd-player{position:fixed;bottom:16px;right:16px;width:460px;max-width:calc(100vw - 32px);background:#050505;border:3px solid #050505;border-radius:8px;box-shadow:4px 4px 0 #050505;z-index:10002;overflow:hidden;display:flex;flex-direction:column;visibility:hidden;transform:translateY(110%);pointer-events:none;}
 #mcd-player.show{visibility:visible;transform:none;pointer-events:auto;}
 #mcd-player .mcd-player-head-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}

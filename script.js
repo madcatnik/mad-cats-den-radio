@@ -1,4 +1,4 @@
-/* V225 RENDERED HIDDEN — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
+/* V226 FIRE OPENS ONLY — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
 document.addEventListener('DOMContentLoaded', () => {
   // Contact form — kept from V201, untouched
   const contactForm = document.querySelector('form[name="backroom-howls"]');
@@ -357,7 +357,8 @@ document.addEventListener('DOMContentLoaded', () => {
     player.classList.remove('show');
     try{ document.body.classList.remove('mcd-player-open'); }catch(e){}
   });
-  if (fireBtn) fireBtn.addEventListener('click', () => { if (!player.classList.contains('show')) openPlayer(); if (isPlaying) pauseCurrent(); else playCurrent(); });
+  // V226: FIRE IT UP first click = open player only, do NOT play. PLAY stays PLAY. Visitor must press red PLAY as a second clean click when widget is already ready.
+  if (fireBtn) fireBtn.addEventListener('click', () => { if (!player.classList.contains('show')) { openPlayer(); return; } if (isPlaying) pauseCurrent(); else playCurrent(); });
 
   window.addEventListener('beforeunload', () => { syncPosFromTimer(); if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now()); });
 
