@@ -1,7 +1,6 @@
-/* PLAYER V50-ALL-TOGETHER — CORRECT v47 base (Ape Tape Mix 1 + Pinterest) — desktop drag only */
-/* PLAYER V44 - FIX: audio must play on FIRE IT UP (desktop + mobile) + restore desktop drag */
+/* V215 MOBILE STRETCH — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
 document.addEventListener('DOMContentLoaded', () => {
-  const STATION_SLOGAN = "LOW CEILING HIGH VOLUME — NO SPONSORS — NO ALGORITHM — JUST BASEMENT SIGNAL — ATHENS GR — EST 2026";
+  // Contact form — kept from V201, untouched
   const contactForm = document.querySelector('form[name="backroom-howls"]');
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
@@ -17,276 +16,280 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(()=>{ if (submitBtn) submitBtn.textContent = 'ERROR - TRY AGAIN'; setTimeout(()=>{ if(submitBtn) submitBtn.textContent = originalText; },4000); });
     });
   }
+
+  // ---- Fresh Player C + Fix B + V207: PlayerWidget fix, seek-after-play, own timer, auto-next ----
+  const player = document.getElementById('mcd-player');
+  const playBtn = document.getElementById('mcd-play');
+  const nextBtn = document.getElementById('mcd-next');
+  const ejectBtn = document.getElementById('mcd-eject');
   const fireBtn = document.getElementById('mcd-h-fire');
-  const beautyPlayer = document.getElementById('mcd-beauty-player');
-  const beautyClose = document.getElementById('mcd-beauty-close');
-  const beautyPlay = document.getElementById('mcd-beauty-play');
+  const marqueeText = document.getElementById('mcd-marquee-text');
+  const statusPill = document.getElementById('mcd-player-status');
   const heroSection = document.getElementById('mcd-hero');
   const iframe = document.getElementById('mcd-mixcloud');
-  // V119 — RANDOM ONCE PER VISIT, no list on site. Pool of tapes, pick one on load, keep it till reload. FIRE IT UP plays that pick.
-  const MCD_TAPES = [
-    {id:'ape-tape-1', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
-    {id:'ape-tape-2', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-2-raw-rockabilly-teddy-boy-rock-n-roll-wild-surf/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
+  if (!player || !iframe) return;
+
+  const TAPES = [
+    {id:'ape-tape-1', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-1-' + '1950s-rockabilly-' + 'rock-n-roll' + '/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
+    {id:'ape-tape-2', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-2-' + 'raw-rockabilly-' + 'teddy-boy-' + 'rock-n-roll-' + 'wild-surf' + '/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
   ];
-  // V177 — After refresh: resume SAME tape if saved, else random. Not new random every refresh (that was dif name / dif tape).
-  let MCD_TAPE_IDX = Math.floor(Math.random() * MCD_TAPES.length);
-  try { const _last = localStorage.getItem('mcd_last_tape_id'); if (_last) { const _i = MCD_TAPES.findIndex(t => t.id === _last); if (_i !== -1) MCD_TAPE_IDX = _i; } } catch(e){}
-  let MCD_TAPE = MCD_TAPES[MCD_TAPE_IDX];
-  let MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
-  if (iframe) {
-    const pickSrc = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed);
-    if (iframe.getAttribute('src') !== pickSrc) iframe.setAttribute('src', pickSrc);
-    try { localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } catch(e){}
+  const HELP_TEXT = 'PRESS PLAY • NO SPONSORS • NO ALGORITHM • MADCATNIK DIGGIN IN CRATE ...';
+  const RESUME_WINDOW = 30 * 60 * 1000;
+
+  function tapeSrc(t, autoplay){
+    let u = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(t.feed);
+    if (autoplay) u += '&autoplay=1';
+    return u;
   }
-  const nowSpinningEl = document.getElementById('mcd-now-spinning-text');
-  let isPlaying = false, widget = null, apiLoading = false, hasResumed = false;
-  // V144b — Cream marquee: LOADING -> HELP while waiting -> NOW SPINNING immediately when playing. Speed 22s (original).
-const CREAM_LOADING = "\u2726 LOADING TAPE... LOW CEILING HIGH VOLUME \u2014 JUST BASEMENT SIGNAL \u2726";
-const CREAM_HELP = "\u2726 PRESS PLAY \u2022 NO SOUND? PRESS AGAIN \u2726";
-let mcdCreamHelpTimer = null;
-function mcdCreamNowSpinning(){ return `\u2726 NOW SPINNING: ${MCD_TAPE.label} \u2726 ${STATION_SLOGAN} \u2726`; }
-if (nowSpinningEl) nowSpinningEl.textContent = CREAM_LOADING;
-  function fireHTML(icon, label){
-    return '<span class="mcd-play-symbol" aria-hidden="true">' + icon + '</span><span class="mcd-fire-label"> ' + label + '</span>';
+
+  let currentIdx = Math.floor(Math.random() * TAPES.length);
+  let resumePos = 0;
+  try {
+    const savedId = localStorage.getItem('mcd_fresh_tape_id');
+    const savedPos = parseFloat(localStorage.getItem('mcd_fresh_tape_pos') || '0');
+    const savedAt = parseInt(localStorage.getItem('mcd_fresh_paused_at') || '0', 10);
+    if (savedId && savedAt && (Date.now() - savedAt) < RESUME_WINDOW && savedPos > 0) {
+      const si = TAPES.findIndex(t => t.id === savedId);
+      if (si !== -1) { currentIdx = si; resumePos = savedPos; }
+    }
+  } catch(e){}
+
+  let currentTape = TAPES[currentIdx];
+  let isPlaying = false;
+  let widget = null;
+  let widgetReady = false;
+  let isBinding = false;
+  let pendingSeek = resumePos;
+  let lastKnownPos = resumePos;
+  let tapeDuration = 0;
+  let isAutoNexting = false;
+
+  // Own timer — backup if Mixcloud getPosition fails. PLAY start + elapsed = position.
+  let playStartTime = 0;
+  let playStartPos = 0;
+  let posTimer = null;
+  function startPosTimer(){
+    stopPosTimer();
+    playStartTime = Date.now();
+    playStartPos = lastKnownPos;
+    posTimer = setInterval(()=>{
+      if (!isPlaying) return;
+      const est = playStartPos + (Date.now() - playStartTime) / 1000;
+      if (est > lastKnownPos) lastKnownPos = est;
+      if (tapeDuration > 0 && lastKnownPos >= tapeDuration - 2) { autoNext(); }
+    }, 1000);
   }
-  function ensureMixcloudAPI(cb){
-    if (window.Mixcloud && window.Mixcloud.PlayerWidget) { cb(); return; }
-    if (apiLoading) { setTimeout(()=>ensureMixcloudAPI(cb), 300); return; }
-    apiLoading = true;
-    const s = document.createElement('script');
-    s.src = 'https://widget.mixcloud.com/media/js/widgetApi.js';
-    s.async = true;
-    s.onload = () => { apiLoading = false; cb(); };
-    s.onerror = () => { apiLoading = false; cb(); };
-    document.head.appendChild(s);
+  function stopPosTimer(){ if (posTimer) { clearInterval(posTimer); posTimer = null; } }
+  // Refresh lastKnownPos from own timer before saving
+  function syncPosFromTimer(){
+    if (isPlaying && playStartTime) {
+      const est = playStartPos + (Date.now() - playStartTime) / 1000;
+      if (est > lastKnownPos) lastKnownPos = est;
+    }
   }
-  function getWidget(){
-    if (widget) return widget;
-    if (window.Mixcloud && iframe) { try { widget = Mixcloud.PlayerWidget(iframe); } catch(e){ widget = null; } }
-    return widget;
+
+  if (iframe && !iframe.src.includes(encodeURIComponent(currentTape.feed))) {
+    iframe.setAttribute('src', tapeSrc(currentTape, false));
   }
-  // V120 — AUTOPLAY NEXT TAPE, loop. One tape ends -> other takes over, no click. No list, same player.
-  // Ended -> clear finished tape position (so it doesn't resume at the end next time), advance to next tape, swap iframe, re-bind events, play.
-  function mcdBindWidgetEvents(w){
-    if (!w) return;
-    try { if (w.events && w.events.play && w.events.play.on) w.events.play.on(()=>{
-      setPlayingUI(true);
-      // V175 REFRESH RESUME — On Mixcloud's own play, seek once to saved spot (near paused position). No external play needed.
-      if (!hasResumed) { hasResumed = true; try { localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } catch(err){} try { const _saved = localStorage.getItem(MCD_TAPE_KEY); if (_saved && parseFloat(_saved) > 3) { const _sp = parseFloat(_saved); setTimeout(()=>{ try { w.seek(_sp); } catch(err){} }, 600); } } catch(err){} }
-    }); } catch(e){}
-    try { if (w.events && w.events.pause && w.events.pause.on) w.events.pause.on(()=>{ setPlayingUI(false); }); } catch(e){}
-    try { if (w.events && w.events.ended && w.events.ended.on) w.events.ended.on(()=>{ mcdOnTapeEnded(); }); } catch(e){}
+
+  function setMarquee(){
+    if (!marqueeText) return;
+    if (player) player.classList.toggle('is-playing', isPlaying);
+    if (isPlaying) {
+      const txt = 'NOW SPINNING: ' + currentTape.label + ' • LOW CEILING HIGH VOLUME • JUST BASEMENT SIGNAL';
+      marqueeText.textContent = txt + '  •  ' + txt;
+    } else {
+      marqueeText.textContent = HELP_TEXT;
+    }
+    if (statusPill) statusPill.textContent = isPlaying ? 'TAPE ROLLING' : 'TAPE READY';
+    if (playBtn) playBtn.textContent = isPlaying ? '❚❚ PAUSE' : '▶ PLAY';
+    if (fireBtn) fireBtn.classList.toggle('is-playing', isPlaying);
+    if (heroSection) heroSection.classList.toggle('is-playing', isPlaying);
   }
-  let mcdEnding = false, mcdLastPos = 0;
-  function mcdOnTapeEnded(){
-    if (mcdEnding) return; mcdEnding = true; mcdManualPause = false;
-    // If player was ejected / hidden, don't auto-advance
-    if (beautyPlayer && !beautyPlayer.classList.contains('show')) { setPlayingUI(false); return; }
-    try { localStorage.removeItem(MCD_TAPE_KEY); } catch(e){}
-    const nextIdx = (MCD_TAPE_IDX + 1) % MCD_TAPES.length;
-    mcdLoadTapeAndPlay(nextIdx);
+
+  function savePosition(pos, pausedAt){
+    try {
+      if (pos && pos > 0) { localStorage.setItem('mcd_fresh_tape_pos', String(Math.floor(pos))); lastKnownPos = pos; }
+      localStorage.setItem('mcd_fresh_tape_id', currentTape.id);
+      if (pausedAt) localStorage.setItem('mcd_fresh_paused_at', String(pausedAt));
+    } catch(e){}
   }
-  function mcdLoadTapeAndPlay(nextIdx){
-    MCD_TAPE_IDX = nextIdx;
-    MCD_TAPE = MCD_TAPES[MCD_TAPE_IDX];
-    MCD_TAPE_KEY = 'mcd_tape_position_' + MCD_TAPE.id;
-    // V124 — auto-advance must ALWAYS start at 0:00. Clear next tape's saved spot, otherwise it jumps to where you left it last time.
-    try { localStorage.removeItem(MCD_TAPE_KEY); localStorage.setItem('mcd_last_tape_id', MCD_TAPE.id); } catch(e){}
-    hasResumed = true; // autoplay starts at 0, don't resume old position for this tape
-    setTimeout(()=>{ mcdEnding = false; mcdLastPos = 0; }, 2000);
-    if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
-  if (nowSpinningEl) nowSpinningEl.textContent = mcdCreamNowSpinning();
-    if (typeof setSeekUI === 'function') { try { setSeekUI(0); } catch(e){} }
-    // V123 — use widget.load(feed, true) instead of rebuilding iframe. Rebuilding iframe kills the play gesture, so new tape lands at 0:00 stuck on PAUSE. load() keeps same widget/iframe, same session, so it keeps playing.
-    try { if (typeof seekDuration !== 'undefined') seekDuration = 0; } catch(e){}
-    const w = getWidget();
-    if (w) {
-      try {
-        w.ready.then(()=>{
+
+  function makeWidget(){
+    if (!window.Mixcloud) return null;
+    const Ctor = window.Mixcloud.PlayerWidget || window.Mixcloud.Widget;
+    if (!Ctor) return null;
+    try { return Ctor(iframe); } catch(e){ return null; }
+  }
+
+  function trySeek(pos){
+    if (!pos || pos <= 0) return;
+    if (!widget || !widgetReady) { pendingSeek = pos; return; }
+    try {
+      const r = widget.seek(pos);
+      if (r && r.then) r.then((ok)=>{ if (ok) { pendingSeek = 0; } else { pendingSeek = pos; } }).catch(()=>{ pendingSeek = pos; });
+      else pendingSeek = 0;
+    } catch(e){ pendingSeek = pos; }
+  }
+
+  function bindWidget(){
+    if (isBinding) return;
+    if (!window.Mixcloud || !iframe) { setTimeout(bindWidget, 500); return; }
+    // Widget API needs visible iframe — if player closed, retry when opened
+    if (!player.classList.contains('show')) { setTimeout(bindWidget, 800); return; }
+    isBinding = true;
+    try {
+      const w = makeWidget();
+      if (!w) { isBinding = false; setTimeout(bindWidget, 800); return; }
+      widget = w;
+      widget.ready.then(() => {
+        widgetReady = true; isBinding = false;
+        if (!widget._mcdV207Bound) {
+          widget._mcdV207Bound = true;
           try {
-            const lp = w.load(MCD_TAPE.feed, true);
-            if (lp && lp.then) {
-              lp.then(()=>{ setPlayingUI(true); setTimeout(()=>{ try { w.seek(0); } catch(e){} if (typeof setSeekUI === 'function') { try { setSeekUI(0); } catch(e){} } }, 800); }).catch(()=>{
-                // load() resolved but play blocked — keep UI on next tape, one tap resumes it
-                setPlayingUI(false);
-                if (fireBtn) fireBtn.innerHTML = fireHTML('\u25B6\uFE0E', 'TAP TO CONTINUE');
-                if (beautyPlay) beautyPlay.textContent = '▶︎ PLAY';
-              });
-            } else { setPlayingUI(true); setTimeout(()=>{ try { w.seek(0); } catch(e){} }, 800); }
-          } catch(e){
-            // Fallback: old iframe swap if load() not available
-            if (iframe) {
-              const nextSrc = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed);
-              widget = null; iframe.setAttribute('src', nextSrc);
-              ensureMixcloudAPI(()=>{ const w2 = getWidget(); if (w2) { try { w2.ready.then(()=>{ mcdBindWidgetEvents(w2); try { w2.play(); } catch(e){} }).catch(()=>{}); } catch(e){} } });
-            }
-          }
-        }).catch(()=>{});
-      } catch(e){}
-    } else if (iframe) {
-      const nextSrc = 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=' + encodeURIComponent(MCD_TAPE.feed);
-      widget = null; iframe.setAttribute('src', nextSrc);
-    }
+            widget.events.play.on(() => {
+              isPlaying = true; setMarquee(); startPosTimer();
+              // V207 fix: seek AFTER play fires, not on ready. Mixcloud ignores seek before first play.
+              if (pendingSeek && pendingSeek > 0) {
+                const s = pendingSeek;
+                setTimeout(()=>{ trySeek(s); }, 600);
+              }
+            });
+          } catch(e){}
+          try {
+            widget.events.pause.on(() => {
+              isPlaying = false; setMarquee(); stopPosTimer(); syncPosFromTimer();
+              if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now());
+            });
+          } catch(e){}
+          try {
+            widget.events.ended.on(() => {
+              // Tape finished -> auto start next via load(), no reload, so browser does not block it
+              autoNext();
+            });
+          } catch(e){}
+          try {
+            widget.events.progress.on((position, duration) => {
+              if (typeof position === 'number' && position > 0) lastKnownPos = position;
+              if (typeof duration === 'number' && duration > 0) tapeDuration = duration;
+              // Fallback auto-next: if progress says we are at the end, flip
+              if (typeof position === 'number' && typeof duration === 'number' && duration > 0 && position >= duration - 2) {
+                autoNext();
+              }
+            });
+          } catch(e){}
+          try {
+            widget.events.error.on(() => {});
+          } catch(e){}
+        }
+        try { widget.getDuration().then((d)=>{ if (d && d>0) tapeDuration = d; }).catch(()=>{}); } catch(e){}
+        // If we are already playing (autoplay reload) and have a pending seek, seek now via play handler will also fire, but try once here too
+        if (isPlaying && pendingSeek && pendingSeek > 0) {
+          const s = pendingSeek;
+          setTimeout(()=>{ trySeek(s); }, 800);
+        }
+      }).catch(()=>{ isBinding = false; setTimeout(bindWidget, 800); });
+    } catch(e){ isBinding = false; setTimeout(bindWidget, 800); }
   }
-  // Create widget immediately - HTML already loads widgetApi.js before this script, so window.Mixcloud is there
-  ensureMixcloudAPI(()=>{ getWidget(); });
-  // V68 SYNC VIA EVENTS — not polling. When you tap Mixcloud's own ▶/⏸ inside iframe, Mixcloud fires play/pause events. We listen and sync our buttons + cat glow.
-  // Polling position>0 caused jam: after pause, position is still >0, so polling kept flipping back to playing.
-  ensureMixcloudAPI(()=>{
-    const w = getWidget();
-    if (!w) return;
-    try {
-      w.ready.then(()=>{
-        mcdBindWidgetEvents(w);
-      }).catch(()=>{});
-    } catch(e){}
+
+  iframe.addEventListener('load', () => { widget = null; widgetReady = false; isBinding = false; bindWidget(); });
+  bindWidget();
+
+  function openPlayer(){ player.classList.add('show'); try{ document.body.classList.add('mcd-player-open'); }catch(e){} bindWidget(); }
+
+  function playCurrent(){
+    openPlayer();
+    if (isPlaying) return;
+    isAutoNexting = false;
+    isPlaying = true; setMarquee(); startPosTimer();
+    widget = null; widgetReady = false; isBinding = false;
+    // pendingSeek stays = lastKnownPos, will be applied after play fires in new iframe
+    pendingSeek = lastKnownPos;
+    if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true));
+  }
+
+  function pauseCurrent(){
+    if (!isPlaying) return;
+    syncPosFromTimer(); stopPosTimer();
+    const posToSave = lastKnownPos;
+    isPlaying = false; setMarquee();
+    savePosition(posToSave, Date.now());
+    widget = null; widgetReady = false; isBinding = false;
+    pendingSeek = posToSave;
+    if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, false));
+  }
+
+  // V208 auto-next: use Widget load(feed, true) so it keeps playing without a click.
+  // Iframe reload with autoplay=1 gets blocked when there is no click, load() does not.
+  function pickNextIdx(){
+    let n = currentIdx;
+    if (TAPES.length > 1) { do { n = Math.floor(Math.random() * TAPES.length); } while (n === currentIdx); }
+    return n;
+  }
+  function autoNext(){
+    if (isAutoNexting) return;
+    isAutoNexting = true;
+    const nIdx = pickNextIdx();
+    const nTape = TAPES[nIdx];
+    // If widget is ready, try load() first — no reload, keeps playing
+    if (widget && widgetReady && widget.load) {
+      currentIdx = nIdx; currentTape = nTape;
+      stopPosTimer();
+      lastKnownPos = 0; pendingSeek = 0; tapeDuration = 0;
+      try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
+      try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
+      isPlaying = true; setMarquee(); startPosTimer();
+      try {
+        const r = widget.load(nTape.feed, true);
+        if (r && r.then) r.then(()=>{ isAutoNexting = false; try { widget.getDuration().then((d)=>{ if (d>0) tapeDuration = d; }).catch(()=>{}); } catch(e){} }).catch(()=>{ isAutoNexting = false; playNext(true); });
+        else { isAutoNexting = false; }
+      } catch(e){ isAutoNexting = false; playNext(true); }
+      // Safety: if load did not start playing in 3s, fall back to reload
+      setTimeout(()=>{ if (isAutoNexting) { isAutoNexting = false; playNext(true); } }, 3000);
+      return;
+    }
+    // No widget — fall back to reload with autoplay
+    isAutoNexting = false;
+    playNext(true);
+  }
+
+  function playNext(autoplay){
+    let nextIdx = currentIdx;
+    if (TAPES.length > 1) {
+      do { nextIdx = Math.floor(Math.random() * TAPES.length); } while (nextIdx === currentIdx);
+    }
+    isAutoNexting = false;
+    currentIdx = nextIdx; currentTape = TAPES[currentIdx];
+    stopPosTimer();
+    lastKnownPos = 0; pendingSeek = 0; tapeDuration = 0;
+    try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
+    try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
+    isPlaying = !!autoplay; setMarquee();
+    if (autoplay) startPosTimer();
+    widget = null; widgetReady = false; isBinding = false;
+    if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, autoplay));
+    openPlayer();
+  }
+
+  if (playBtn) playBtn.addEventListener('click', () => {
+    if (!player.classList.contains('show')) openPlayer();
+    if (isPlaying) pauseCurrent();
+    else playCurrent();
   });
-  // V46 TAPE MEMORY - save position every 5s while playing, so leaving + coming back resumes where you left
-  function saveTapePosition(){
-    const w = getWidget();
-    if (!w || !isPlaying) return;
-    try {
-      const p = w.getPosition();
-      if (p && p.then) p.then((pos)=>{ if (pos && pos > 0) { try { localStorage.setItem(MCD_TAPE_KEY, String(pos)); } catch(e){} } }).catch(()=>{});
-    } catch(e){}
-  }
-  setInterval(saveTapePosition, 5000);
-  // Save on leave too, so last seconds aren't lost
-  window.addEventListener('beforeunload', saveTapePosition);
-  let mcdManualPause = false, mcdLastPlayingAt = 0;
-  function setPlayingUI(on){
-    isPlaying = on;
-    if (on) { mcdLastPlayingAt = Date.now(); mcdManualPause = false; }
-    // V144b — HELP only while waiting. Playing -> NOW SPINNING immediately. Paused (open) -> HELP. Closed -> LOADING.
-    if (nowSpinningEl) {
-      if (on) {
-        if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
-        nowSpinningEl.textContent = mcdCreamNowSpinning();
-      } else {
-        if (mcdCreamHelpTimer) clearTimeout(mcdCreamHelpTimer);
-        if (beautyPlayer && beautyPlayer.classList.contains('show')) {
-          nowSpinningEl.textContent = CREAM_HELP;
-        } else {
-          nowSpinningEl.textContent = CREAM_LOADING;
-        }
-      }
-    }
-    
-  if (fireBtn) { fireBtn.classList.toggle('is-playing', on); fireBtn.innerHTML = on ? fireHTML('\uD83D\uDC80', 'KEEP IT WILD') : fireHTML('\u25B6\uFE0E', 'FIRE IT UP'); }
-    if (beautyPlay) beautyPlay.textContent = on ? '⏸︎ PAUSE' : '▶︎ PLAY';
-    if (beautyPlayer) { beautyPlayer.classList.toggle('is-playing', on); /* V173 — never add is-hairline, Mixcloud must stay visible + connected */ }
-    if (heroSection) heroSection.classList.toggle('is-playing', on);
-    document.body.classList.toggle('is-playing', on);
-  }
+  if (nextBtn) nextBtn.addEventListener('click', () => { playNext(true); });
+  if (ejectBtn) ejectBtn.addEventListener('click', () => {
+    syncPosFromTimer(); stopPosTimer();
+    if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now());
+    isPlaying = false; setMarquee();
+    widget = null; widgetReady = false; isBinding = false;
+    pendingSeek = lastKnownPos;
+    if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, false));
+    player.classList.remove('show');
+    try{ document.body.classList.remove('mcd-player-open'); }catch(e){}
+  });
+  if (fireBtn) fireBtn.addEventListener('click', () => { openPlayer(); });
 
-// SEEK ONLY — custom seek bar, outside Mixcloud iframe
-  const seekTrack = document.getElementById('mcd-seek-track');
-  const seekFill = document.getElementById('mcd-seek-fill');
-  const seekThumb = document.getElementById('mcd-seek-thumb');
-  const seekCur = document.getElementById('mcd-seek-cur');
-  const seekDur = document.getElementById('mcd-seek-dur');
-  let seekDuration = 0;
-  let isSeeking = false;
-  function fmtTime(s){
-    if(!isFinite(s) || s < 0) return '0:00';
-    const m = Math.floor(s / 60);
-    const sec = Math.floor(s % 60);
-    return m + ':' + (sec < 10 ? '0' + sec : sec);
-  }
-  function setSeekUI(pos){
-    if(!seekDuration) return;
-    const pct = Math.max(0, Math.min(100, (pos / seekDuration) * 100));
-    if(seekFill) seekFill.style.width = pct + '%';
-    // V148 — clamp thumb inside track only, no page-level overflow change
-    const thumbPct = Math.max(1.5, Math.min(98.5, pct));
-    if(seekThumb) seekThumb.style.left = thumbPct + '%';
-    if(seekCur) seekCur.textContent = fmtTime(pos);
-  }
-  function seekFromEvent(e){ return; /* V175 — No Den seek, Mixcloud bar is the only seek */ }
-  if(seekTrack){
-    // V103 FIX: attach seek even if widget is null at load — widget loads async, so guard on widget broke seek on mobile (page scrolled instead)
-    const wSeekInit = getWidget();
-    if(wSeekInit){ wSeekInit.ready.then(() => {
-      wSeekInit.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
-    }).catch(()=>{}); }
-    setInterval(() => {
-      if(!isSeeking){
-        const wPoll = getWidget();
-        if(wPoll){
-        wPoll.getPosition().then((p) => { setSeekUI(p || 0); if (p > 0 && beautyPlayer) beautyPlayer.classList.add('is-hairline');
-          // V122 FIX for symptom A: ended never fires, and Mixcloud fires pause first, so isPlaying is already false at end. DO NOT check isPlaying here. Kick on position alone, unless user manually paused.
-          if (seekDuration > 0 && !mcdEnding && !mcdManualPause) {
-            if (p >= seekDuration - 2) { mcdOnTapeEnded(); }
-            else if (mcdLastPos > seekDuration - 5 && p < 2) { mcdOnTapeEnded(); }
-          }
-          mcdLastPos = p || 0;
-        }).catch(()=>{});
-        if(!seekDuration){
-          wPoll.getDuration().then((d) => { seekDuration = d || 0; if(seekDur) seekDur.textContent = fmtTime(seekDuration); }).catch(()=>{});
-        }
-        }
-      }
-    }, 500);
-    seekTrack.addEventListener('pointerdown', (e) => { e.preventDefault(); isSeeking = true; try { seekTrack.setPointerCapture(e.pointerId); } catch(err){} seekFromEvent(e); });
-    seekTrack.addEventListener('pointermove', (e) => { if(!isSeeking) return; e.preventDefault(); seekFromEvent(e); });
-    const endSeek = (e) => { if(!isSeeking) return; isSeeking = false; try { seekTrack.releasePointerCapture(e.pointerId); } catch(err){} };
-    seekTrack.addEventListener('pointerup', endSeek);
-    seekTrack.addEventListener('pointercancel', endSeek);
-  }
-  function handleFireClick(){
-    if (fireBtn && beautyPlayer) {
-      if (!beautyPlayer.classList.contains('show')) beautyPlayer.classList.add('show');
-      // V175 SINGLE BAR — RED = OPEN DECK. Mixcloud's own play is the only play (Mixcloud rule). No widget.play() from red.
-      if (nowSpinningEl) nowSpinningEl.textContent = mcdCreamNowSpinning();
-      try { beautyPlayer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch(err){}
-    }
-  }
-  if (fireBtn && beautyPlayer) { fireBtn.addEventListener('click', handleFireClick); }
-  if (beautyClose && beautyPlayer) {
-    beautyClose.addEventListener('click', () => {
-      beautyPlayer.classList.remove('show');
-      saveTapePosition();
-      // Reset any drag position so next open docks back to bottom-right on desktop
-      beautyPlayer.style.top = ''; beautyPlayer.style.left = ''; beautyPlayer.style.bottom = ''; beautyPlayer.style.right = '';
-      setPlayingUI(false);
-      const w = getWidget(); if (w) { try{ w.pause(); }catch(e){} }
-    });
-  }
+  window.addEventListener('beforeunload', () => { syncPosFromTimer(); if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now()); });
 
-  // V175 SINGLE BAR — No Den PLAY button, no Den seek. Mixcloud's bar is the only play/seek. Handlers removed.
-  // 3. DRAGGABLE TAPE DECK - RESTORED from V11, desktop only. Mobile stays docked bottom.
-  const dragHandle = beautyPlayer ? beautyPlayer.querySelector('.head') : null;
-  let isDragging = false, startX, startY, initialX, initialY;
-  const isMobile = () => window.innerWidth <= 768 || window.matchMedia('(pointer: coarse)').matches;
-  if (dragHandle && beautyPlayer) {
-    dragHandle.addEventListener('pointerdown', (e) => {
-      if (isMobile()) return;
-      if (e.target.closest('#mcd-beauty-close') || e.target.closest('#mcd-beauty-play') || e.target.closest('#mcd-seek-wrap')) return;
-      isDragging = true;
-      beautyPlayer.classList.add('is-dragging');
-      startX = e.clientX; startY = e.clientY;
-      const rect = beautyPlayer.getBoundingClientRect();
-      beautyPlayer.style.bottom = 'auto';
-      beautyPlayer.style.right = 'auto';
-      beautyPlayer.style.top = rect.top + 'px';
-      beautyPlayer.style.left = rect.left + 'px';
-      initialX = rect.left; initialY = rect.top;
-      try { dragHandle.setPointerCapture(e.pointerId); } catch(err){}
-    });
-    dragHandle.addEventListener('pointermove', (e) => {
-      if (!isDragging) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      beautyPlayer.style.top = (initialY + dy) + 'px';
-      beautyPlayer.style.left = (initialX + dx) + 'px';
-    });
-    const endDrag = (e) => {
-      if (!isDragging) return;
-      isDragging = false;
-      beautyPlayer.classList.remove('is-dragging');
-      try { dragHandle.releasePointerCapture(e.pointerId); } catch(err){}
-    };
-    dragHandle.addEventListener('pointerup', endDrag);
-    dragHandle.addEventListener('pointercancel', endDrag);
-  }
+  setMarquee();
 });

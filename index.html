@@ -1,8 +1,6 @@
-<!-- V142 — V141 base + manifesto revert 26/20 + genre +1px wrap allowed + poster +25px desktop / +20px mobile -->
-<!-- V141 — GitHub V140 base + 3HC 17px + 3HC are + DEN 160/90 + gig/zine +2px desktop+mobile + manifesto +2px desktop+mobile -->
-<!-- V140 SEEK UNLOCK — V139 CSS kept, JS blocking removed (that locked seek) --> 
-<!-- V139 SEEK MOBILE FIX — V138 base + stronger seek touch fix (wrap + fill + times, touchstart/touchmove preventDefault) — NO visual change --> 
-<!-- V138 SEO + LINK SHARE — V137 base + H1/Title/Description + RadioStation schema + OG JPG + site_name/locale — NO player help line, NO visual change -->
+<!-- V215 MOBILE STRETCH — clean rebuild on V201 audit-clean base, old player gone -->
+<!-- V215 MOBILE STRETCH — AUDIT CLEAN — dead player CSS + old V comments removed, no visual change, V200 base -->
+<!-- V215 MOBILE STRETCH AUDIT CLEAN — PLAYER REMOVED — all other content untouched, V180 base -->
 <!-- MAD CATS DEN v48-READY — CORRECT live v47 base (Pinterest + Ape Tape Mix 1) + mobile stability + player seek, zero visual changes when CSS loads -->
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +11,7 @@
 <meta name="description" content="Rockabilly Radio + Zine — broadcasting from a basement. Real gone R&amp;R, low ceiling, high volume, no paywall, just tape hiss.">
 <meta name="theme-color" content="#10120F">
 
-<link rel="stylesheet" href="./style.css?v=v130-follow-smaller">
+<link rel="stylesheet" href="./style.css?v=v215-mobile-stretch">
 
 <!-- V137 1360 CAP: capped at 1360, centred, black sides. Overrides 1200 cap in style.css without touching it. Safe: only max-width + centring. -->
 <style>
@@ -25,34 +23,7 @@
     margin-right: auto !important;
   }
   body { background: #000; }
-  /* V139 SEEK MOBILE FIX: dragging seek must seek, not scroll page - wrap + all children, not just track/thumb */
-  #mcd-seek-wrap,
-  #mcd-seek-wrap *,
-  #mcd-seek-track,
-  #mcd-seek-fill,
-  #mcd-seek-thumb,
-  #mcd-seek-times {
-    touch-action: none !important;
-    overscroll-behavior: none !important;
-    -webkit-user-select: none !important;
-    user-select: none !important;
-    -webkit-touch-callout: none !important;
-  }
-  #mcd-seek-wrap {
-    /* Bigger hit area so finger doesn't slip off track and scroll */
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
-    margin-top: -6px !important;
-    margin-bottom: -6px !important;
-  }
-  #mcd-seek-thumb {
-    width: 26px !important;
-    height: 26px !important;
-  }
-  #mcd-seek-track {
-    min-height: 28px !important;
-  }
-  /* V138 H1: keep hero visual identical, H1 inherits hero type */
+/* V138 H1: keep hero visual identical, H1 inherits hero type */
   .mcd-hero-h1 { font-size: inherit !important; font-weight: inherit !important; letter-spacing: inherit !important; text-transform: inherit !important; }
   .mcd-hero-h1 .mad-line, .mcd-hero-h1 .den-line { display: block; }
 </style>
@@ -338,35 +309,30 @@
 </main>
 <footer id="mcd-footer" class="mcd-footer--full"><div class="mcd-footer-line1">MCD ✦ RADIO+ZINE EST.2026 • ATHENS GR</div><div class="mcd-footer-line2"><span class="mcd-footer-line2-a">NO SPONSORS • NO ALGORITHM • JUST BASEMENT SIGNAL</span><span class="mcd-footer-line2-sep"> • </span><span class="mcd-footer-line2-b">© 2026 MAD CATS DEN</span></div></footer>
 
-<div id="mcd-beauty-player">
-  <div class="head">
-    <div style="display:flex;align-items:center;gap:8px">
-      <span class="dot"></span>
-      <span style="font-family:'Alfa Slab One',cursive;font-style:italic;font-size:14px;color:#050505;letter-spacing:0.04em;">BASEMENT SIGNAL</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:6px">
-      <span class="pill">TAPE ROLLING</span>
-          <button id="mcd-beauty-close" aria-label="Eject tape">⏏︎ EJECT</button>
-    </div>
-  </div>
-  <div class="mcd-now-spinning" id="mcd-now-spinning"><div class="mcd-now-spinning-inner"><span id="mcd-now-spinning-text">✦ LOADING TAPE... LOW CEILING HIGH VOLUME — JUST BASEMENT SIGNAL ✦</span></div></div><div class="vu-meter"></div>
-  <!-- SEEK ONLY — custom bar outside Mixcloud iframe, so mobile drag can't scroll page -->
-  <div id="mcd-seek-wrap" aria-label="Seek tape">
-    <div id="mcd-seek-track">
-      <div id="mcd-seek-fill"></div>
-      <div id="mcd-seek-thumb"></div>
-    </div>
-    <div id="mcd-seek-times"><span id="mcd-seek-cur">0:00</span><span>ITS A TAPE • DRAG TO SEEK</span><span id="mcd-seek-dur">--:--</span></div>
-  </div>
+<!-- V215 MOBILE STRETCH AUDIT CLEAN — PLAYER REMOVED, will be rebuilt fresh in Step 2 -->
+
+<!-- V215 MOBILE STRETCH — clean rebuild, Mixcloud bar is the only seek, ITS A TAPE is a label -->
+<div id="mcd-player">
+  <div class="mcd-player-head">
+<div class="mcd-player-head-top">
+<div class="mcd-player-brand">
+<span class="mcd-player-dot"></span>
+<span class="mcd-player-brand-text">BASEMENT SIGNAL</span>
+</div>
+<div class="mcd-player-controls">
+<button id="mcd-play" aria-label="Play or pause tape">▶ PLAY</button>
+<button id="mcd-next" aria-label="Next tape">NEXT TAPE</button>
+<button id="mcd-eject" aria-label="Eject tape">⏏ EJECT</button>
+</div>
+</div>
+</div>
+  <div class="mcd-player-marquee"><div class="mcd-player-marquee-inner"><span id="mcd-marquee-text">PRESS PLAY • NO SPONSORS • NO ALGORITHM • MADCATNIK DIGGIN IN CRATE ...</span></div></div>
+  
   <iframe title="MAD CATS DEN Mixcloud player" id="mcd-mixcloud" width="100%" height="60" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2Fmad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
 </div>
 
-<div id="mcd-toast" role="status" aria-live="polite"></div>
-
 <script src="https://widget.mixcloud.com/media/js/widgetApi.js"></script>
-<script src="./script.js?v=v178" defer></script>
-
-<!-- V140: NO JS blocking on seek - CSS touch-action:none does the scroll block, script.js does the seek -->
+<script src="./script.js?v=v215-mobile-stretch" defer></script>
 
 </body>
 </html>

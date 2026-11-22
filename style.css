@@ -1,6 +1,5 @@
-/* =========================================
-   MAD CATS DEN - THE MASTER BUILD (FINAL V10)
-   ========================================= */
+/* V201 STEP 1.5 — AUDIT CLEAN — dead player CSS + old V comments removed, no visual change */
+
 
 @font-face{
   font-family:'Alfa Slab One'; font-style:normal; font-weight:400; font-display:block;
@@ -141,7 +140,7 @@ body::after{
   color:var(--brick); text-transform:uppercase; display:block; text-align:center; white-space:nowrap;
   font-size: clamp(90px, 13vw, 160px); text-shadow: 2px 2px 0 var(--black); margin-top:4px;
 }
-/* V45 - Desktop DEN always max, never shrinks with vw */
+
 @media(min-width:600px){
   .den-line{ font-size:160px !important; }
 }
@@ -329,62 +328,18 @@ body::after{
   box-shadow: 0 0 0 var(--black) !important; 
 }
 
-/* --- TAPE DECK PLAYER --- */
-#mcd-beauty-player{
-  position:fixed; bottom:16px; right:16px; width:460px; height:auto; min-height:108px;
-  background:var(--ink); border:3px solid var(--black); border-radius:8px; box-shadow:4px 4px 0 var(--black);
-  z-index:10002; overflow:hidden; display:none; flex-direction:column; transform:rotate(-0.4deg);
-}
-#mcd-beauty-player.show{display:flex}
-
-/* Player Header - Torn Zine Tape Style */
-#mcd-beauty-player .head{
-  background:var(--cream);
-  border-bottom:3px solid var(--black); padding:10px 14px;
-  display:flex; align-items:center; justify-content:space-between; gap:8px; cursor:grab; touch-action:none; user-select:none;
-}
-#mcd-beauty-player .head:active{cursor:grabbing}
-#mcd-beauty-player.is-dragging{opacity:0.98;box-shadow:12px 12px 0 var(--black);transition:none;cursor:grabbing}
-#mcd-beauty-player.is-dragging iframe{pointer-events:none}
-#mcd-beauty-player .dot{width:10px;height:10px;background:var(--brick);border-radius:50%;box-shadow:0 0 0 2px var(--black), 0 0 8px rgba(204,45,48,0.7);animation:liveDotPulseBrick 3.6s ease-in-out infinite;flex-shrink:0}
-
 /* TAPE ROLLING Pulse Animation */
 @keyframes tapePulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
-#mcd-beauty-player.is-playing .pill {
-  animation: tapePulse 2s ease-in-out infinite;
-}
-
-#mcd-beauty-player .pill{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;background:var(--black);color:var(--cream);border:2px solid var(--black);border-radius:4px;padding:2px 6px;white-space:nowrap}
 
 /* Eject Hover Red */
-#mcd-beauty-close{
-  background:var(--cream);color:var(--black);border:2px solid var(--black);border-radius:4px;
-  padding:4px 8px; display:flex;align-items:center;justify-content:center;
-  font-family: 'Barlow Condensed', sans-serif; font-weight:800; font-size:11px;
-  cursor:pointer;box-shadow:0 3px 0 var(--black);margin-left:4px; transition: all 0.1s ease;
-}
-#mcd-beauty-close:hover {
-  background: var(--brick); color: var(--cream);
-}
-#mcd-beauty-close:active{transform:translateY(3px);box-shadow:0 0 0 var(--black);}
 
-/* VU Meter Hiss Effect */
-.vu-meter { height: 4px; width: 100%; background: #050505; position: relative; overflow: hidden; display: none; }
-#mcd-beauty-player.is-playing .vu-meter { display: block; }
-#mcd-beauty-player.is-playing .vu-meter::after {
-  content: ""; position: absolute; top: 0; left: 0; width: 200%; height: 100%;
-  background: repeating-linear-gradient(90deg, var(--mint) 0%, var(--mint) 4px, #050505 4px, #050505 8px);
-  animation: tapeHiss 0.4s linear infinite;
-}
 @keyframes tapeHiss {
   0% { transform: translateX(0); }
   100% { transform: translateX(-16px); }
 }
-
-#mcd-beauty-player iframe{flex:0 0 60px;width:100%;height:60px;border:0;display:block;background:var(--black);touch-action:pan-y;overscroll-behavior:contain}
 
 #mcd-footer{width:100%;display:flex;justify-content:center;align-items:center;padding:12px;margin-top:12px;background:transparent}
 #mcd-footer div {
@@ -398,14 +353,12 @@ body::after{
 @media(min-width:1280px){
   #mcd-hero { gap: 50px; height: auto; min-height: 440px; }
   .mcd-hero-mascot-wrap { width: 410px; height: 410px; }
-}
-@media(max-width:1023px){
+}@media(max-width:1023px) {
   #mcd-hero{flex-direction:column;height:auto;min-height:400px;gap:24px;padding:16px 20px}
   .mcd-two-col{display:flex !important;flex-direction:column !important;}
   .mcd-card--zine{order:1 !important;}
   .mcd-card--gig{order:2 !important;}
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   /* Save thumb space */
   #mcd-header-player{width:calc(100% - 8px); top:4px; min-height:56px; padding:8px 10px 12px;}
   .mcd-stamp-logo{padding:5px 10px;font-size:14px;max-width:60%}
@@ -438,14 +391,7 @@ body::after{
   /* Restore flow for mobile pills so they can scatter */
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{flex:0 1 auto; justify-content:center}
   
-  .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi { font-size: 14px; padding: 16px 12px; line-height: 1.4; text-wrap: balance; text-align: center; }
-  
-  /* Dock Beauty Player */
-  #mcd-beauty-player{
-    bottom:0; right:0; left:0; width:100%; max-width:100%; border-radius:8px 8px 0 0; transform:none; touch-action:pan-y; overscroll-behavior:contain; padding-bottom:env(safe-area-inset-bottom, 0px);
-  }
-  #mcd-beauty-player .head{touch-action:pan-y;cursor:default}
-  #mcd-beauty-player iframe{touch-action:pan-y} 
+  .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi { font-size: 14px; padding: 16px 12px; line-height: 1.4; text-wrap: balance; text-align: center; } 
     border-bottom:none; box-shadow:0 -4px 0 var(--black);
   }
 }
@@ -458,8 +404,7 @@ body::after{
   .mcd-mini-soon{font-size:11.5px;}
   /* Uniform shadows mobile */
   .mcd-card, .mcd-support-block--den { box-shadow: 4px 4px 0 var(--black); }
-}
-@media(prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none !important;transition:none !important} }
+}@media(prefers-reduced-motion:reduce) { *,*::before,*::after{animation:none !important;transition:none !important} }
 
 .mcd-coming{background:var(--cream); color:var(--brick); text-shadow:1px 1px 0 var(--black); padding:2px 10px; border:2px solid var(--black); box-shadow:2px 2px 0 var(--black); display:inline-block; transform:rotate(-1deg); font-size:0.92em; line-height:1.1; white-space:nowrap;}
 .mcd-genre-tags{ font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--black); text-align:center; border-top:2px solid var(--black); border-bottom:2px solid var(--black); padding:8px 4px; margin:0; line-height:1.6; }
@@ -503,11 +448,7 @@ body::after{
 .mcd-support-row--den.mcd-row-social .mcd-s-pill--den{ flex:1 1 0 !important; min-width:0 !important; justify-content:center !important; background:var(--cream) !important; color:var(--black) !important; border:2px solid var(--black) !important; font-size:11px !important; padding:8px 4px !important; text-align:center; white-space:nowrap; }
 .mcd-submit-btn, button.mcd-submit-btn{ background:var(--brick) !important; color:var(--cream) !important; border:2px solid var(--black) !important; text-shadow:1px 1px 0 var(--black) !important; }
 .mcd-support-block--den input::placeholder{ text-transform:uppercase !important; }
-.mcd-now-spinning{ background:var(--cream) !important; border-bottom:2px solid var(--black); height:22px !important; overflow:hidden !important; display:flex !important; align-items:center; white-space:nowrap !important; }
-.mcd-now-spinning-inner{ display:inline-flex !important; white-space:nowrap !important; animation:mcdTapeScroll 22s linear infinite; }
-#mcd-now-spinning-text{ font-weight:800; font-size:10px !important; color:var(--black) !important; white-space:nowrap !important; display:inline-block !important; padding-right:50px; line-height:22px; }
 @keyframes mcdTapeScroll{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
-#mcd-beauty-player iframe{ background:var(--cream); overflow:hidden; scrollbar-width:none; }
 .mcd-card--gig .mcd-support-block--den p, .mcd-card--gig .mcd-support-block--den div{ font-size:14px !important; line-height:1.65 !important; }
 .mcd-poster-wrap{ width:82% !important; max-width:365px !important; margin:0 auto !important; }
 .mcd-card--gig .mcd-support-block--den{ padding:10px 12px !important; gap:10px !important; }
@@ -571,7 +512,6 @@ body::after{
 /* CLEAN v40 - ONE follow-divider rule, green line gone everywhere */
 .mcd-follow-divider{ display:none !important; height:0 !important; margin:0 !important; padding:0 !important; background:transparent !important; border:none !important; }
 
-/* V46 - FOOTER: 2 lines stacked, not 2 columns. Desktop + mobile same. */
 #mcd-footer, #mcd-footer.mcd-footer--full{
   display:flex !important; flex-direction:column !important;
   justify-content:center !important; align-items:center !important;
@@ -584,25 +524,21 @@ body::after{
 }
 #mcd-footer .mcd-footer-line2{
   line-height:1.6 !important; text-wrap:balance !important;
-}
-@media(max-width:599px){
+}@media(max-width:599px) {
   #mcd-footer{ padding:12px 12px !important; gap:6px !important; }
   #mcd-footer .mcd-footer-line1{ font-size:11px !important; }
   #mcd-footer .mcd-footer-line2{ font-size:9px !important; line-height:1.7 !important; max-width:320px !important; }
 }
 
-/* === V48-READY — mobile stability only, no visual changes === */
 html,body{max-width:100%;overflow-x:clip}
-#mcd-main,#mcd-hero,#mcd-header-player{max-width:100%;overflow-x:clip}
-@media(max-width:768px){
+#mcd-main,#mcd-hero,#mcd-header-player{max-width:100%;overflow-x:clip}@media(max-width:768px) {
   .mcd-hero-mascot-wrap{will-change:transform;contain:layout}
   .mcd-hero-glow{will-change:transform,opacity}
-  body:has(#mcd-beauty-player.show){overscroll-behavior-y:contain}
   #mcd-hero{contain:layout style;transform:translateZ(0)}
   #mcd-hero.is-playing .mcd-hero-glow--mint,#mcd-hero.is-playing .mcd-hero-glow--brick{transform:scale(1.15)}
   #mcd-hero.is-playing .mcd-hero-cat{animation:none}
 }
-/* === V49 MOBILE HEADER ONLY — paste this at the VERY BOTTOM of your current style.css, save, test on Live Server === */
+
 /* Desktop: zero change. Mobile (<=768px): hide MCD stamp + TRANSMITTING / LIVE WIRES, keep only bigger FIRE IT UP */
 @media(max-width:768px){
   #mcd-header-player{
@@ -649,7 +585,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V49 MOBILE HEADER ONLY — included here so full replacement keeps it === */
 @media(max-width:768px){
   #mcd-header-player{ justify-content:center; padding:8px 10px 10px; min-height:auto; }
   .mcd-stamp-logo{ display:none !important; }
@@ -662,7 +597,6 @@ html,body{max-width:100%;overflow-x:clip}
   #mcd-header-player.is-playing .mcd-h-right{ width:100%; justify-content:center; margin:0; }
 }
 
-/* === V50 ALL-TOGETHER — button narrower + no blue emoji + no red bar + tighter bottom + hero gap + stronger glow === */
 @media(max-width:768px){
   #mcd-header-player{ justify-content:center; padding:8px 10px 10px; }
   #mcd-h-fire{ width:92%; max-width:420px; margin:0 auto; font-size:20px; padding:14px 18px; text-align:center; }
@@ -670,8 +604,8 @@ html,body{max-width:100%;overflow-x:clip}
   .mcd-play-symbol{ font-variant-emoji:text; color:#CC2D30; }
   #mcd-header-player::after{ display:none !important; }
   #mcd-footer{ font-size:10px !important; padding:4px 0 !important; white-space:nowrap; overflow:hidden; }
-  #mcd-beauty-player .head{ padding:6px 8px !important; }
-  #mcd-beauty-player{ padding-bottom:0 !important; }
+  
+  
   #mcd-hero{ padding-bottom:28px !important; }
   .mcd-hero-titles{ padding-bottom:12px; }
 }
@@ -679,51 +613,11 @@ html,body{max-width:100%;overflow-x:clip}
 #mcd-hero.is-playing .mcd-hero-glow--brick{ opacity:1 !important; filter:blur(44px) !important; transform:scale(1.55) !important; transition:all 0.5s ease !important; }
 #mcd-hero.is-playing .mcd-hero-cat{ box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 48px rgba(204,45,48,0.85), 0 0 80px rgba(155,219,193,0.55) !important; }
 
-/* === SEEK ONLY — custom seek bar, touch-action:none so drag can't scroll page === */
-#mcd-seek-wrap{ background:#050505; padding:8px 12px 6px; border-top:2px solid #050505; touch-action:none; user-select:none; -webkit-user-select:none; overflow:hidden; }
-#mcd-seek-track{ position:relative; height:14px; background:#2a2a2a; border:2px solid #050505; border-radius:8px; cursor:pointer; touch-action:none; }
-#mcd-seek-fill{ position:absolute; left:0; top:0; bottom:0; width:0%; background:#CC2D30; border-radius:6px; }
-#mcd-seek-thumb{ position:absolute; top:50%; left:0%; width:18px; height:18px; background:#F0F0DA; border:2px solid #050505; border-radius:50%; transform:translate(-50%, -50%); box-shadow:2px 2px 0 #050505; pointer-events:none; }
-#mcd-seek-times{ display:flex; justify-content:space-between; align-items:center; font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700; color:#F0F0DA; letter-spacing:0.08em; margin-top:4px; }
-#mcd-beauty-player iframe{ touch-action:pan-y !important; pointer-events:auto !important; }
-@media(max-width:768px){
-  #mcd-seek-wrap{ padding:10px 12px 8px; }
-  #mcd-seek-track{ height:18px; }
-  #mcd-seek-thumb{ width:22px; height:22px; }
-  #mcd-beauty-player iframe{ touch-action:pan-y !important; }
-}
-
-/* === V54 — ONLY OUR SEEK — hide Mixcloud's grey bar, keep only our red bar === */
 /* Mixcloud iframe stays in DOM and keeps playing audio, just invisible. No duplicate bar. */
 
-#mcd-beauty-play{
-  background:#F0F0DA; color:#050505; border:2px solid #050505; border-radius:4px;
-  padding:4px 8px; display:flex; align-items:center; justify-content:center;
-  font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:11px;
-  cursor:pointer; box-shadow:0 3px 0 #050505; margin-left:4px; transition:all 0.1s ease;
-  white-space:nowrap;
-}
-#mcd-beauty-play:active{ transform:translateY(3px); box-shadow:0 0 0 #050505; }
-#mcd-beauty-player.is-playing #mcd-beauty-play{ background:#CC2D30; color:#F0F0DA; }
-
-/* === V55 A+A — RED BUTTONS — safe, CSS only, no JS, no seek change === */
 /* 1. Player PLAY/PAUSE: always red, both PLAY and PAUSE, bigger, so you can spot it next to cream EJECT */
 /* EJECT stays cream, only PLAY/PAUSE is red */
-#mcd-beauty-play{
-  background:#CC2D30 !important;
-  color:#F0F0DA !important;
-  border:2px solid #050505 !important;
-  padding:6px 10px !important;
-  font-size:12px !important;
-  font-weight:800 !important;
-  letter-spacing:0.04em !important;
-  box-shadow:0 3px 0 #050505 !important;
-}
-#mcd-beauty-player.is-playing #mcd-beauty-play{
-  background:#CC2D30 !important;
-  color:#F0F0DA !important;
-  box-shadow:0 3px 0 #050505, 0 0 14px rgba(204,45,48,0.65) !important;
-}
+
 /* 2. FIRE IT UP on mobile only: solid red on cream header, so cream-on-cream washout is gone */
 /* Desktop stays as it is — cream button pops on dark hero. Mobile header is cream, so button must be red. */
 @media(max-width:768px){
@@ -744,164 +638,17 @@ html,body{max-width:100%;overflow-x:clip}
     color:#F0F0DA !important;
   }
 }
-
-
-
-/* V59 LIVE AUDIO — direct gesture only, no forced PAUSE */
-
-/* === V60 HAIRLINE — Mixcloud full for first tap, then hairline, ours on top === */
-/* Start: Mixcloud visible, 60px, clickable — that's the tap Mixcloud + browser allow on live. */
-/* After first play: player gets .is-hairline, Mixcloud shrinks to 6px hairline, ours stays on top as the main bar. */
-/* No opacity:0, no visibility:hidden, no height:0 — Mixcloud always sees a visible player, so it doesn't block. */
-#mcd-beauty-player{
-  overflow:hidden !important;
-}
-#mcd-beauty-player iframe{
-  position:relative !important;
-  left:auto !important;
-  top:auto !important;
-  width:100% !important;
-  height:60px !important;
-  min-height:60px !important;
-  flex:0 0 60px !important;
-  opacity:1 !important;
-  visibility:visible !important;
-  pointer-events:auto !important;
-  border:0 !important;
-  display:block !important;
-  background:#050505 !important;
-  transition:height 0.4s ease !important;
-}
-#mcd-beauty-player.is-hairline iframe{
-  height:60px !important;
-  min-height:60px !important;
-  flex:0 0 60px !important;
-  opacity:1 !important;
-  pointer-events:auto !important;
-  overflow:hidden !important;
-} /* V173 — NO hairline. Mixcloud must stay 60px + clickable, or it blocks external play. */
-#mcd-seek-wrap{
-  border-bottom:1px solid #050505 !important;
-}
-
-/* === V61 A — Hide our bar until play starts === */
-/* At start: only Mixcloud bar visible, one bar, not two. */
-/* After first play (mobile: FIRE IT UP works, desktop: tap Mixcloud play), player gets .is-hairline, our bar appears, Mixcloud shrinks to hairline. */
-#mcd-seek-wrap{
-  display:block !important;
-} /* V173 — show Den bar, but Mixcloud stays too */
-#mcd-beauty-player.is-hairline #mcd-seek-wrap{
-  display:block !important;
-}
-
-/* === V65 Slower + Smoother === */
-/* 1. Speed 50% slower: 7s -> 14s, same single run, just half speed. */
-/* 2. Smooth transition: label fades + collapses, seek bar fades + expands, Mixcloud shrinks slower. No more harsh cut. */
-#mcd-tap-to-start{
-  background:#CC2D30 !important;
-  color:#F0F0DA !important;
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:800;
-  font-size:9px !important;
-  letter-spacing:0.08em;
-  text-align:center;
-  padding:5px 0 !important;
-  border-top:2px solid #050505 !important;
-  border-bottom:2px solid #050505 !important;
-  overflow:hidden !important;
-  white-space:nowrap !important;
-  max-height:30px !important;
-  opacity:1 !important;
-  transition:opacity 0.6s ease, max-height 0.6s ease, padding 0.6s ease, border-width 0.6s ease !important;
-}
-#mcd-tap-to-start .mcd-tap-scroll{
-  display:inline-block !important;
-  white-space:nowrap !important;
-  animation:mcdTapScroll 14s linear infinite !important;
-}
 @keyframes mcdTapScroll{
   0%{ transform:translateX(350%); opacity:1; }
   55%{ transform:translateX(-350%); opacity:1; }
   60%{ transform:translateX(-350%); opacity:0; }
   100%{ transform:translateX(350%); opacity:0; }
 }
-#mcd-beauty-player.is-hairline #mcd-tap-to-start{
-  display:block !important;
-  opacity:0 !important;
-  max-height:0 !important;
-  padding:0 !important;
-  border-top-width:0 !important;
-  border-bottom-width:0 !important;
-  overflow:hidden !important;
-}
-/* Seek bar: fade + expand instead of pop */
-#mcd-seek-wrap{
-  display:block !important;
-  opacity:0 !important;
-  max-height:0 !important;
-  overflow:hidden !important;
-  transition:opacity 0.6s ease, max-height 0.6s ease !important;
-}
-#mcd-beauty-player.is-hairline #mcd-seek-wrap{
-  display:block !important;
-  opacity:1 !important;
-  max-height:80px !important;
-}
-/* Mixcloud shrink slower, smoother */
-#mcd-beauty-player iframe{
-  transition:height 0.6s ease !important;
-}
-#mcd-beauty-player.is-hairline iframe{
-  transition:height 0.6s ease !important;
-}
-
-/* === V66 VU BACK + EVEN SMOOTHER === */
-/* VU / tape-hiss bar: was only on .is-playing, but after Mixcloud tap we only add .is-hairline, so VU stayed hidden. Now shows on .is-hairline too, so it's back. */
-#mcd-beauty-player.is-hairline .vu-meter{
-  display:block !important;
-  height:6px !important;
-}
-#mcd-beauty-player.is-playing .vu-meter{
-  display:block !important;
-  height:6px !important;
-}
-/* Even smoother: 1s, staggered — label fades first, seek bar fades in 0.25s after, Mixcloud shrinks 1s */
-#mcd-tap-to-start{
-  transition:opacity 1s ease-in-out, max-height 1s ease-in-out, padding 1s ease-in-out, border-width 1s ease-in-out !important;
-}
-#mcd-seek-wrap{
-  transition:opacity 1s ease-in-out 0.25s, max-height 1s ease-in-out 0.25s !important;
-}
-#mcd-beauty-player iframe{
-  transition:height 1s ease-in-out !important;
-}
-#mcd-beauty-player.is-hairline iframe{
-  transition:height 1s ease-in-out !important;
-}
-
-/* === V67 SYNC + CAT GLOW + EVEN SMOOTHER === */
-/* Sync fix is in JS: Mixcloud own play now calls setPlayingUI(true), so fireBtn -> KEEP IT WILD, beautyPlay -> PAUSE, hero -> cat glow, body -> playing. */
-/* Even smoother: 1.2s, staggered — label fades 1.2s, seek fades in 0.4s after, Mixcloud shrinks 1.2s */
-#mcd-tap-to-start{
-  transition:opacity 1.2s ease-in-out, max-height 1.2s ease-in-out, padding 1.2s ease-in-out, border-width 1.2s ease-in-out !important;
-}
-#mcd-seek-wrap{
-  transition:opacity 1.2s ease-in-out 0.4s, max-height 1.2s ease-in-out 0.4s !important;
-}
-#mcd-beauty-player iframe{
-  transition:height 1.2s ease-in-out !important;
-}
-#mcd-beauty-player.is-hairline iframe{
-  transition:height 1.2s ease-in-out !important;
-}
 /* Cat glow: ensure it comes back when playing via Mixcloud tap too — hero.is-playing already does it, now JS syncs hero */
 #mcd-hero.is-playing .mcd-hero-cat{
   box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 48px rgba(204,45,48,0.85), 0 0 80px rgba(155,219,193,0.55) !important;
 }
 
-/* V68 UNJAM — sync via Mixcloud events, not position polling */
-
-/* === V69 SOFTER + SLOWER GLOW — CSS only, no JS, no player touch === */
 /* Cat: 48px/80px -> 28px/44px, opacity down, pulse 2s heavy -> 3.5s gentle breathe. */
 /* Background glows: opacity down, transition 1.2s for smoother fade like the label/seek. */
 #mcd-hero.is-playing .mcd-hero-cat{
@@ -928,23 +675,13 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V70 DEN STYLE SYMBOLS — mobile only, desktop unchanged === */
 /* iOS forces PLAY / PAUSE / EJECT to blue emoji unless we add FE0E (done in HTML/JS) + font-variant-emoji:text + Den colours. */
 /* PLAY is red button, so triangle/bars stay cream. EJECT is cream button, so eject stays black. */
 @media(max-width:768px){
-  #mcd-beauty-play, #mcd-beauty-close{
-    font-variant-emoji:text !important;
-    -webkit-text-fill-color:currentColor !important;
-  }
-  #mcd-beauty-play{
-    color:#F0F0DA !important;
-  }
-  #mcd-beauty-close{
-    color:#050505 !important;
-  }
+  
+  
 }
 
-/* === V71 ZINE + FOOTER + TINY POLISH — safe, HTML/CSS only, no player JS === */
 /* 2. Zine minis: Not clickable + COMING SOON */
 .mcd-mini{
   cursor:default !important;
@@ -1007,10 +744,7 @@ html,body{max-width:100%;overflow-x:clip}
   background:#CC2D30;
   color:#F0F0DA;
 }
-#mcd-back-to-top{
-  background:#CC2D30 !important;
-  color:#F0F0DA !important;
-}
+
 /* 5a. Word break: Keep ROCKABILLY together */
 .mcd-manifesto{
   word-break:keep-all !important;
@@ -1036,7 +770,6 @@ html,body{max-width:100%;overflow-x:clip}
   line-height:1.2 !important;
 }
 
-/* === V72 FOOTER READABLE + MINT SHADOWS + KOFI BACK — safe, CSS only, no player JS === */
 /* 1. Footer readable even when player is next to it: give it bottom space so fixed player doesn't cover it, and a real pill background */
 #mcd-footer{
   padding-bottom:170px !important;
@@ -1054,7 +787,7 @@ html,body{max-width:100%;overflow-x:clip}
   margin-top:10px !important;
   text-shadow:1px 1px 0 #050505 !important;
 }
-/* 2. Ko-fi pill back to big — V71 made it 16px/12px, bring back 22px/22px */
+
 .mcd-support-row--den.mcd-row-kofi{
   margin:24px auto !important;
 }
@@ -1079,13 +812,11 @@ html,body{max-width:100%;overflow-x:clip}
   box-shadow:5px 5px 0 #9BDBC1 !important;
 }
 
-/* === V73 HEADER MINT SHADOW — safe, CSS only, no player JS === */
 /* Header stamp MCD ✦ RADIO+ZINE EST.2026 is already a black pill, was black shadow, now mint shadow like footer */
 .mcd-stamp-logo{
   box-shadow:4px 4px 0 #9BDBC1 !important;
 }
 
-/* === V74 DEN BIGGER — hero only, CSS only, no player JS === */
 /* Was: clamp(68px, 11vw, 124px). Now: clamp(80px, 13vw, 148px) — bigger on mobile too, but still fits. MAD CATS stays same, so DEN owns the hero. */
 .den-line{
   font-size:clamp(90px, 13vw, 160px) !important;
@@ -1093,12 +824,10 @@ html,body{max-width:100%;overflow-x:clip}
   letter-spacing:-0.03em !important;
   text-shadow:3px 3px 0 var(--black) !important;
   margin-top:2px !important;
-}
-@media(min-width:600px){
+}@media(min-width:600px) {
   .den-line{ font-size:160px !important; }
 }
 
-/* === V75 3HC GLOW + BASEMENT +1px + RED STARS — safe, CSS only, no player JS === */
 /* 1. 3HC stamp: bit of red glow — drop-shadow follows the stamp shape, not a square box */
 .mcd-3hc-stamp{
   filter:drop-shadow(0 0 10px rgba(204,45,48,0.55)) drop-shadow(0 0 20px rgba(204,45,48,0.25)) !important;
@@ -1113,15 +842,10 @@ html,body{max-width:100%;overflow-x:clip}
   color:#CC2D30 !important;
 }
 
-/* === V76 3HC GLOW BLACK — try, CSS only, no player JS === */
-/* Was red glow in V75. Now black glow — print style, hard offset like the rest of the Den, less neon. */
-/* Keep V75 red stars + basement +1px, only the stamp glow changes. */
 .mcd-3hc-stamp{
   filter:drop-shadow(4px 4px 0 rgba(5,5,5,0.85)) drop-shadow(0 0 10px rgba(5,5,5,0.35)) !important;
 }
 
-/* === V77 3HC HARD SHADOW + TILT — no glow, CSS only, no player JS === */
-/* Was glow in V75/V76. Now Den print: hard offset shadow, no blur, + slight tilt like the minis/cards. */
 .mcd-3hc-stamp{
   filter:drop-shadow(4px 4px 0 rgba(5,5,5,0.9)) !important;
   transform:rotate(-2deg) !important;
@@ -1130,8 +854,6 @@ html,body{max-width:100%;overflow-x:clip}
   transform:rotate(-1deg);
 }
 
-/* === V78 3HC RED OUTLINE — flat, no glow, CSS only, no player JS === */
-/* Was hard shadow + tilt in V77. Now option 5: flat, 3px solid red border, ties stamp to DEN red, no glow, no shadow. */
 .mcd-3hc-stamp{
   filter:none !important;
   transform:none !important;
@@ -1145,8 +867,6 @@ html,body{max-width:100%;overflow-x:clip}
   transform:none !important;
 }
 
-/* === V79 3HC FADED RED + ROUND + VINTAGE — the one, CSS only, no player JS === */
-/* Faded red border ~50% opacity, worn, not fresh paint. Round corners 14px. Vintage paper: warm tint + faint grain via layered gradients. Tilt + hard shadow kept from V77. */
 .mcd-3hc-stamp-wrap{
   background:#EDEBD6 !important;
   background-image:
@@ -1173,8 +893,6 @@ html,body{max-width:100%;overflow-x:clip}
   opacity:0.97 !important;
 }
 
-/* === V80 3HC FIX — stamp IS the card, not the outer box === */
-/* V79 bug: .mcd-3hc-stamp-wrap was display:block full-width, so it became a wide dotted card and the tiny stamp floated inside. */
 /* Fix: wrap shrinks to fit the stamp (fit-content + align-self:center), so the faded red border + vintage + tilt + hard shadow sit ON the stamp itself. */
 .mcd-3hc-stamp-wrap{
   align-self:center !important;
@@ -1210,14 +928,11 @@ html,body{max-width:100%;overflow-x:clip}
   background:transparent !important;
   box-shadow:none !important;
   opacity:0.97 !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-3hc-stamp-wrap{ max-width:200px !important; }
   .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:160px !important; }
 }
 
-/* === V81 3HC REAL MOCKUP — use the approved image, not CSS fake === */
-/* V80 bug: CSS border + grain sat BEHIND the flat PNG, so it looked pale pink + clean. */
 /* Fix: the image itself now HAS the faded red distressed border + vintage grain + tilt + hard shadow baked in. So CSS must be clean — no extra border, no extra background, no extra shadow, or it doubles up. */
 .mcd-3hc-stamp-wrap{
   align-self:center !important;
@@ -1248,13 +963,11 @@ html,body{max-width:100%;overflow-x:clip}
   background:transparent !important;
   box-shadow:none !important;
   opacity:1 !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-3hc-stamp-wrap{ max-width:220px !important; }
   .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:200px !important; }
 }
 
-/* === V82 REVERT — original logo, tilt + hard shadow, no border, no texture === */
 /* Back to the band's real logo. No fake red border, no grain. Just the clean stamp, tilted, with a hard Den shadow. */
 .mcd-3hc-stamp-wrap{
   align-self:center !important;
@@ -1285,15 +998,13 @@ html,body{max-width:100%;overflow-x:clip}
   background:transparent !important;
   box-shadow:none !important;
   opacity:1 !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-3hc-stamp-wrap{ max-width:210px !important; }
   .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:200px !important; }
 }
 
-/* === V83 3HC MATCH MINT BOX — same border + shadow as the mint container above === */
 /* Mint box: border:3px solid #050505 + box-shadow:4px 4px 0 #050505. */
-/* V82 had no border, so the shadow read as a stray line on right/bottom. Add the border, shadow now matches. */
+
 .mcd-3hc-stamp-wrap{
   align-self:center !important;
   display:block !important;
@@ -1323,15 +1034,13 @@ html,body{max-width:100%;overflow-x:clip}
   background:transparent !important;
   box-shadow:none !important;
   opacity:1 !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-3hc-stamp-wrap{ max-width:210px !important; }
   .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:200px !important; }
 }
 
-/* === V84 3HC MATCH MINT EXACT — same tilt + same torn edge + same shadow === */
 /* Mint box above: rotate(-0.3deg), border 3px, shadow 4px 4px 0, clip-path torn polygon, no radius. */
-/* V83 had rotate(-2deg) + radius 14px, so its shadow tilted and looked like a double line on the right. Fix: same tilt, same torn edge, same shadow. */
+
 .mcd-3hc-stamp-wrap{
   align-self:center !important;
   display:block !important;
@@ -1362,14 +1071,11 @@ html,body{max-width:100%;overflow-x:clip}
   background:transparent !important;
   box-shadow:none !important;
   opacity:1 !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-3hc-stamp-wrap{ max-width:210px !important; }
   .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:200px !important; }
 }
 
-/* === V85 3HC SMALLER — tighten the card, kill the blank space === */
-/* V84 stamp was 230px, too big for the card, pushed left card tall, right zine card stretched with blank at bottom. */
 /* Fix: stamp 160px desktop / 140px mobile, tighter margins, same mint-match border + shadow + tilt + torn edge. */
 .mcd-3hc-stamp-wrap{
   align-self:center !important;
@@ -1401,13 +1107,11 @@ html,body{max-width:100%;overflow-x:clip}
   background:transparent !important;
   box-shadow:none !important;
   opacity:1 !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-3hc-stamp-wrap{ max-width:150px !important; }
   .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:140px !important; }
 }
 
-/* === V86 GENRE STRIP AS CARD — same style as mint box + 3HC card === */
 /* Was: just 2px top/bottom lines, flat, no shadow. Now: full card — mint bg, 3px border, 4px hard shadow, torn edge, -0.3deg tilt, like the mint box + 3HC. */
 .mcd-genre-tags{
   background:#9BDBC1 !important;
@@ -1420,8 +1124,6 @@ html,body{max-width:100%;overflow-x:clip}
   margin:14px 4px 16px 4px !important;
 }
 
-/* === V87 GENRE STRIP CREAM — same card, no mint === */
-/* V86 was mint #9BDBC1, too much mint with the left mint box. Now cream #F0F0DA, keeps border + shadow + torn edge + tilt. */
 .mcd-genre-tags{
   background:#F0F0DA !important;
   border:3px solid #050505 !important;
@@ -1433,10 +1135,6 @@ html,body{max-width:100%;overflow-x:clip}
   margin:14px 4px 16px 4px !important;
 }
 
-/* === V88 GENRE DEN + REMOVE MINT LINE — CSS only, no player JS === */
-/* Genre strip stays cream card from V87. Mint glowing line above SLIDE IT UNDER removed in HTML — it was neon, fought with the red button, not Den print. */
-
-/* === V89 FINAL — genre cream card + 3HC smaller torn, high specificity to beat stacked layers === */
 /* Use .mcd-card--zine / .mcd-card--gig prefix so this wins over all earlier single-class .mcd-genre-tags / .mcd-3hc-stamp-wrap rules, even with !important. */
 .mcd-card--zine .mcd-genre-tags{
   background:#F0F0DA !important;
@@ -1480,13 +1178,11 @@ html,body{max-width:100%;overflow-x:clip}
   background:transparent !important;
   box-shadow:none !important;
   opacity:1 !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-card--gig .mcd-3hc-stamp-wrap{ max-width:150px !important; }
   .mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:140px !important; }
 }
 
-/* === V90 MOBILE ONLY — 3+4 + TROUBLE pill — desktop untouched === */
 @media(max-width:768px){
   /* 3: DROP A LINE — second star was dropping alone to line 2. Smaller, tighter, stays on one line. */
   .mcd-form-title{
@@ -1539,12 +1235,10 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V91 MOBILE ONLY — exact breaks you asked — desktop untouched === */
 .mcd-head-mobile{ display:none !important; }
 .mcd-trouble-mobile{ display:none !important; }
 .mcd-manifesto-line1, .mcd-manifesto-line2{ display:inline; }
-.mcd-footer-line2-a, .mcd-footer-line2-b, .mcd-footer-line2-sep{ display:inline; }
-@media(max-width:768px){
+.mcd-footer-line2-a, .mcd-footer-line2-b, .mcd-footer-line2-sep{ display:inline; }@media(max-width:768px) {
   /* 1. FULL ZINE — Row1 FULL ZINE & 24/7 RADIO, Row2 COMING SOON! + SPRING 2027 */
   .mcd-head-desktop{ display:none !important; }
   .mcd-head-mobile{
@@ -1612,8 +1306,6 @@ html,body{max-width:100%;overflow-x:clip}
   .mcd-footer-line2-b{ display:block !important; margin-top:4px !important; }
 }
 
-/* === V92 MOBILE ONLY — TROUBLE pill 2 lines exactly, not 4 === */
-/* V91 set 18px, too wide for Alfa Slab on 390px, so each line broke in the middle: TROUBLE / NEEDS FUEL / GREASE THE / JUKEBOX. */
 /* Fix: 14px + nowrap per line + tighter padding, so Row1 ✦ ✦ TROUBLE NEEDS FUEL and Row2 GREASE THE JUKEBOX ✦ ✦ each stay on one line. */
 @media(max-width:768px){
   .mcd-row-kofi .mcd-kofi,
@@ -1629,8 +1321,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V93 MOBILE ONLY — THREE HAUNTED CHORDS -2px to 17px, one line === */
-/* Was 19px (V91 +1), you wanted -1px from original 18px = 17px, so -2px from now. 17px + nowrap fits one line in the mint box on 390px. */
 @media(max-width:768px){
   .mcd-card--gig .mcd-torn .mcd-card-title{
     font-size:17px !important;
@@ -1639,7 +1329,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V94 MOBILE ONLY — TROUBLE pill going off screen === */
 /* Was width 100% + scale(1.02) + 7px shadow + rotate, so right edge went past the screen on 390px. Pull it in. */
 @media(max-width:768px){
   .mcd-row-kofi{
@@ -1660,7 +1349,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V95 MOBILE ONLY — Top bar Option A, two rows === */
 /* Row1: MCD pill left + ● TRANSMITTING right. Row2: FIRE IT UP full-width below. */
 /* CSS-only: .mcd-h-right becomes display:contents on mobile, so its children (dot + TRANSMITTING + FIRE IT UP) become direct flex children of the header and can be ordered. No HTML/JS change, player still works. */
 @media(max-width:768px){
@@ -1717,7 +1405,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V96 MOBILE ONLY — Top bar polish, 3 bits === */
 @media(max-width:768px){
   /* 2. Header height — gap 8px -> 6px, padding a touch tighter, less tall */
   #mcd-header-player{
@@ -1745,7 +1432,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V97 MOBILE ONLY — Row1 no pill, centred, no TRANSMITTING. Row2 FIRE IT UP untouched === */
 @media(max-width:768px){
   /* Row1: centre, no pill */
   #mcd-header-player{
@@ -1775,10 +1461,9 @@ html,body{max-width:100%;overflow-x:clip}
   .mcd-transmitting-txt{
     display:none !important;
   }
-  /* Row2 FIRE IT UP — no change, keep V96 as is */
+  
 }
 
-/* === V98 MOBILE ONLY — DEN RULES tape, pull in from edge === */
 /* Was left:-14px, so on 390px it sat ~6px from screen edge, felt like falling off. Now left:8px inside the cat wrap, bottom -6px, tilt -2deg -> -1deg, so it sits nicer. */
 @media(max-width:768px){
   .mcd-hero-mascot-wrap .mcd-tape--bottom{
@@ -1788,7 +1473,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V99 MOBILE ONLY — TROUBLE -1px, less tight === */
 /* Was 14px, very tight on 390px. Now 13px, same 2 lines, more breathing room. */
 @media(max-width:768px){
   .mcd-row-kofi .mcd-kofi,
@@ -1797,7 +1481,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V100 MOBILE ONLY — DEN +2px === */
 /* Was 80px min on mobile, now 82px. Subtle, still fits one line on 390px, just pops a touch more. */
 @media(max-width:768px){
   .den-line{
@@ -1805,7 +1488,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V101 MOBILE ONLY — TROUBLE less tight + FULL ZINE hierarchy === */
 @media(max-width:768px){
   /* TROUBLE: 13px -> 12px, more line-height, a touch more letter-spacing, lighter shadow, more padding — so letters don't touch */
   .mcd-row-kofi .mcd-kofi,
@@ -1829,7 +1511,6 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V102 MOBILE ONLY — FULL ZINE rows swapped === */
 /* Was Row1 FULL ZINE, Row2 COMING SOON! + SPRING. Now Row1 COMING SOON! + SPRING, Row2 FULL ZINE. CSS order swap, no HTML change. */
 @media(max-width:768px){
   .mcd-head-mobile{
@@ -1844,25 +1525,17 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* === V103 — Mobile seek fix + Desktop sync (JS) + TROUBLE container +2px === */
 @media(max-width:768px){
   /* TROUBLE container +2px: padding 14px 10px -> 16px 12px, so container is 2px bigger each side */
   .mcd-row-kofi .mcd-kofi,
   .mcd-s-pill--den.mcd-kofi{
     padding:16px 12px !important;
   }
-  /* Seek: harden touch-action so dragging seek can't scroll page on mobile */
-  #mcd-seek-wrap,
-  #mcd-seek-track{
-    touch-action:none !important;
-    overscroll-behavior:none !important;
-  }
-  #mcd-beauty-player{
-    overscroll-behavior:contain !important;
-  }
+  
+  
+  
 }
 
-/* === V104 — Footer to Player gap 4-5px, desktop + mobile === */
 /* Was: body 120px + footer 170px = 290px black below footer, player only ~112px tall, so ~160px dead gap. */
 /* Now: footer back to normal 12px, body padding only when player is shown, sized to player height + 5px gap. */
 #mcd-footer{
@@ -1870,44 +1543,15 @@ html,body{max-width:100%;overflow-x:clip}
 }
 body{
   padding-bottom:0 !important;
-}
-body:has(#mcd-beauty-player.show){
-  padding-bottom:133px !important; /* desktop: player ~112px + bottom 16px + 5px gap = 133px */
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   #mcd-footer{
     padding-bottom:12px !important;
   }
-  body:has(#mcd-beauty-player.show){
-    padding-bottom:140px !important; /* mobile: player docked bottom:0, ~135px tall + 5px gap, includes safe-area */
-  }
-  #mcd-beauty-player{
-    bottom:0 !important;
-  }
-}
-
-/* === V105 — Footer gap fix: V104 was 25px short, player covered footer by ~20px === */
-/* Real playing height: head 47 + now-spinning 24 + VU 6 + seek 48 + iframe hairline 6 + borders 6 = ~137px. + bottom 16 + gap 5 = 158px body padding. */
-/* Pre-play height is taller: iframe 60 + tap 30, seek 0 = ~167px, so need 188px before hairline. */
-body:has(#mcd-beauty-player.show){
-  padding-bottom:188px !important; /* before hairline: taller player */
-}
-body:has(#mcd-beauty-player.show.is-hairline){
-  padding-bottom:158px !important; /* playing: 137px + 16px bottom + 5px gap = 158px */
 }
 body{
   transition:padding-bottom 1.2s ease-in-out !important;
 }
-@media(max-width:768px){
-  body:has(#mcd-beauty-player.show){
-    padding-bottom:192px !important; /* mobile pre-play: + safe-area */
-  }
-  body:has(#mcd-beauty-player.show.is-hairline){
-    padding-bottom:162px !important; /* mobile playing: 137px + safe-area ~20px + 5px gap */
-  }
-}
 
-/* === V106 — WHAT'S BREWING — kill 6x COMING SOON, one header instead === */
 /* COMING SOON was .mcd-mini::after — was only hidden on mobile, now hidden everywhere */
 .mcd-mini::after{
   display:none !important;
@@ -1930,8 +1574,7 @@ body{
   transform:rotate(-2deg);
   margin:4px 0 12px 0;
   white-space:nowrap;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-brewing{
     font-size:11.5px;
     padding:3px 8px;
@@ -1939,33 +1582,28 @@ body{
   }
 }
 
-/* === V107 — BREWING centered + VOTE black = 3 colours x2 each === */
 /* Was left-aligned, now centered over the 2-col grid. Size stays 13px / 11.5px mobile — small intro, not a second big title. */
 .mcd-brewing{
   align-self:center !important;
   margin:4px auto 12px auto !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-brewing{
     margin:2px auto 10px auto !important;
   }
 }
 
-/* === V108 — Zine intro -1px + 2 rows === */
 /* Was 14px, now 13px. HTML splits into 2 rows with <br>: Row1 Midnight howls... notes. Row2 Radio runs 24/7... Spring 2027. */
 .mcd-card--zine .mcd-card-text{
   font-size:13px !important;
 }
 
-/* === V109 — 3HC smaller + genre faded border + genre -1px + ROCK & ROLL === */
 /* 1. 3HC: 160px -> 140px desktop, 140px -> 120px mobile, wrap 170->150 / 150->130. Same border/shadow/tilt/torn, just smaller, balances cards. */
 .mcd-card--gig .mcd-3hc-stamp-wrap{
   max-width:150px !important;
 }
 .mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp{
   width:140px !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-card--gig .mcd-3hc-stamp-wrap{ max-width:130px !important; }
   .mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp{ width:120px !important; }
 }
@@ -1979,14 +1617,12 @@ body{
 /* 3. Genre text: 11px -> 10px desktop, 9.5px -> 8.5px mobile */
 .mcd-card--zine .mcd-genre-tags{
   font-size:10px !important;
-}
-@media(max-width:599px){
+}@media(max-width:599px) {
   .mcd-card--zine .mcd-genre-tags{
     font-size:9.5px !important;
   }
 }
 
-/* === V110 — Bring elements closer, safe tightening only (no font/size/layout change) === */
 /* Screenshot 1 — ZINE: big gaps between intro -> genre -> BREWING */
 /* Was: intro gap 12px, genre margin 14px 4px 16px + padding 10px 8px, brewing margin 4px auto 12px */
 /* Now: intro gap 8px, genre margin 8px 4px 8px + padding 8px 8px, brewing margin 2px auto 8px — saves ~22px, all closer */
@@ -1999,8 +1635,7 @@ body{
 }
 .mcd-brewing{
   margin:2px auto 8px auto !important;
-}
-@media(max-width:768px){
+}@media(max-width:768px) {
   .mcd-brewing{
     margin:2px auto 8px auto !important;
   }
@@ -2017,7 +1652,6 @@ body{
   padding:6px 12px 2px 12px !important;
 }
 
-/* === V111 — Header center + TRANSMITTING to 12px, desktop only === */
 /* Center: was LIVE WIRES COMING 2027 at 13px / 0.14em, now FULL SCHEDULE + LIVE WIRES • 2027 at 12px / 0.12em — longer line, -1px keeps same width, same balance. */
 /* TRANSMITTING: was 13px, now 12px to match center, same font/weight/spacing, dot unchanged. */
 /* Desktop only (min-width:769px) — mobile stays as is: center hidden, TRANSMITTING stays 11px in row1. */
@@ -2032,14 +1666,11 @@ body{
   }
 }
 
-/* === V112 — Left card pill -> mint box -4px === */
 /* Was: container padding 12px top + inner 4px = 16px, plus flex center extra. Now container top 12px -> 8px, saves 4px, pill sits closer to mint box. Safe, no font/layout change. */
 .mcd-card--gig .mcd-card-body > div:last-child{
   padding-top:8px !important;
 }
 
-/* === V113 — Left card pill -> mint box, REAL fix === */
-/* V112 only cut padding 12px->8px, but container had justify-content:center + flex:1, so centering ate half of it — invisible on Live Server. */
 /* Now: justify-content center -> flex-start, so mint box sits at top, close to pill. Padding-top 8px stays. */
 /* Net: gap was ~16px padding + ~10px centering = ~26px, now ~12px (8px + 4px inner) — visible. */
 .mcd-card--gig .mcd-card-body > div:last-child{
@@ -2047,7 +1678,6 @@ body{
   justify-content:flex-start !important;
 }
 
-/* === V114 — Intro + genre as ONE paragraph, 3 rows centered, NO container === */
 /* Was: intro 2 rows + genre in cream card (bg, 3px border, shadow, torn, padding 8px, margin 8px). Now: kill the box, keep 3 rows as one centered paragraph. */
 /* CSS only, HTML unchanged, so we can revert in one version if we don't like it. */
 .mcd-card--zine .mcd-zine-intro{
@@ -2072,8 +1702,7 @@ body{
   text-align:center !important;
   font-size:11px !important;
   line-height:1.6 !important;
-}
-@media(max-width:599px){
+}@media(max-width:599px) {
   .mcd-card--zine .mcd-genre-tags{
     font-size:9.5px !important;
     line-height:1.9 !important;
@@ -2085,7 +1714,6 @@ body{
   }
 }
 
-/* === V116 — MOBILE ONLY: intro -1px + tighter + TROUBLE -1px + more breathing === */
 /* Desktop untouched. */
 /* 1. Paragraph (intro + genre): was 13px / 1.65 on mobile, now 12px / 1.4, still centered. Wraps less: 6 rows -> ~5 rows, tighter. NOT 11px — 11px mono on phone gets hard to read, 12px is the floor. Genre line-height 1.9 -> 1.5 to match tighter paragraph. */
 @media(max-width:768px){
@@ -2104,7 +1732,6 @@ body{
   }
 }
 
-/* === V117 — Intro one paragraph + TROUBLE not touching border, MOBILE ONLY === */
 /* 1. Intro is now one continuous paragraph in HTML (no <br>), so it flows naturally, no forced break. Desktop + mobile both flow, still centered. */
 /* 2. TROUBLE was touching dashed border: nowrap + 11px + 0.03em spacing + 12px side padding + narrow container. Fix: font 11px -> 10px, spacing 0.03em -> 0 (text narrower), side padding 12px -> 16px (more air), container wider 0 8px -> 0 4px + width calc 100%-8px -> 100%-4px. Net gap grows ~8-10px, still 2 lines, same stars. */
 @media(max-width:768px){
@@ -2121,37 +1748,17 @@ body{
   }
 }
 
-/* === V118 — Intro wording only: Radio -> Web Radio + skull === */
-/* No layout change, same one-paragraph flow from V117. */
-
-/* === V119 — Random player + new FB, no CSS change, JS+HTML only === */
-
-/* === V120 — Autoplay next tape, loop. JS only, no CSS change === */
-
-/* === V121 — Autoplay fallback: detect end by position, not only ended event === */
-
-/* === V122 — Symptom A fix: drop isPlaying check, Mixcloud fires pause first so ended was blocked === */
-
-/* === V123 — use widget.load(feed,true) not iframe swap, keeps play gesture === */
-
-/* === V124 — auto-advance always starts at 0:00, clear next tape saved position === */
-
-/* === V126 — YouTube link only. Wide screen STAYS capped at 1200px, cupped in centre, per banner safe-zone rule. No widening. === */
-
-/* === V127 — WHAT'S BREWING bigger, Option A === */
 /* Was 13px desktop / 11.5px mobile, padding 4x10 — read like a tag. Now 16px / 14px, padding 6x14 — reads as section header, still smaller than FISTFUL 26px, same mint, centered, tilt. */
 .mcd-brewing {
   font-size: 16px !important;
   padding: 6px 14px !important;
-}
-@media (max-width: 768px) {
+}@media (max-width: 768px) {
   .mcd-brewing {
     font-size: 14px !important;
     padding: 5px 12px !important;
   }
 }
 
-/* === V128 — FOLLOW THE PACK = mint pill like WHAT'S BREWING, red star kept, container NOT bigger === */
 /* Was plain mint text 13px, margin 6px top / 10px bottom. Now pill 16px / 14px mobile, but top margin 0 and bottom 4px + tighter padding 4x12, so total height stays the same. */
 .mcd-follow-heading {
   display: inline-flex !important;
@@ -2174,8 +1781,7 @@ body{
 .mcd-follow-heading .mcd-follow-star {
   color: var(--brick) !important;
   margin-left: 2px !important;
-}
-@media (max-width: 768px) {
+}@media (max-width: 768px) {
   .mcd-follow-heading {
     font-size: 14px !important;
     padding: 3px 10px !important;
@@ -2183,7 +1789,6 @@ body{
   }
 }
 
-/* === V129 — FOLLOW THE PACK centered (desktop fix) === */
 /* Was inline-flex + margin auto, which doesn't center when parent is block. Now flex + width fit-content + margin-left/right auto = truly centered on desktop, stays centered on mobile. No size, no padding, no container growth. */
 .mcd-follow-heading {
   display: flex !important;
@@ -2194,34 +1799,17 @@ body{
   margin-right: auto !important;
 }
 
-/* === V130 — FOLLOW THE PACK a touch smaller, still pill, still centered === */
 /* Was 16px / 14px mobile, padding 4x12 — a bit big, fought WHAT'S BREWING. Now 14px / 12.5px, padding 3x10 — sub-header, not main header. Red star kept, centered, container same or hair smaller, NOT bigger. */
 .mcd-follow-heading {
   font-size: 14px !important;
   padding: 3px 10px !important;
-}
-@media (max-width: 768px) {
+}@media (max-width: 768px) {
   .mcd-follow-heading {
     font-size: 12.5px !important;
     padding: 3px 10px !important;
   }
 }
 
-/* === V135 CLEAN from V130 — only Mixcloud iframe scrollbar, page scrolling untouched === */
-/* Tiny bar under 111:15 is the Mixcloud iframe inside the player, not the page */
-#mcd-mixcloud, #mcd-beauty-player iframe {
-  display: block !important;
-  overflow: hidden !important;
-  border: 0 !important;
-  scrollbar-width: none !important;
-}
-#mcd-mixcloud::-webkit-scrollbar, #mcd-beauty-player iframe::-webkit-scrollbar {
-  display: none !important; width: 0 !important; height: 0 !important;
-}
-#mcd-beauty-player { overflow: hidden !important; }
-/* No html/body overflow lock — wheel scrolling stays as V130 */
-
-/* === V136 — WIDE SCREEN FIX — the real bug: old V48 rule set max-width:100% globally, stretching desktop === */
 /* That rule was for mobile only, but it overrode the 1200px cap on desktop. Restore cap on desktop only. */
 @media (min-width: 769px) {
   #mcd-header-player, #mcd-hero, #mcd-main {
@@ -2231,26 +1819,46 @@ body{
     margin-right: auto !important;
     box-sizing: border-box !important;
   }
-  /* TROUBLE stays as V130 — dark shadow, old size, not touched */
+  
 }
-/* No html/body overflow lock — wheel scrolling stays as V130 */
-/* === V142 FINAL LOCKED — ROLL WITH THE CREW + BURN RUBBER + follow gap 10 + star +2 + social gap +4 === */
+
 .mcd-card--zine .mcd-genre-tags{ white-space:normal !important; }
 .mcd-genre-line1, .mcd-genre-line2{ white-space:normal !important; }
-/* === V143 — Genre +1px only === */
-.mcd-card--zine .mcd-genre-tags{ font-size:12px !important; }
-@media(max-width:599px){ .mcd-card--zine .mcd-genre-tags{ font-size:10.5px !important; } }
 
-/* === V148 — Hide sliver without breaking page scroll. Shadow stays 4px. Page uses clip, not hidden, so mouse wheel still works. === */
-#mcd-beauty-player iframe{ scrollbar-width:none; }
-#mcd-beauty-player iframe::-webkit-scrollbar{ display:none; }
+.mcd-card--zine .mcd-genre-tags{ font-size:12px !important; }@media(max-width:599px) { .mcd-card--zine .mcd-genre-tags{ font-size:10.5px !important; } }
 html, body{ overflow-x:clip; }
 
-/* V175 SINGLE BAR — one play, one seek: Mixcloud's. Den header keeps BASEMENT SIGNAL + TAPE ROLLING + EJECT only. */
-#mcd-beauty-player .pill{display:none !important;}
-#mcd-beauty-player.is-playing .pill{display:inline-block !important;}
-#mcd-beauty-player #mcd-beauty-play{display:none !important;}
-#mcd-seek-wrap #mcd-seek-track, #mcd-seek-wrap #mcd-seek-fill, #mcd-seek-wrap #mcd-seek-thumb{display:none !important;}
-#mcd-seek-wrap #mcd-seek-times{display:flex !important; justify-content:center !important;}
-#mcd-tap-to-start{display:none !important;}
-#mcd-beauty-player iframe{height:60px !important; min-height:60px !important; flex:0 0 60px !important; opacity:1 !important; pointer-events:auto !important; visibility:visible !important; display:block !important;}
+
+/* === V215 MOBILE STRETCH — clean, no overrides, no hairline, no fake seek === */
+#mcd-player{position:fixed;bottom:16px;right:16px;width:460px;max-width:calc(100vw - 32px);background:#050505;border:3px solid #050505;border-radius:8px;box-shadow:4px 4px 0 #050505;z-index:10002;overflow:hidden;display:none;flex-direction:column;}
+#mcd-player.show{display:flex;}
+#mcd-player .mcd-player-head-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+#mcd-player .mcd-player-head{background:#F0F0DA;border-bottom:3px solid #050505;padding:10px 14px;}
+#mcd-player .mcd-player-brand{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap;}
+#mcd-player .mcd-player-dot{width:12px;height:12px;border-radius:50%;background:#9BDBC1;border:2px solid #050505;box-sizing:border-box;flex-shrink:0;}
+#mcd-player .mcd-player-brand-text{font-family:'Alfa Slab One',cursive;font-style:italic;font-size:14px;color:#050505;letter-spacing:0.04em;white-space:nowrap;}
+#mcd-player .mcd-player-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0;}
+#mcd-player #mcd-play{background:#CC2D30;color:#F0F0DA;border:2px solid #050505;border-radius:4px;padding:5px 14px;min-width:84px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.04em;cursor:pointer;box-shadow:3px 3px 0 #050505;white-space:nowrap;height:28px;display:inline-flex;align-items:center;justify-content:center;}
+#mcd-player #mcd-next,#mcd-player #mcd-eject{background:#F0F0DA;color:#050505;border:2px solid #050505;border-radius:4px;padding:5px 8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.04em;cursor:pointer;box-shadow:3px 3px 0 #050505;white-space:nowrap;height:28px;display:inline-flex;align-items:center;justify-content:center;}
+#mcd-player #mcd-play:active,#mcd-player #mcd-next:active,#mcd-player #mcd-eject:active{transform:translate(2px,2px);box-shadow:0 0 0 #050505;}
+#mcd-player .mcd-player-marquee{background:#F0F0DA;border-bottom:2px solid #050505;height:28px;overflow:hidden;display:flex;align-items:center;padding:0 8px;}
+#mcd-player .mcd-player-marquee-inner{display:block;white-space:nowrap;animation:none;text-align:center;}
+#mcd-player.is-playing .mcd-player-marquee-inner{display:inline-block;text-align:left;animation:mcd-fresh-marquee 22s linear infinite;}
+#mcd-player .mcd-player-marquee-inner span{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.06em;color:#050505;white-space:nowrap;padding-right:40px;}
+@keyframes mcd-fresh-marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+#mcd-player iframe{width:100%;height:60px;min-height:60px;border:0;display:block;background:#000;}
+/* Footer lift — exact player height + gap, no extra black window */
+body:has(#mcd-player.show){padding-bottom:170px !important;}
+body.mcd-player-open{padding-bottom:170px !important;}
+body.mcd-player-open #mcd-footer{margin-bottom:10px !important;}
+@media(max-width:768px){
+  #mcd-player{bottom:0;right:0;left:0;width:100%;max-width:100%;border-radius:8px 8px 0 0;transform:none;padding-bottom:env(safe-area-inset-bottom, 0px);box-shadow:0 -4px 0 #050505;}
+  #mcd-player .mcd-player-head{padding:8px 10px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;}
+  #mcd-player .mcd-player-brand-text{font-size:12px;}
+  #mcd-player .mcd-player-controls{flex:0 0 100%;width:100%;display:flex;flex-wrap:nowrap;justify-content:space-between;gap:6px;}
+  #mcd-player #mcd-play,#mcd-player #mcd-next,#mcd-player #mcd-eject{font-size:12px;padding:8px 6px;box-sizing:border-box;min-width:0;white-space:nowrap;}
+  #mcd-player #mcd-play{flex:1.4 1 0%;}
+  #mcd-player #mcd-next,#mcd-player #mcd-eject{flex:1 1 0%;}
+  body:has(#mcd-player.show){padding-bottom:200px !important;}
+}
+
