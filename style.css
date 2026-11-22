@@ -1829,9 +1829,9 @@ body{
 html, body{ overflow-x:clip; }
 
 
-/* === V224 PLAY LOAD — clean, no overrides, no hairline, no fake seek === */
-#mcd-player{position:fixed;bottom:16px;right:16px;width:460px;max-width:calc(100vw - 32px);background:#050505;border:3px solid #050505;border-radius:8px;box-shadow:4px 4px 0 #050505;z-index:10002;overflow:hidden;display:none;flex-direction:column;}
-#mcd-player.show{display:flex;}
+/* === V225 RENDERED HIDDEN — clean, no overrides, no hairline, no fake seek === */
+#mcd-player{position:fixed;bottom:16px;right:16px;width:460px;max-width:calc(100vw - 32px);background:#050505;border:3px solid #050505;border-radius:8px;box-shadow:4px 4px 0 #050505;z-index:10002;overflow:hidden;display:flex;flex-direction:column;visibility:hidden;transform:translateY(110%);pointer-events:none;}
+#mcd-player.show{visibility:visible;transform:none;pointer-events:auto;}
 #mcd-player .mcd-player-head-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
 #mcd-player .mcd-player-head{background:#F0F0DA;border-bottom:3px solid #050505;padding:10px 14px;}
 #mcd-player .mcd-player-brand{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap;}
@@ -1852,7 +1852,7 @@ body:has(#mcd-player.show){padding-bottom:170px !important;}
 body.mcd-player-open{padding-bottom:170px !important;}
 body.mcd-player-open #mcd-footer{margin-bottom:10px !important;}
 @media(max-width:768px){
-  #mcd-player{bottom:0;right:0;left:0;width:100%;max-width:100%;border-radius:8px 8px 0 0;transform:none;padding-bottom:env(safe-area-inset-bottom, 0px);box-shadow:0 -4px 0 #050505;}
+  #mcd-player{bottom:0;right:0;left:0;width:100%;max-width:100%;border-radius:8px 8px 0 0;transform:translateY(110%);visibility:hidden;pointer-events:none;padding-bottom:env(safe-area-inset-bottom, 0px);box-shadow:0 -4px 0 #050505;}
   #mcd-player .mcd-player-head{padding:8px 10px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;}
   #mcd-player .mcd-player-brand-text{font-size:12px;}
   #mcd-player .mcd-player-controls{flex:0 0 100%;width:100%;display:flex;flex-wrap:nowrap;justify-content:space-between;gap:6px;}
@@ -1869,3 +1869,5 @@ body.mcd-player-open #mcd-footer{margin-bottom:10px !important;}
 @keyframes mcd-vu-dash{from{background-position:0 0;}to{background-position:-24px 0;}}
 
 #mcd-player #mcd-play,#mcd-player #mcd-next,#mcd-player #mcd-eject{font-variant-emoji:text;}
+
+@media(max-width:768px){ #mcd-player.show{visibility:visible !important;transform:none !important;pointer-events:auto !important;} }

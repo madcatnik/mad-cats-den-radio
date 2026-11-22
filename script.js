@@ -1,4 +1,4 @@
-/* V224 PLAY LOAD — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
+/* V225 RENDERED HIDDEN — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
 document.addEventListener('DOMContentLoaded', () => {
   // Contact form — kept from V201, untouched
   const contactForm = document.querySelector('form[name="backroom-howls"]');
@@ -141,8 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function bindWidget(){
     if (isBinding) return;
     if (!window.Mixcloud || !iframe) { setTimeout(bindWidget, 500); return; }
-    // Widget API needs visible iframe — if player closed, retry when opened
-    if (!player.classList.contains('show')) { setTimeout(bindWidget, 800); return; }
+    // V225: Player is rendered but hidden (visibility hidden, off-screen), not display:none, so bind on page load, widget is ready before first click.
     isBinding = true;
     try {
       const w = makeWidget();
