@@ -1,4 +1,4 @@
-/* V226 FIRE OPENS ONLY — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
+/* V227 PLAY LOAD — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
 document.addEventListener('DOMContentLoaded', () => {
   // Contact form — kept from V201, untouched
   const contactForm = document.querySelector('form[name="backroom-howls"]');
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
       widget = w;
       widget.ready.then(() => {
         widgetReady = true; isBinding = false;
-        if (pendingPlay) { pendingPlay = false; try { const rp = widget.play(); if (rp && rp.then) rp.then(()=>{}).catch(()=>{}); } catch(e){} }
+        if (pendingPlay) { pendingPlay = false; try { const rp = widget.load(currentTape.feed, true); if (rp && rp.then) rp.then(()=>{}).catch(()=>{}); } catch(e){} }
         if (!widget._mcdV207Bound) {
           widget._mcdV207Bound = true;
           try {
@@ -207,33 +207,19 @@ document.addEventListener('DOMContentLoaded', () => {
     openPlayer();
     if (isPlaying) return;
     isAutoNexting = false;
-    // V224: If widget ready, try play() first, then fall back to load() like NEXT does, because play() is flaky but load() works.
+    // V227 LAST TRY: PLAY uses load() synchronously in the click, exactly like NEXT which works. No play() at all — play() from parent is blocked.
     if (widget && widgetReady) {
       try {
-        // If widget is on wrong tape, load correct tape and play, don't reload iframe.
-        if (iframe && !iframe.src.includes(encodeURIComponent(currentTape.feed)) && widget.load) {
-          const r2 = widget.load(currentTape.feed, true);
-          isPlaying = true; setMarquee(); startPosTimer();
-          pendingSeek = 0; lastKnownPos = 0;
-          if (r2 && r2.then) r2.then(()=>{}).catch(()=>{});
-          return;
-        }
         playEventFired = false;
         const attemptPos = lastKnownPos;
-        const r = widget.play();
+        // If on wrong tape, seek from 0, else seek to where we paused.
+        const isWrongTape = iframe && !iframe.src.includes(encodeURIComponent(currentTape.feed));
+        const r2 = widget.load(currentTape.feed, true);
         isPlaying = true; setMarquee(); startPosTimer();
-        pendingSeek = lastKnownPos;
-        if (r && r.then) r.then(()=>{}).catch(()=>{});
-        // Fallback: if no real play event in 1.5s, use load() — same path as NEXT, which works.
-        setTimeout(()=>{
-          if (isPlaying && !playEventFired) {
-            try {
-              pendingSeek = attemptPos;
-              const r2 = widget.load(currentTape.feed, true);
-              if (r2 && r2.then) r2.then(()=>{}).catch(()=>{});
-            } catch(e){}
-          }
-        }, 1500);
+        pendingSeek = isWrongTape ? 0 : attemptPos;
+        if (!isWrongTape) lastKnownPos = attemptPos;
+        if (isWrongTape) lastKnownPos = 0;
+        if (r2 && r2.then) r2.then(()=>{}).catch(()=>{});
         return;
       } catch(e) { /* fall through to wait + fallback */ }
     }
