@@ -119,16 +119,30 @@ document.addEventListener('DOMContentLoaded', () => {
     return u;
   }
 
-  // V241: True random tape on every load (avoids repeating the exact same tape on refresh)
+  // V245: Resume within 30min if user refreshes mid-tape; otherwise pick a fresh random tape
   let currentIdx = Math.floor(Math.random() * TAPES.length);
+  let resumePos = 0;
+  let resumedFromRefresh = false;
   try {
-    const lastStartId = sessionStorage.getItem('mcd_last_start_id');
-    if (TAPES.length > 1 && lastStartId && TAPES[currentIdx].id === lastStartId) {
-      currentIdx = (currentIdx + 1) % TAPES.length;
+    const savedId = localStorage.getItem('mcd_fresh_tape_id');
+    const savedPos = parseFloat(localStorage.getItem('mcd_fresh_tape_pos') || '0');
+    const savedAt = parseInt(localStorage.getItem('mcd_fresh_paused_at') || '0', 10);
+    if (savedId && savedAt && (Date.now() - savedAt) < RESUME_WINDOW && savedPos > 0) {
+      const si = TAPES.findIndex(t => t.id === savedId);
+      if (si !== -1) {
+        currentIdx = si;
+        resumePos = savedPos;
+        resumedFromRefresh = true;
+      }
+    }
+    if (!resumedFromRefresh) {
+      const lastStartId = sessionStorage.getItem('mcd_last_start_id');
+      if (TAPES.length > 1 && lastStartId && TAPES[currentIdx].id === lastStartId) {
+        currentIdx = (currentIdx + 1) % TAPES.length;
+      }
     }
     sessionStorage.setItem('mcd_last_start_id', TAPES[currentIdx].id);
   } catch(e){}
-  let resumePos = 0;
 
   let currentTape = TAPES[currentIdx];
   let loadedTapeId = currentTape.id;
@@ -141,6 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastKnownPos = resumePos;
   let tapeDuration = 0;
   let isAutoNexting = false;
+  let lastAutoNextAt = 0;
+  let lastSwitchAt = 0;
+  let seekRetryCount = 0;
 
   // Own timer — backup if Mixcloud getPosition fails. PLAY start + elapsed = position.
   let playStartTime = 0;
@@ -210,9 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!widget || !widgetReady) { pendingSeek = pos; return; }
     try {
       const r = widget.seek(pos);
-      if (r && r.then) r.then((ok)=>{ if (ok) { pendingSeek = 0; } else { pendingSeek = pos; } }).catch(()=>{ pendingSeek = pos; });
-      else pendingSeek = 0;
-    } catch(e){ pendingSeek = pos; }
+      if (r && r.then) r.then(()=>{}).catch(()=>{});
+    } catch(e){}
   }
 
   function bindWidget(){
@@ -287,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // in case Mixcloud's iframe drops postMessage play/pause events.
   setInterval(() => {
     if (!player.classList.contains('show') || !widget || !widgetReady) return;
+    const inSwitchGrace = (Date.now() - lastSwitchAt) < 5000;
     try {
       if (widget.getIsPaused) {
         const p = widget.getIsPaused();
@@ -299,7 +316,16 @@ document.addEventListener('DOMContentLoaded', () => {
               isPlaying = true;
               setMarquee();
               startPosTimer();
-            } else if (paused === true && isPlaying) {
+              if (pendingSeek && pendingSeek > 0) {
+                seekRetryCount = 0;
+                const s = pendingSeek;
+                setTimeout(() => { trySeek(s); }, 600);
+              }
+            } else if (paused === true && isPlaying && !inSwitchGrace) {
+              if (tapeDuration > 0 && lastKnownPos >= tapeDuration - 6) {
+                autoNext();
+                return;
+              }
               isPlaying = false;
               setMarquee();
               stopPosTimer();
@@ -309,14 +335,29 @@ document.addEventListener('DOMContentLoaded', () => {
           }).catch(() => {});
         }
       }
-      if (isPlaying) {
-        if (tapeDuration <= 0 && widget.getDuration) {
-          widget.getDuration().then((d) => { if (d && d > 0) tapeDuration = d; }).catch(() => {});
+      if (isPlaying && !inSwitchGrace) {
+        if (widget.getDuration) {
+          widget.getDuration().then((d) => { if (typeof d === 'number' && d > 0) tapeDuration = d; }).catch(() => {});
         }
         if (widget.getPosition) {
           widget.getPosition().then((pos) => {
             if (typeof pos === 'number' && pos > 0) {
-              lastKnownPos = pos;
+              if (pendingSeek > 0) {
+                if (pos >= pendingSeek - 5) {
+                  pendingSeek = 0;
+                  seekRetryCount = 0;
+                  lastKnownPos = pos;
+                } else if (seekRetryCount < 12) {
+                  seekRetryCount++;
+                  trySeek(pendingSeek);
+                } else {
+                  pendingSeek = 0;
+                  seekRetryCount = 0;
+                  lastKnownPos = pos;
+                }
+              } else {
+                lastKnownPos = pos;
+              }
               if (tapeDuration > 0 && pos >= tapeDuration - 3) {
                 autoNext();
               }
@@ -407,31 +448,45 @@ document.addEventListener('DOMContentLoaded', () => {
     return n;
   }
   function autoNext(){
-    if (isAutoNexting) return;
+    const now = Date.now();
+    if (isAutoNexting || (now - lastAutoNextAt) < 8000) return;
     isAutoNexting = true;
+    lastAutoNextAt = now;
+    lastSwitchAt = now;
     const nIdx = pickNextIdx();
     const nTape = TAPES[nIdx];
-    // If widget is ready, try load() first — no reload, keeps playing
+    currentIdx = nIdx;
+    currentTape = nTape;
+    stopPosTimer();
+    lastKnownPos = 0; pendingSeek = 0; seekRetryCount = 0; tapeDuration = 0;
+    try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
+    try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
+    isPlaying = true; setMarquee(); startPosTimer();
+    loadedTapeId = nTape.id;
+
+    const fallbackReloadSameTarget = () => {
+      isAutoNexting = false;
+      widget = null; widgetReady = false; isBinding = false;
+      if (iframe) iframe.setAttribute('src', tapeSrc(nTape, true));
+    };
+
     if (widget && widgetReady && widget.load) {
-      currentIdx = nIdx; currentTape = nTape;
-      stopPosTimer();
-      lastKnownPos = 0; pendingSeek = 0; tapeDuration = 0;
-      try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
-      try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
-      isPlaying = true; setMarquee(); startPosTimer();
       try {
-        loadedTapeId = nTape.id;
         const r = widget.load(nTape.feed, true);
-        if (r && r.then) r.then(()=>{ isAutoNexting = false; try { widget.getDuration().then((d)=>{ if (d>0) tapeDuration = d; }).catch(()=>{}); } catch(e){} }).catch(()=>{ isAutoNexting = false; playNext(true); });
-        else { isAutoNexting = false; }
-      } catch(e){ isAutoNexting = false; playNext(true); }
-      // Safety: if load did not start playing in 3s, fall back to reload
-      setTimeout(()=>{ if (isAutoNexting) { isAutoNexting = false; playNext(true); } }, 3000);
+        if (r && r.then) {
+          r.then(() => {
+            isAutoNexting = false;
+          }).catch(fallbackReloadSameTarget);
+        } else {
+          isAutoNexting = false;
+        }
+      } catch(e) {
+        fallbackReloadSameTarget();
+      }
+      setTimeout(() => { if (isAutoNexting) fallbackReloadSameTarget(); }, 3500);
       return;
     }
-    // No widget — fall back to reload with autoplay
-    isAutoNexting = false;
-    playNext(true);
+    fallbackReloadSameTarget();
   }
 
   function playNext(autoplay){
@@ -440,6 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
       do { nextIdx = Math.floor(Math.random() * TAPES.length); } while (nextIdx === currentIdx);
     }
     isAutoNexting = false;
+    lastSwitchAt = Date.now();
     const nTape = TAPES[nextIdx];
     // V223: If widget ready, use load() — openPlayer BEFORE load, not after, so bindWidget doesn't make a second widget and kill the load.
     if (widget && widgetReady && widget.load && autoplay) {
@@ -488,7 +544,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // V229: FIRE IT UP opens the deck so the visitor taps Mixcloud's highlighted play button; once unlocked, it toggles pause/play.
   if (fireBtn) fireBtn.addEventListener('click', () => { if (!player.classList.contains('show')) { openPlayer(); return; } if (isPlaying) pauseCurrent(); else if (hasUnlockedAudio) playCurrent(); });
 
-  window.addEventListener('beforeunload', () => { syncPosFromTimer(); if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now()); });
+  function persistNow(){
+    syncPosFromTimer();
+    if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now());
+  }
+  setInterval(() => { if (isPlaying) persistNow(); }, 2000);
+  window.addEventListener('beforeunload', persistNow);
+  window.addEventListener('pagehide', persistNow);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') persistNow(); });
 
   setMarquee();
 });
