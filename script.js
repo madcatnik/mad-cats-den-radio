@@ -119,17 +119,16 @@ document.addEventListener('DOMContentLoaded', () => {
     return u;
   }
 
+  // V241: True random tape on every load (avoids repeating the exact same tape on refresh)
   let currentIdx = Math.floor(Math.random() * TAPES.length);
-  let resumePos = 0;
   try {
-    const savedId = localStorage.getItem('mcd_fresh_tape_id');
-    const savedPos = parseFloat(localStorage.getItem('mcd_fresh_tape_pos') || '0');
-    const savedAt = parseInt(localStorage.getItem('mcd_fresh_paused_at') || '0', 10);
-    if (savedId && savedAt && (Date.now() - savedAt) < RESUME_WINDOW && savedPos > 0) {
-      const si = TAPES.findIndex(t => t.id === savedId);
-      if (si !== -1) { currentIdx = si; resumePos = savedPos; }
+    const lastStartId = sessionStorage.getItem('mcd_last_start_id');
+    if (TAPES.length > 1 && lastStartId && TAPES[currentIdx].id === lastStartId) {
+      currentIdx = (currentIdx + 1) % TAPES.length;
     }
+    sessionStorage.setItem('mcd_last_start_id', TAPES[currentIdx].id);
   } catch(e){}
+  let resumePos = 0;
 
   let currentTape = TAPES[currentIdx];
   let loadedTapeId = currentTape.id;
@@ -262,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }
               if (typeof duration === 'number' && duration > 0) tapeDuration = duration;
               // Fallback auto-next: if progress says we are at the end, flip
-              if (typeof position === 'number' && typeof duration === 'number' && duration > 0 && position >= duration - 2) {
+              if (typeof position === 'number' && typeof duration === 'number' && duration > 0 && position >= duration - 3) {
                 autoNext();
               }
             });
@@ -287,26 +286,43 @@ document.addEventListener('DOMContentLoaded', () => {
   // V231: Sync UI (marquee, VU, HIT PLAY hide) with Mixcloud's actual play/pause state every 1s while open,
   // in case Mixcloud's iframe drops postMessage play/pause events.
   setInterval(() => {
-    if (!player.classList.contains('show') || !widget || !widgetReady || !widget.getIsPaused) return;
+    if (!player.classList.contains('show') || !widget || !widgetReady) return;
     try {
-      const p = widget.getIsPaused();
-      if (p && p.then) {
-        p.then((paused) => {
-          if (paused === false && !isPlaying) {
-            playEventFired = true;
-            hasUnlockedAudio = true;
-            if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; }
-            isPlaying = true;
-            setMarquee();
-            startPosTimer();
-          } else if (paused === true && isPlaying) {
-            isPlaying = false;
-            setMarquee();
-            stopPosTimer();
-            syncPosFromTimer();
-            if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now());
-          }
-        }).catch(() => {});
+      if (widget.getIsPaused) {
+        const p = widget.getIsPaused();
+        if (p && p.then) {
+          p.then((paused) => {
+            if (paused === false && !isPlaying) {
+              playEventFired = true;
+              hasUnlockedAudio = true;
+              if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; }
+              isPlaying = true;
+              setMarquee();
+              startPosTimer();
+            } else if (paused === true && isPlaying) {
+              isPlaying = false;
+              setMarquee();
+              stopPosTimer();
+              syncPosFromTimer();
+              if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now());
+            }
+          }).catch(() => {});
+        }
+      }
+      if (isPlaying) {
+        if (tapeDuration <= 0 && widget.getDuration) {
+          widget.getDuration().then((d) => { if (d && d > 0) tapeDuration = d; }).catch(() => {});
+        }
+        if (widget.getPosition) {
+          widget.getPosition().then((pos) => {
+            if (typeof pos === 'number' && pos > 0) {
+              lastKnownPos = pos;
+              if (tapeDuration > 0 && pos >= tapeDuration - 3) {
+                autoNext();
+              }
+            }
+          }).catch(() => {});
+        }
       }
     } catch(e) {}
   }, 1000);
