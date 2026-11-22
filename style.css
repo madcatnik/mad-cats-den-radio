@@ -1829,7 +1829,7 @@ body{
 html, body{ overflow-x:clip; }
 
 
-/* === V215 MOBILE STRETCH — clean, no overrides, no hairline, no fake seek === */
+/* === V224 PLAY LOAD — clean, no overrides, no hairline, no fake seek === */
 #mcd-player{position:fixed;bottom:16px;right:16px;width:460px;max-width:calc(100vw - 32px);background:#050505;border:3px solid #050505;border-radius:8px;box-shadow:4px 4px 0 #050505;z-index:10002;overflow:hidden;display:none;flex-direction:column;}
 #mcd-player.show{display:flex;}
 #mcd-player .mcd-player-head-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
@@ -1862,3 +1862,10 @@ body.mcd-player-open #mcd-footer{margin-bottom:10px !important;}
   body:has(#mcd-player.show){padding-bottom:200px !important;}
 }
 
+
+#mcd-player .mcd-player-vu{background:#050505;height:6px;overflow:hidden;display:flex;align-items:center;border-bottom:2px solid #050505;}
+#mcd-player .mcd-player-vu .mcd-vu-bar{display:block;height:100%;width:100%;background:repeating-linear-gradient(90deg,#9BDBC1 0 14px,transparent 14px 24px);background-size:24px 100%;background-position:0 0;}
+#mcd-player.is-playing .mcd-player-vu .mcd-vu-bar{animation:mcd-vu-dash 2.5s linear infinite;}
+@keyframes mcd-vu-dash{from{background-position:0 0;}to{background-position:-24px 0;}}
+
+#mcd-player #mcd-play,#mcd-player #mcd-next,#mcd-player #mcd-eject{font-variant-emoji:text;}

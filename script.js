@@ -1,4 +1,4 @@
-/* V215 MOBILE STRETCH — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
+/* V224 PLAY LOAD — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
 document.addEventListener('DOMContentLoaded', () => {
   // Contact form — kept from V201, untouched
   const contactForm = document.querySelector('form[name="backroom-howls"]');
@@ -17,12 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ---- Fresh Player C + Fix B + V207: PlayerWidget fix, seek-after-play, own timer, auto-next ----
+  // ---- Fresh Player C + Fix B + V207 + V217 first-click widget.play: PlayerWidget fix, seek-after-play, own timer, auto-next ----
   const player = document.getElementById('mcd-player');
   const playBtn = document.getElementById('mcd-play');
   const nextBtn = document.getElementById('mcd-next');
   const ejectBtn = document.getElementById('mcd-eject');
   const fireBtn = document.getElementById('mcd-h-fire');
+  const fireLabel = fireBtn ? fireBtn.querySelector('.mcd-fire-label') : null;
+  const fireSymbol = fireBtn ? fireBtn.querySelector('.mcd-play-symbol') : null;
+  let pendingPlay = false;
+  let playEventFired = false;
   const marqueeText = document.getElementById('mcd-marquee-text');
   const statusPill = document.getElementById('mcd-player-status');
   const heroSection = document.getElementById('mcd-hero');
@@ -102,8 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
       marqueeText.textContent = HELP_TEXT;
     }
     if (statusPill) statusPill.textContent = isPlaying ? 'TAPE ROLLING' : 'TAPE READY';
-    if (playBtn) playBtn.textContent = isPlaying ? '❚❚ PAUSE' : '▶ PLAY';
+    if (playBtn) playBtn.textContent = isPlaying ? '❚︎❚︎ PAUSE' : '▶︎ PLAY';
     if (fireBtn) fireBtn.classList.toggle('is-playing', isPlaying);
+    if (fireLabel) fireLabel.textContent = isPlaying ? ' KEEP IT WILD' : ' FIRE IT UP';
+    if (fireSymbol) fireSymbol.textContent = isPlaying ? '💀' : '▶︎';
     if (heroSection) heroSection.classList.toggle('is-playing', isPlaying);
   }
 
@@ -144,11 +150,12 @@ document.addEventListener('DOMContentLoaded', () => {
       widget = w;
       widget.ready.then(() => {
         widgetReady = true; isBinding = false;
+        if (pendingPlay) { pendingPlay = false; try { const rp = widget.play(); if (rp && rp.then) rp.then(()=>{}).catch(()=>{}); } catch(e){} }
         if (!widget._mcdV207Bound) {
           widget._mcdV207Bound = true;
           try {
             widget.events.play.on(() => {
-              isPlaying = true; setMarquee(); startPosTimer();
+              playEventFired = true; isPlaying = true; setMarquee(); startPosTimer();
               // V207 fix: seek AFTER play fires, not on ready. Mixcloud ignores seek before first play.
               if (pendingSeek && pendingSeek > 0) {
                 const s = pendingSeek;
@@ -201,17 +208,68 @@ document.addEventListener('DOMContentLoaded', () => {
     openPlayer();
     if (isPlaying) return;
     isAutoNexting = false;
+    // V224: If widget ready, try play() first, then fall back to load() like NEXT does, because play() is flaky but load() works.
+    if (widget && widgetReady) {
+      try {
+        // If widget is on wrong tape, load correct tape and play, don't reload iframe.
+        if (iframe && !iframe.src.includes(encodeURIComponent(currentTape.feed)) && widget.load) {
+          const r2 = widget.load(currentTape.feed, true);
+          isPlaying = true; setMarquee(); startPosTimer();
+          pendingSeek = 0; lastKnownPos = 0;
+          if (r2 && r2.then) r2.then(()=>{}).catch(()=>{});
+          return;
+        }
+        playEventFired = false;
+        const attemptPos = lastKnownPos;
+        const r = widget.play();
+        isPlaying = true; setMarquee(); startPosTimer();
+        pendingSeek = lastKnownPos;
+        if (r && r.then) r.then(()=>{}).catch(()=>{});
+        // Fallback: if no real play event in 1.5s, use load() — same path as NEXT, which works.
+        setTimeout(()=>{
+          if (isPlaying && !playEventFired) {
+            try {
+              pendingSeek = attemptPos;
+              const r2 = widget.load(currentTape.feed, true);
+              if (r2 && r2.then) r2.then(()=>{}).catch(()=>{});
+            } catch(e){}
+          }
+        }, 1500);
+        return;
+      } catch(e) { /* fall through to wait + fallback */ }
+    }
+    // V217: Widget null or not ready yet — DON'T reload immediately, that gets blocked on desktop and kills the widget.
+    // Wait for ready, then play via pendingPlay in bindWidget ready handler.
+    pendingPlay = true;
     isPlaying = true; setMarquee(); startPosTimer();
-    widget = null; widgetReady = false; isBinding = false;
-    // pendingSeek stays = lastKnownPos, will be applied after play fires in new iframe
     pendingSeek = lastKnownPos;
-    if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true));
+    bindWidget();
+    // Fallback: if widget never becomes ready in 4s, reload with autoplay as last resort.
+    setTimeout(()=>{
+      if (pendingPlay && isPlaying && (!widget || !widgetReady)) {
+        pendingPlay = false;
+        widget = null; widgetReady = false; isBinding = false;
+        if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true));
+      }
+    }, 4000);
   }
 
   function pauseCurrent(){
     if (!isPlaying) return;
+    pendingPlay = false;
     syncPosFromTimer(); stopPosTimer();
     const posToSave = lastKnownPos;
+    // V216: Try widget.pause() first — no reload, keeps widget alive for next PLAY.
+    if (widget && widgetReady) {
+      try {
+        const r = widget.pause();
+        isPlaying = false; setMarquee();
+        savePosition(posToSave, Date.now());
+        pendingSeek = posToSave;
+        if (r && r.then) r.then(()=>{}).catch(()=>{});
+        return;
+      } catch(e) { /* fall through to reload fallback */ }
+    }
     isPlaying = false; setMarquee();
     savePosition(posToSave, Date.now());
     widget = null; widgetReady = false; isBinding = false;
@@ -259,7 +317,20 @@ document.addEventListener('DOMContentLoaded', () => {
       do { nextIdx = Math.floor(Math.random() * TAPES.length); } while (nextIdx === currentIdx);
     }
     isAutoNexting = false;
-    currentIdx = nextIdx; currentTape = TAPES[currentIdx];
+    const nTape = TAPES[nextIdx];
+    // V223: If widget ready, use load() — openPlayer BEFORE load, not after, so bindWidget doesn't make a second widget and kill the load.
+    if (widget && widgetReady && widget.load && autoplay) {
+      openPlayer();
+      currentIdx = nextIdx; currentTape = nTape;
+      stopPosTimer();
+      lastKnownPos = 0; pendingSeek = 0; tapeDuration = 0;
+      try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
+      try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
+      isPlaying = true; setMarquee(); startPosTimer();
+      try { const r = widget.load(nTape.feed, true); if (r && r.then) r.then(()=>{}).catch(()=>{ /* load failed, fall back to reload */ widget = null; widgetReady = false; isBinding = false; if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true)); }); } catch(e){ widget = null; widgetReady = false; isBinding = false; if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true)); }
+      return;
+    }
+    currentIdx = nextIdx; currentTape = nTape;
     stopPosTimer();
     lastKnownPos = 0; pendingSeek = 0; tapeDuration = 0;
     try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
@@ -287,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     player.classList.remove('show');
     try{ document.body.classList.remove('mcd-player-open'); }catch(e){}
   });
-  if (fireBtn) fireBtn.addEventListener('click', () => { openPlayer(); });
+  if (fireBtn) fireBtn.addEventListener('click', () => { if (!player.classList.contains('show')) openPlayer(); if (isPlaying) pauseCurrent(); else playCurrent(); });
 
   window.addEventListener('beforeunload', () => { syncPosFromTimer(); if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now()); });
 
