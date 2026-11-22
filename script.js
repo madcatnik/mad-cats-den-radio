@@ -1,5 +1,79 @@
+/* ============================================================================
+   CURRENT GIG CONFIG — Edit these fields to swap the left Gig Card in 10s.
+   Leave badge or stampSrc as "" to hide them automatically.
+   ============================================================================ */
+const CURRENT_GIG = {
+  heading: 'NEXT ALL-NIGHTER ✦ LIVE',
+  datePill: 'FRI 18.12.26 • 22:30',
+  badge: 'FREE ENTRY',
+  posterSrc: './gig-poster.webp',
+  posterAlt: 'The 3 Haunted Chords - Fri 18.12.26',
+  posterUrl: 'https://www.facebook.com/madcatsdenradio',
+  locationText: 'FRIDAY 18.12.26 📍 OINOXOOS BAR • AG. SOFIAS 7, NEA FILADELFIA • SHOW 22:30',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Oinoxoos+Bar+Agias+Sofias+7+Nea+Filadelfia',
+  bandTitle: 'THE THREE HAUNTED CHORDS',
+  bioParagraphs: [
+    "3HC are a Greece-based rockabilly band delivering raw, energetic rock 'n' roll with a blend of blues, country and vintage influences.",
+    "Formed in 2024, the band brings together experienced musicians from the local scene, creating a powerful live sound and an authentic rockabilly feel.",
+    "Their recent live studio recordings capture the band exactly as they sound on stage — tight, dynamic and full of energy."
+  ],
+  stampSrc: './3hc-stamp-cream.png',
+  stampAlt: 'THE THREE HAUNTED CHORDS — 3HC logo'
+};
+
 /* V227 PLAY LOAD — clean rebuild, no hairline, no fake seek, Mixcloud bar is the only seek */
 document.addEventListener('DOMContentLoaded', () => {
+  // Render CURRENT_GIG config into the Gig Card
+  (function applyGigConfig(g) {
+    if (!g) return;
+    const setText = (id, val) => { const el = document.getElementById(id); if (el && val != null) el.textContent = val; };
+    setText('mcd-gig-heading', g.heading);
+    setText('mcd-gig-date', g.datePill);
+    setText('mcd-gig-title', g.bandTitle);
+
+    const badgeEl = document.getElementById('mcd-gig-badge');
+    if (badgeEl) {
+      if (g.badge) { badgeEl.textContent = g.badge; badgeEl.style.display = ''; }
+      else { badgeEl.style.display = 'none'; }
+    }
+
+    const posterLink = document.getElementById('mcd-gig-poster-link');
+    if (posterLink && g.posterUrl) posterLink.href = g.posterUrl;
+
+    const posterImg = document.getElementById('mcd-gig-poster-img');
+    if (posterImg) {
+      if (g.posterSrc) posterImg.src = g.posterSrc;
+      if (g.posterAlt) posterImg.alt = g.posterAlt;
+    }
+
+    const locEl = document.getElementById('mcd-gig-loc');
+    if (locEl) {
+      if (g.locationText) locEl.textContent = g.locationText;
+      if (g.mapsUrl) locEl.href = g.mapsUrl;
+    }
+
+    const bioEl = document.getElementById('mcd-gig-bio');
+    if (bioEl && Array.isArray(g.bioParagraphs)) {
+      bioEl.innerHTML = '';
+      g.bioParagraphs.forEach((p, idx) => {
+        if (idx > 0) { bioEl.appendChild(document.createElement('br')); bioEl.appendChild(document.createElement('br')); }
+        bioEl.appendChild(document.createTextNode(p));
+      });
+    }
+
+    const stampWrap = document.getElementById('mcd-gig-stamp-wrap');
+    const stampImg = document.getElementById('mcd-gig-stamp-img');
+    if (stampWrap && stampImg) {
+      if (g.stampSrc) {
+        stampImg.src = g.stampSrc;
+        stampImg.alt = g.stampAlt || '';
+        stampWrap.style.display = '';
+      } else {
+        stampWrap.style.display = 'none';
+      }
+    }
+  })(CURRENT_GIG);
+
   // Contact form — kept from V201, untouched
   const contactForm = document.querySelector('form[name="backroom-howls"]');
   if (contactForm) {
@@ -19,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ---- Fresh Player C + Fix B + V207 + V217 first-click widget.play: PlayerWidget fix, seek-after-play, own timer, auto-next ----
   const player = document.getElementById('mcd-player');
-  const playBtn = document.getElementById('mcd-play');
   const nextBtn = document.getElementById('mcd-next');
   const ejectBtn = document.getElementById('mcd-eject');
   const fireBtn = document.getElementById('mcd-h-fire');
@@ -27,8 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const fireSymbol = fireBtn ? fireBtn.querySelector('.mcd-play-symbol') : null;
   let pendingPlay = false;
   let playEventFired = false;
+  let hasUnlockedAudio = false;
   const marqueeText = document.getElementById('mcd-marquee-text');
-  const statusPill = document.getElementById('mcd-player-status');
   const heroSection = document.getElementById('mcd-hero');
   const iframe = document.getElementById('mcd-mixcloud');
   if (!player || !iframe) return;
@@ -37,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {id:'ape-tape-1', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-1-' + '1950s-rockabilly-' + 'rock-n-roll' + '/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
     {id:'ape-tape-2', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-2-' + 'raw-rockabilly-' + 'teddy-boy-' + 'rock-n-roll-' + 'wild-surf' + '/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
   ];
-  const HELP_TEXT = 'PRESS PLAY • NO SPONSORS • NO ALGORITHM • MADCATNIK DIGGIN IN CRATE ...';
+  const HELP_TEXT = 'NO SPONSORS • NO ALGORITHM • MADCATNIK DIGGIN IN CRATE ...';
   const RESUME_WINDOW = 30 * 60 * 1000;
 
   function tapeSrc(t, autoplay){
@@ -59,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch(e){}
 
   let currentTape = TAPES[currentIdx];
+  let loadedTapeId = currentTape.id;
+  let playFallbackTimer = null;
   let isPlaying = false;
   let widget = null;
   let widgetReady = false;
@@ -95,9 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (iframe && !iframe.src.includes(encodeURIComponent(currentTape.feed))) {
     iframe.setAttribute('src', tapeSrc(currentTape, false));
   }
+  loadedTapeId = currentTape.id;
 
   function setMarquee(){
     if (!marqueeText) return;
+    const isOpen = player && player.classList.contains('show');
     if (player) player.classList.toggle('is-playing', isPlaying);
     if (isPlaying) {
       const txt = 'NOW SPINNING: ' + currentTape.label + ' • LOW CEILING HIGH VOLUME • JUST BASEMENT SIGNAL';
@@ -105,11 +182,12 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       marqueeText.textContent = HELP_TEXT;
     }
-    if (statusPill) statusPill.textContent = isPlaying ? 'TAPE ROLLING' : 'TAPE READY';
-    if (playBtn) playBtn.textContent = isPlaying ? '❚︎❚︎ PAUSE' : '▶︎ PLAY';
-    if (fireBtn) fireBtn.classList.toggle('is-playing', isPlaying);
-    if (fireLabel) fireLabel.textContent = isPlaying ? ' KEEP IT WILD' : ' FIRE IT UP';
-    if (fireSymbol) fireSymbol.textContent = isPlaying ? '💀' : '▶︎';
+    if (fireBtn) fireBtn.classList.toggle('is-playing', isOpen || isPlaying);
+    if (fireSymbol) {
+      fireSymbol.textContent = (isOpen || isPlaying) ? '' : '▶︎';
+      fireSymbol.style.display = (isOpen || isPlaying) ? 'none' : '';
+    }
+    if (fireLabel) fireLabel.textContent = (isOpen || isPlaying) ? 'KEEP IT WILD 💀' : ' FIRE IT UP';
     if (heroSection) heroSection.classList.toggle('is-playing', isPlaying);
   }
 
@@ -139,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function bindWidget(){
-    if (isBinding) return;
+    if (isBinding || (widget && widgetReady)) return;
     if (!window.Mixcloud || !iframe) { setTimeout(bindWidget, 500); return; }
     // V225: Player is rendered but hidden (visibility hidden, off-screen), not display:none, so bind on page load, widget is ready before first click.
     isBinding = true;
@@ -149,12 +227,12 @@ document.addEventListener('DOMContentLoaded', () => {
       widget = w;
       widget.ready.then(() => {
         widgetReady = true; isBinding = false;
-        if (pendingPlay) { pendingPlay = false; try { const rp = widget.load(currentTape.feed, true); if (rp && rp.then) rp.then(()=>{}).catch(()=>{}); } catch(e){} }
+        if (pendingPlay) { pendingPlay = false; loadedTapeId = currentTape.id; try { const rp = widget.load(currentTape.feed, true); if (rp && rp.then) rp.then(()=>{}).catch(()=>{}); } catch(e){} }
         if (!widget._mcdV207Bound) {
           widget._mcdV207Bound = true;
           try {
             widget.events.play.on(() => {
-              playEventFired = true; isPlaying = true; setMarquee(); startPosTimer();
+              playEventFired = true; hasUnlockedAudio = true; if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; } isPlaying = true; setMarquee(); startPosTimer();
               // V207 fix: seek AFTER play fires, not on ready. Mixcloud ignores seek before first play.
               if (pendingSeek && pendingSeek > 0) {
                 const s = pendingSeek;
@@ -176,7 +254,12 @@ document.addEventListener('DOMContentLoaded', () => {
           } catch(e){}
           try {
             widget.events.progress.on((position, duration) => {
-              if (typeof position === 'number' && position > 0) lastKnownPos = position;
+              if (typeof position === 'number' && position > 0) {
+                if (!isPlaying && position !== lastKnownPos) {
+                  playEventFired = true; hasUnlockedAudio = true; isPlaying = true; setMarquee(); startPosTimer();
+                }
+                lastKnownPos = position;
+              }
               if (typeof duration === 'number' && duration > 0) tapeDuration = duration;
               // Fallback auto-next: if progress says we are at the end, flip
               if (typeof position === 'number' && typeof duration === 'number' && duration > 0 && position >= duration - 2) {
@@ -201,25 +284,62 @@ document.addEventListener('DOMContentLoaded', () => {
   iframe.addEventListener('load', () => { widget = null; widgetReady = false; isBinding = false; bindWidget(); });
   bindWidget();
 
-  function openPlayer(){ player.classList.add('show'); try{ document.body.classList.add('mcd-player-open'); }catch(e){} bindWidget(); }
+  // V231: Sync UI (marquee, VU, HIT PLAY hide) with Mixcloud's actual play/pause state every 1s while open,
+  // in case Mixcloud's iframe drops postMessage play/pause events.
+  setInterval(() => {
+    if (!player.classList.contains('show') || !widget || !widgetReady || !widget.getIsPaused) return;
+    try {
+      const p = widget.getIsPaused();
+      if (p && p.then) {
+        p.then((paused) => {
+          if (paused === false && !isPlaying) {
+            playEventFired = true;
+            hasUnlockedAudio = true;
+            if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; }
+            isPlaying = true;
+            setMarquee();
+            startPosTimer();
+          } else if (paused === true && isPlaying) {
+            isPlaying = false;
+            setMarquee();
+            stopPosTimer();
+            syncPosFromTimer();
+            if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now());
+          }
+        }).catch(() => {});
+      }
+    } catch(e) {}
+  }, 1000);
+
+  function openPlayer(){ player.classList.add('show'); try{ document.body.classList.add('mcd-player-open'); }catch(e){} setMarquee(); bindWidget(); }
 
   function playCurrent(){
     openPlayer();
     if (isPlaying) return;
     isAutoNexting = false;
-    // V227 LAST TRY: PLAY uses load() synchronously in the click, exactly like NEXT which works. No play() at all — play() from parent is blocked.
+    // V228: PLAY uses load() synchronously in the click, tracks loadedTapeId, and reverts UI if browser blocks autoplay.
     if (widget && widgetReady) {
       try {
         playEventFired = false;
+        if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; }
         const attemptPos = lastKnownPos;
         // If on wrong tape, seek from 0, else seek to where we paused.
-        const isWrongTape = iframe && !iframe.src.includes(encodeURIComponent(currentTape.feed));
+        const isWrongTape = loadedTapeId !== currentTape.id;
         const r2 = widget.load(currentTape.feed, true);
+        loadedTapeId = currentTape.id;
         isPlaying = true; setMarquee(); startPosTimer();
         pendingSeek = isWrongTape ? 0 : attemptPos;
         if (!isWrongTape) lastKnownPos = attemptPos;
         if (isWrongTape) lastKnownPos = 0;
         if (r2 && r2.then) r2.then(()=>{}).catch(()=>{});
+        playFallbackTimer = setTimeout(()=>{
+          playFallbackTimer = null;
+          if (!playEventFired && isPlaying) {
+            isPlaying = false;
+            stopPosTimer();
+            setMarquee();
+          }
+        }, 2500);
         return;
       } catch(e) { /* fall through to wait + fallback */ }
     }
@@ -242,6 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function pauseCurrent(){
     if (!isPlaying) return;
     pendingPlay = false;
+    if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; }
     syncPosFromTimer(); stopPosTimer();
     const posToSave = lastKnownPos;
     // V216: Try widget.pause() first — no reload, keeps widget alive for next PLAY.
@@ -283,6 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
       isPlaying = true; setMarquee(); startPosTimer();
       try {
+        loadedTapeId = nTape.id;
         const r = widget.load(nTape.feed, true);
         if (r && r.then) r.then(()=>{ isAutoNexting = false; try { widget.getDuration().then((d)=>{ if (d>0) tapeDuration = d; }).catch(()=>{}); } catch(e){} }).catch(()=>{ isAutoNexting = false; playNext(true); });
         else { isAutoNexting = false; }
@@ -312,6 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
       try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
       isPlaying = true; setMarquee(); startPosTimer();
+      loadedTapeId = nTape.id;
       try { const r = widget.load(nTape.feed, true); if (r && r.then) r.then(()=>{}).catch(()=>{ /* load failed, fall back to reload */ widget = null; widgetReady = false; isBinding = false; if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true)); }); } catch(e){ widget = null; widgetReady = false; isBinding = false; if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true)); }
       return;
     }
@@ -323,28 +446,31 @@ document.addEventListener('DOMContentLoaded', () => {
     isPlaying = !!autoplay; setMarquee();
     if (autoplay) startPosTimer();
     widget = null; widgetReady = false; isBinding = false;
+    loadedTapeId = currentTape.id;
     if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, autoplay));
     openPlayer();
   }
 
-  if (playBtn) playBtn.addEventListener('click', () => {
-    if (!player.classList.contains('show')) openPlayer();
-    if (isPlaying) pauseCurrent();
-    else playCurrent();
-  });
   if (nextBtn) nextBtn.addEventListener('click', () => { playNext(true); });
   if (ejectBtn) ejectBtn.addEventListener('click', () => {
+    pendingPlay = false;
+    if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; }
     syncPosFromTimer(); stopPosTimer();
     if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now());
     isPlaying = false; setMarquee();
-    widget = null; widgetReady = false; isBinding = false;
     pendingSeek = lastKnownPos;
-    if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, false));
+    if (widget && widgetReady) {
+      try { const r = widget.pause(); if (r && r.then) r.then(()=>{}).catch(()=>{}); } catch(e){}
+    } else {
+      widget = null; widgetReady = false; isBinding = false;
+      if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, false));
+    }
     player.classList.remove('show');
     try{ document.body.classList.remove('mcd-player-open'); }catch(e){}
+    setMarquee();
   });
-  // V226: FIRE IT UP first click = open player only, do NOT play. PLAY stays PLAY. Visitor must press red PLAY as a second clean click when widget is already ready.
-  if (fireBtn) fireBtn.addEventListener('click', () => { if (!player.classList.contains('show')) { openPlayer(); return; } if (isPlaying) pauseCurrent(); else playCurrent(); });
+  // V229: FIRE IT UP opens the deck so the visitor taps Mixcloud's highlighted play button; once unlocked, it toggles pause/play.
+  if (fireBtn) fireBtn.addEventListener('click', () => { if (!player.classList.contains('show')) { openPlayer(); return; } if (isPlaying) pauseCurrent(); else if (hasUnlockedAudio) playCurrent(); });
 
   window.addEventListener('beforeunload', () => { syncPosFromTimer(); if (lastKnownPos > 0) savePosition(lastKnownPos, Date.now()); });
 

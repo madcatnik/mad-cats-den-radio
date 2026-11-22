@@ -11,7 +11,7 @@
 <meta name="description" content="Rockabilly Radio + Zine — broadcasting from a basement. Real gone R&amp;R, low ceiling, high volume, no paywall, just tape hiss.">
 <meta name="theme-color" content="#10120F">
 
-<link rel="stylesheet" href="./style.css?v=v227-play-load">
+<link rel="stylesheet" href="./style.css?v=v238-play-load">
 
 <!-- V137 1360 CAP: capped at 1360, centred, black sides. Overrides 1200 cap in style.css without touching it. Safe: only max-width + centring. -->
 <style>
@@ -71,11 +71,10 @@
   "foundingDate": "2026",
   "location": {
     "@type": "Place",
-    "name": "Oinoxoos Bar",
+    "name": "Athens, Greece",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Ag. Sofias 7",
-      "addressLocality": "Nea Filadelfia",
+      "addressLocality": "Athens",
       "addressRegion": "Attica",
       "addressCountry": "GR"
     }
@@ -84,7 +83,8 @@
     "https://www.instagram.com/madcatnik",
     "https://www.facebook.com/madcatsdenradio",
     "https://www.mixcloud.com/madcatnik",
-    "https://youtube.com/@madcatsdenradio?si=O_CwHmCKFkWFQPAz"
+    "https://youtube.com/@madcatsdenradio",
+    "https://www.pinterest.com/madcatsdenradio"
   ]
 }
 </script>
@@ -121,7 +121,8 @@
     "https://www.instagram.com/madcatnik",
     "https://www.facebook.com/madcatsdenradio",
     "https://www.mixcloud.com/madcatnik",
-    "https://youtube.com/@madcatsdenradio?si=O_CwHmCKFkWFQPAz"
+    "https://youtube.com/@madcatsdenradio",
+    "https://www.pinterest.com/madcatsdenradio"
   ]
 }
 </script>
@@ -192,38 +193,38 @@
   </div>
   <div class="mcd-hero-titles">
     <div class="mcd-hero-kicker"><span class="mcd-kicker-line1">BROADCASTING FROM A BASEMENT</span><span class="mcd-kicker-sep"> • </span><span class="mcd-kicker-line2">LOW CEILING • HIGH VOLUME</span></div>
-    <h1 class="mcd-hero-h1" style="margin:0; padding:0; font:inherit; line-height:inherit;"><span class="mad-line" style="user-select: none; -webkit-user-select: none;">MAD CATS</span><span class="den-line" style="user-select: none; -webkit-user-select: none;">DEN</span><span style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">, Rockabilly Radio 24/7, Athens GR</span></h1>
+    <h1 class="mcd-hero-h1" style="margin:0; padding:0; font:inherit; line-height:inherit;"><span class="mad-line" style="user-select: none; -webkit-user-select: none;">MAD CATS</span> <span class="den-line" style="user-select: none; -webkit-user-select: none;">DEN</span><span style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">, Rockabilly Radio 24/7, Athens GR</span></h1>
   </div>
 </section>
 
 <div id="mcd-main">
   
   <div class="mcd-two-col">
-    <!-- GIG CARD -->
+    <!-- GIG CARD (Edit CURRENT_GIG at the top of script.js to swap shows in 10 seconds) -->
     <div class="mcd-card mcd-card--gig" style="transform:rotate(-0.4deg);">
       <div class="mcd-card-head" style="background:#CC2D30; flex-direction:row; align-items:center; justify-content:space-between;">
-        <h2 style="color:#F0F0DA; font-size:28px;">NEXT ALL-NIGHTER ✦ LIVE</h2>
-        <div class="mcd-card-pill mcd-date-pill">FRI 18.12.26 • 22:30</div>
+        <h2 id="mcd-gig-heading" style="color:#F0F0DA; font-size:28px;">NEXT ALL-NIGHTER ✦ LIVE</h2>
+        <div id="mcd-gig-date" class="mcd-card-pill mcd-date-pill">FRI 18.12.26 • 22:30</div>
       </div>
       <div class="mcd-card-body" style="gap:0; padding:0; justify-content:flex-start;">
         
         <div style="padding:16px 12px 0 12px;">
           <div class="mcd-poster-wrap">
-            <div class="mcd-free-badge">FREE ENTRY</div>
-            <a href="https://www.facebook.com/madcatsdenradio" target="_blank" rel="noopener" style="display:block; cursor:pointer; overflow:hidden; border-radius:8px;">
-              <img fetchpriority="high" src="./gig-poster.webp" alt="The 3 Haunted Chords - Fri 18.12.26" style="width:100%; height:auto; display:block; image-rendering:-webkit-optimize-contrast; image-rendering:crisp-edges; filter:contrast(1.08) saturate(1.05);">
+            <div id="mcd-gig-badge" class="mcd-free-badge">FREE ENTRY</div>
+            <a id="mcd-gig-poster-link" href="https://www.facebook.com/madcatsdenradio" target="_blank" rel="noopener" style="display:block; cursor:pointer; overflow:hidden; border-radius:8px;">
+              <img id="mcd-gig-poster-img" fetchpriority="high" src="./gig-poster.webp" alt="The 3 Haunted Chords - Fri 18.12.26" style="width:100%; height:auto; display:block; image-rendering:-webkit-optimize-contrast; image-rendering:crisp-edges; filter:contrast(1.08) saturate(1.05);">
             </a>
           </div>
           <div style="margin-top:16px; display:flex; justify-content:center;">
-            <a class="mcd-loc-pill" href="https://www.google.com/maps/search/?api=1&query=Oinoxoos+Bar+Agias+Sofias+7+Nea+Filadelfia" target="_blank" rel="noopener">FRIDAY 18.12.26 📍 OINOXOOS BAR • AG. SOFIAS 7, NEA FILADELFIA • SHOW 22:30</a>
+            <a id="mcd-gig-loc" class="mcd-loc-pill" href="https://www.google.com/maps/search/?api=1&query=Oinoxoos+Bar+Agias+Sofias+7+Nea+Filadelfia" target="_blank" rel="noopener">FRIDAY 18.12.26 📍 OINOXOOS BAR • AG. SOFIAS 7, NEA FILADELFIA • SHOW 22:30</a>
           </div>
         </div>
         
         <div style="padding:12px; display:flex; flex-direction:column; flex:1; justify-content:center;">
           <div style="margin: 0; padding: 4px;">
             <div class="mcd-torn" style="background:#9BDBC1; border-color:#050505; transform:rotate(-0.3deg); margin:0; border:3px solid #050505; box-shadow:4px 4px 0 #050505; padding: 16px 14px;">
-              <div class="mcd-card-title" style="color:#050505; font-family:'Alfa Slab One',cursive; font-style:italic; font-size:17px; line-height:1.1;">THE THREE HAUNTED CHORDS</div>
-              <div class="mcd-card-text" style="color:#050505; font-weight:600;">
+              <div id="mcd-gig-title" class="mcd-card-title" style="color:#050505; font-family:'Alfa Slab One',cursive; font-style:italic; font-size:17px; line-height:1.1;">THE THREE HAUNTED CHORDS</div>
+              <div id="mcd-gig-bio" class="mcd-card-text" style="color:#050505; font-weight:600;">
                 3HC are a Greece-based rockabilly band delivering raw, energetic rock 'n' roll with a blend of blues, country and vintage influences.<br><br>
                 Formed in 2024, the band brings together experienced musicians from the local scene, creating a powerful live sound and an authentic rockabilly feel.<br><br>
                 Their recent live studio recordings capture the band exactly as they sound on stage — tight, dynamic and full of energy.
@@ -231,7 +232,7 @@
             </div>
           </div>
 
-          <div class="mcd-3hc-stamp-wrap"><img src="./3hc-stamp-cream.png" alt="THE THREE HAUNTED CHORDS — 3HC logo" class="mcd-3hc-stamp" loading="lazy"></div><div class="mcd-card-note" style="text-align:center; font-weight:700; padding:12px 12px 4px 12px; font-size:9px; letter-spacing:0.08em; color:rgba(5,5,5,0.6); margin-top:auto;">REAL GONE ROCK & ROLL • NO PAYWALL • JUST TAPE HISS</div>
+          <div id="mcd-gig-stamp-wrap" class="mcd-3hc-stamp-wrap"><img id="mcd-gig-stamp-img" src="./3hc-stamp-cream.png" alt="THE THREE HAUNTED CHORDS — 3HC logo" class="mcd-3hc-stamp" loading="lazy"></div><div class="mcd-card-note" style="text-align:center; font-weight:700; padding:12px 12px 4px 12px; font-size:9px; letter-spacing:0.08em; color:rgba(5,5,5,0.6); margin-top:auto;">REAL GONE ROCK & ROLL • NO PAYWALL • JUST TAPE HISS</div>
         </div>
         
       </div>
@@ -253,7 +254,7 @@
           <div class="mcd-card-text">Midnight howls, gig stubs, Teddy Boy gear & backroom notes. Web Radio runs 24/7 — non-stop basement signal. Spring 2027. 💀</div>
           <div class="mcd-genre-tags"><span class="mcd-genre-line1">ROCKABILLY • ROCK &amp; ROLL • R&amp;B • SURF</span><span class="mcd-genre-sep"> • </span><span class="mcd-genre-line2">DOO-WOP • PSYCHOBILLY</span></div>
         </div>
-        <div class="mcd-brewing"><span aria-hidden="true">✦</span>&nbsp;WHAT'S BREWING&nbsp;...</div>
+        <div class="mcd-brewing"><span aria-hidden="true">✦</span>&nbsp;WHAT'S BREWING (2027)&nbsp;...</div>
         <div class="mcd-grid-2">
           <div class="mcd-mini"><div><div class="mcd-mini-title">DISPATCHES</div><div class="mcd-mini-desc">Notes from the basement, profiles, picks, interviews & lost tapes</div></div><div class="mcd-mini-soon mcd-tape-mnt">LOGS</div></div>
           <div class="mcd-mini"><div><div class="mcd-mini-title">GIG GUIDE</div><div class="mcd-mini-desc">All-nighters, live bands and festivals across GR.</div></div><div class="mcd-mini-soon mcd-tape-red">LIVE</div></div>
@@ -277,7 +278,7 @@
               <div class="mcd-tape mcd-tape--top-right" style="position:absolute; top:-6px; right:15px; transform:rotate(3deg); padding:4px; border-width:2px; font-size:0;"></div>
               <div class="mcd-form-title"><span class="mcd-star-red">✦</span> DROP A LINE IN THE BACKROOM <span class="mcd-star-red">✦</span></div>
               <input type="email" name="email" placeholder="YOUR EMAIL — I'LL HOWL BACK." required class="mcd-label-tape">
-              <textarea name="message" placeholder="got a bopper? a gig? wanna howl? drop it here..." required class="mcd-label-tape mcd-textarea"></textarea>
+              <textarea name="message" placeholder="GOT A BOPPER? A GIG? WANNA HOWL? DROP IT HERE..." required class="mcd-label-tape mcd-textarea"></textarea>
               
               <div style="position:relative; width:100%; margin-top:8px;">
                 
@@ -287,10 +288,10 @@
             </form>
             
             <div class="mcd-follow-divider"></div><div class="mcd-follow-heading">ROLL WITH THE CREW <span class="mcd-follow-star">✦</span></div><div class="mcd-support-row--den mcd-row-social">
-              <a class="mcd-s-pill--den mcd-dog-tag" href="https://instagram.com/madcatnik" target="_blank" rel="noopener">IG @madcatnik</a>
+              <a class="mcd-s-pill--den mcd-dog-tag" href="https://instagram.com/madcatnik" target="_blank" rel="noopener">INSTAGRAM</a>
               <a class="mcd-s-pill--den mcd-dog-tag" href="https://www.facebook.com/madcatsdenradio" target="_blank" rel="noopener">FACEBOOK</a>
               <a class="mcd-s-pill--den mcd-dog-tag" href="https://www.mixcloud.com/madcatnik" target="_blank" rel="noopener">MIXCLOUD</a>
-              <a class="mcd-s-pill--den mcd-dog-tag" href="https://youtube.com/@madcatsdenradio?si=O_CwHmCKFkWFQPAz" target="_blank" rel="noopener">YOUTUBE</a>
+              <a class="mcd-s-pill--den mcd-dog-tag" href="https://youtube.com/@madcatsdenradio" target="_blank" rel="noopener">YOUTUBE</a>
               <a class="mcd-s-pill--den mcd-dog-tag" href="https://www.pinterest.com/madcatsdenradio" target="_blank" rel="noopener">PINTEREST</a>
             </div>
           </div>
@@ -301,7 +302,7 @@
   </div>
   
   <div class="mcd-support-row--den mcd-row-kofi">
-    <a class="mcd-s-pill--den mcd-kofi" href="https://ko-fi.com/madcatsden" target="_blank" rel="noopener"><span class="mcd-trouble-desktop">✦ ✦ TROUBLE NEEDS FUEL — GREASE THE JUKEBOX ✦ ✦</span><span class="mcd-trouble-mobile"><span class="mcd-trouble-line1">✦ ✦ TROUBLE NEEDS FUEL</span><span class="mcd-trouble-line2">GREASE THE JUKEBOX ✦ ✦</span></span></a>
+    <a class="mcd-s-pill--den mcd-kofi" href="https://ko-fi.com/madcatsden" target="_blank" rel="noopener"><span class="mcd-trouble-desktop">✦ ✦ TROUBLE NEEDS FUEL — GREASE THE JUKEBOX ✦ ✦</span><span class="mcd-trouble-mobile"><span class="mcd-trouble-line1">✦ ✦ TROUBLE NEEDS FUEL</span><span class="mcd-trouble-line2">GREASE THE JUKEBOX ✦ ✦</span></span><span class="mcd-kofi-sub">SUPPORT THE BASEMENT ON KO-FI • TIP JAR</span></a>
   </div>
 
 </div>
@@ -320,20 +321,21 @@
 <span class="mcd-player-brand-text">BASEMENT SIGNAL</span>
 </div>
 <div class="mcd-player-controls">
-<button id="mcd-play" aria-label="Play or pause tape">▶︎ PLAY</button>
 <button id="mcd-next" aria-label="Next tape">NEXT TAPE</button>
 <button id="mcd-eject" aria-label="Eject tape">⏏︎ EJECT</button>
 </div>
 </div>
 </div>
-  <div class="mcd-player-marquee"><div class="mcd-player-marquee-inner"><span id="mcd-marquee-text">PRESS PLAY • NO SPONSORS • NO ALGORITHM • MADCATNIK DIGGIN IN CRATE ...</span></div></div>
+  <div class="mcd-player-marquee"><span class="mcd-mc-play-hint" aria-hidden="true">▼ HIT PLAY</span><div class="mcd-player-marquee-track"><div class="mcd-player-marquee-inner"><span id="mcd-marquee-text">NO SPONSORS • NO ALGORITHM • MADCATNIK DIGGIN IN CRATE ...</span></div></div></div>
   <div class="mcd-player-vu" aria-hidden="true"><span class="mcd-vu-bar"></span></div>
   
-  <iframe title="MAD CATS DEN Mixcloud player" id="mcd-mixcloud" width="100%" height="60" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2Fmad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
+  <div class="mcd-mixcloud-wrap">
+    <iframe title="MAD CATS DEN Mixcloud player" id="mcd-mixcloud" width="100%" height="60" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&hide_artwork=1&feed=%2Fmadcatnik%2Fmad-cats-den-the-ape-tape-series-mix-1-1950s-rockabilly-rock-n-roll%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
+  </div>
 </div>
 
 <script src="https://widget.mixcloud.com/media/js/widgetApi.js"></script>
-<script src="./script.js?v=v227-play-load" defer></script>
+<script src="./script.js?v=v238-play-load" defer></script>
 
 </body>
 </html>
