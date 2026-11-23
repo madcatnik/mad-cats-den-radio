@@ -108,7 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const TAPES = [
     {id:'ape-tape-1', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-1-' + '1950s-rockabilly-' + 'rock-n-roll' + '/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
-    {id:'ape-tape-2', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-2-' + 'raw-rockabilly-' + 'teddy-boy-' + 'rock-n-roll-' + 'wild-surf' + '/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'}
+    {id:'ape-tape-2', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-2-' + 'raw-rockabilly-' + 'teddy-boy-' + 'rock-n-roll-' + 'wild-surf' + '/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'},
+    {id:'ape-tape-3', feed:'/madcatnik/mad-cats-den-the-ape-tape-series-mix-3-raw-rockabilly-teddy-boy-rnr-psychobilly/', label:'APE TAPE 03 — RAW ROCKABILLY, TEDDY BOY RNR, PSYCHOBILLY'}
   ];
   const HELP_TEXT = 'NO SPONSORS • NO ALGORITHM • MADCATNIK DIGGIN IN CRATE ...';
   const RESUME_WINDOW = 30 * 60 * 1000;

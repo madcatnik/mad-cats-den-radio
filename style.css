@@ -361,11 +361,14 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   .mcd-follow-heading { margin: 0 auto 10px auto !important; font-size: 12.5px !important; padding: 3px 10px !important; }
   #mcd-player { bottom: 0; right: 0; left: 0; width: 100%; max-width: 100%; border-radius: 8px 8px 0 0; transform: translateY(110%); visibility: hidden; pointer-events: none; padding-bottom: env(safe-area-inset-bottom, 0px); box-shadow: 0 -4px 0 #050505; }
   #mcd-player.show { visibility: visible !important; transform: none !important; pointer-events: auto !important; }
-  #mcd-player .mcd-player-head { padding: 8px 10px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
-  #mcd-player .mcd-player-brand-text { font-size: 12px; }
-  #mcd-player .mcd-player-controls { flex: 0 0 100%; width: 100%; display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 6px; }
-  #mcd-player #mcd-next, #mcd-player #mcd-eject { font-size: 12px; padding: 8px 6px; box-sizing: border-box; min-width: 0; white-space: nowrap; flex: 1 1 0%; }
-  body:has(#mcd-player.show) { padding-bottom: 200px !important; }
+  #mcd-player .mcd-player-head { padding: 7px 10px; }
+  #mcd-player .mcd-player-head-top { width: 100%; flex-wrap: nowrap; justify-content: space-between; align-items: center; gap: 6px; }
+  #mcd-player .mcd-player-brand { flex: 1 1 auto; min-width: 0; flex-wrap: nowrap; gap: 5px; }
+  #mcd-player .mcd-player-dot { width: 10px; height: 10px; }
+  #mcd-player .mcd-player-brand-text { font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
+  #mcd-player .mcd-player-controls { flex: 0 0 auto; width: auto; display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; }
+  #mcd-player #mcd-next, #mcd-player #mcd-eject { flex: 0 0 auto; font-size: 10.5px; padding: 4px 7px; height: 26px; box-shadow: 2px 2px 0 #050505; box-sizing: border-box; white-space: nowrap; }
+  body:has(#mcd-player.show) { padding-bottom: 165px !important; }
 }
 
 @media (max-width: 599px) {
@@ -451,7 +454,14 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
 }
 @media (max-width: 768px) {
   #mcd-player .mcd-on-air-pill {
-    font-size: 9.5px;
-    padding: 2.5px 6px;
+    font-size: 8.5px;
+    padding: 2px 5px;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
   }
+}
+@media (max-width: 390px) {
+  #mcd-player .mcd-player-head { padding: 6px 8px; }
+  #mcd-player .mcd-player-brand-text { font-size: 10px; }
+  #mcd-player #mcd-next, #mcd-player #mcd-eject { font-size: 10px; padding: 3px 6px; height: 24px; }
 }
