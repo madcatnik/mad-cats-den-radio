@@ -106,6 +106,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const iframe = document.getElementById('mcd-mixcloud');
   if (!player || !iframe) return;
 
+  // V247: 5s auto-detect blocked widget fallback + IG/FB in-app browser tip
+  const mixcloudWrap = player.querySelector('.mcd-mixcloud-wrap');
+  let blockedTimer = null;
+  let fallbackLink = null;
+  if (mixcloudWrap) {
+    const fb = document.createElement('div');
+    fb.className = 'mcd-blocked-fallback';
+    fb.innerHTML = '<a class="mcd-blocked-btn" href="https://www.mixcloud.com/madcatnik/" target="_blank" rel="noopener">SIGNAL BLOCKED — OPEN TAPE ON MIXCLOUD ↗</a>';
+    mixcloudWrap.appendChild(fb);
+    fallbackLink = fb.querySelector('.mcd-blocked-btn');
+  }
+  const isInAppBrowser = /Instagram|FBAN|FBAV|FB_IAB|Messenger/i.test(navigator.userAgent || '');
+  if (isInAppBrowser && mixcloudWrap) {
+    const tip = document.createElement('div');
+    tip.className = 'mcd-inapp-tip';
+    tip.textContent = 'ON IG/FB? TAP ⋯ → OPEN IN BROWSER FOR AUDIO';
+    mixcloudWrap.parentNode.insertBefore(tip, mixcloudWrap);
+  }
+  function syncFallbackHref() {
+    if (fallbackLink && typeof currentTape !== 'undefined' && currentTape && currentTape.feed) {
+      fallbackLink.href = 'https://www.mixcloud.com' + currentTape.feed;
+    }
+  }
+  function clearBlockedState() {
+    if (blockedTimer) { clearTimeout(blockedTimer); blockedTimer = null; }
+    player.classList.remove('is-blocked');
+  }
+  function scheduleBlockedCheck() {
+    clearBlockedState();
+    syncFallbackHref();
+    if (widgetReady) return;
+    blockedTimer = setTimeout(() => {
+      if (!widgetReady && !isPlaying && player.classList.contains('show')) {
+        syncFallbackHref();
+        player.classList.add('is-blocked');
+      }
+    }, 5000);
+  }
+
   const TAPES = [
     {id:'ape-tape-1', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-1-' + '1950s-rockabilly-' + 'rock-n-roll' + '/', label:'APE TAPE 01 — 1950S ROCKABILLY ROCK N ROLL'},
     {id:'ape-tape-2', feed:'/' + 'mad' + 'cat' + 'nik' + '/' + 'mad-cats-den-' + 'the-ape-tape-series-' + 'mix-2-' + 'raw-rockabilly-' + 'teddy-boy-' + 'rock-n-roll-' + 'wild-surf' + '/', label:'APE TAPE 02 — RAW ROCKABILLY, TEDDY BOY ROCK N ROLL, WILD SURF'},
@@ -193,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!marqueeText) return;
     const isOpen = player && player.classList.contains('show');
     if (player) player.classList.toggle('is-playing', isPlaying);
+    syncFallbackHref();
     if (isPlaying) {
       const txt = 'NOW SPINNING: ' + currentTape.label + ' • LOW CEILING HIGH VOLUME • JUST BASEMENT SIGNAL';
       marqueeText.textContent = txt + '  •  ' + txt;
@@ -242,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!w) { isBinding = false; setTimeout(bindWidget, 800); return; }
       widget = w;
       widget.ready.then(() => {
-        widgetReady = true; isBinding = false;
+        widgetReady = true; isBinding = false; clearBlockedState();
         if (pendingPlay) { pendingPlay = false; loadedTapeId = currentTape.id; try { const rp = widget.load(currentTape.feed, true); if (rp && rp.then) rp.then(()=>{}).catch(()=>{}); } catch(e){} }
         if (!widget._mcdV207Bound) {
           widget._mcdV207Bound = true;
@@ -369,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e) {}
   }, 1000);
 
-  function openPlayer(){ player.classList.add('show'); try{ document.body.classList.add('mcd-player-open'); }catch(e){} setMarquee(); bindWidget(); }
+  function openPlayer(){ player.classList.add('show'); try{ document.body.classList.add('mcd-player-open'); }catch(e){} setMarquee(); bindWidget(); scheduleBlockedCheck(); }
 
   function playCurrent(){
     openPlayer();

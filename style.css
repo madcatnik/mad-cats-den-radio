@@ -1,4 +1,4 @@
-/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V235) */
+/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V248) */
 
 /* === FONTS === */
 @font-face {
@@ -35,15 +35,11 @@
 }
 
 /* === KEYFRAMES === */
-@keyframes liveDotPulseMint { 0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 2px #050505, 0 0 0 0 rgba(155,219,193,0.7), 0 0 8px rgba(155,219,193,0.5)} 50%{opacity:0.85;transform:scale(1.12);box-shadow:0 0 0 2px #050505, 0 0 0 6px rgba(155,219,193,0), 0 0 14px rgba(155,219,193,0.45)} }
+@keyframes liveDotPulseMint { 0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 2px #050505, 0 0 0 0 rgba(155,219,193,0.9), 0 0 10px rgba(155,219,193,0.75)} 50%{opacity:0.55;transform:scale(1.22);box-shadow:0 0 0 2px #050505, 0 0 0 8px rgba(155,219,193,0), 0 0 18px rgba(155,219,193,0.6)} }
 @keyframes liveDotPulseBrick { 0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 2px #050505, 0 0 0 0 rgba(204,45,48,0.7), 0 0 8px rgba(204,45,48,0.5)} 50%{opacity:0.85;transform:scale(1.12);box-shadow:0 0 0 2px #050505, 0 0 0 6px rgba(204,45,48,0), 0 0 14px rgba(204,45,48,0.45)} }
 @keyframes patchWobble { 0%,100%{transform:rotate(1.8deg) scale(1.03)} 50%{transform:rotate(1.2deg) scale(1.04)} }
 @keyframes mcdGlowMint { 0%,100%{transform:scale(1);opacity:0.32}50%{transform:scale(1.08);opacity:0.42} }
 @keyframes mcdGlowBrick { 0%,100%{transform:scale(1);opacity:0.22}50%{transform:scale(1.12);opacity:0.32} }
-@keyframes tapePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-@keyframes tapeHiss { 0% { transform: translateX(0); } 100% { transform: translateX(-16px); } }
-@keyframes mcdTapeScroll { 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
-@keyframes mcdTapScroll { 0%{ transform:translateX(350%); opacity:1; } 55%{ transform:translateX(-350%); opacity:1; } 60%{ transform:translateX(-350%); opacity:0; } 100%{ transform:translateX(350%); opacity:0; } }
 @keyframes mcdCatPulseSoft { 0%,100%{ box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 24px rgba(204,45,48,0.60), 0 0 38px rgba(155,219,193,0.32); } 50%{ box-shadow:6px 6px 0 var(--black), 0 0 0 4px var(--black), 0 0 32px rgba(204,45,48,0.75), 0 0 50px rgba(155,219,193,0.45); } }
 @keyframes mcd-fresh-marquee { from{transform:translateX(0);}to{transform:translateX(-50%);} }
 @keyframes mcd-vu-dash { from{background-position:0 0;}to{background-position:-24px 0;} }
@@ -62,7 +58,7 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 .mcd-stamp-logo .mcd-sub { font-family: 'IBM Plex Mono',monospace; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; color: var(--mint); white-space: nowrap; }
 .mcd-h-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: flex; align-items: center; gap: 6px; white-space: nowrap; z-index: 3; }
 .mcd-h-right { display: flex; align-items: center; gap: 12px; margin-left: auto; flex-shrink: 0; z-index: 3; }
-.mcd-live-dot { width: 8px; height: 8px; background: var(--mint); border-radius: 50%; display: inline-block; box-shadow: 0 0 0 2px var(--black), 0 0 8px rgba(155,219,193,0.6); animation: liveDotPulseMint 3.6s ease-in-out infinite; }
+.mcd-live-dot { width: 8px; height: 8px; background: var(--mint); border-radius: 50%; display: inline-block; box-shadow: 0 0 0 2px var(--black), 0 0 8px rgba(155,219,193,0.6); animation: liveDotPulseMint 1.8s ease-in-out infinite; }
 #mcd-h-fire { background: var(--cream); color: var(--brick); border: 3px solid var(--black); border-radius: 14px; box-shadow: 3px 3px 0 var(--black); font-family: 'Alfa Slab One',cursive; font-size: 17px; padding: 10px 18px; transform: rotate(1deg); white-space: nowrap; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
 .mcd-play-symbol { display: inline-block; font-size: 22px; line-height: 1; transform: translateY(1px); vertical-align: -1px; }
 .mcd-fire-label { display: inline-block; line-height: 1; }
@@ -112,7 +108,6 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 .mcd-mini-soon { position: relative; flex-shrink: 0; border: 2.5px solid var(--black) !important; padding: 4px 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.14em; box-shadow: 3px 3px 0 var(--black) !important; transform: rotate(-2deg); overflow: visible; }
 .mcd-tape-mnt { background: var(--mint) !important; color: var(--black) !important; }
 .mcd-tape-red { background: var(--brick) !important; color: var(--cream) !important; }
-.mcd-tape-crm { background: var(--cream) !important; color: var(--black) !important; }
 .mcd-tape-blk { background: var(--black) !important; color: var(--cream) !important; }
 .mcd-support-block--den { margin-top: 16px; padding: 0; background: var(--ink); border: 3px solid var(--black); border-radius: 14px; overflow: visible; transform: rotate(-0.5deg); position: relative; }
 .mcd-support-block--den::after { content: ""; position: absolute; inset: 4px; border-radius: 10px; pointer-events: none; z-index: 1; background-image: radial-gradient(circle at 12px 12px, #333 3px, #000 4px, transparent 4.5px),
@@ -160,7 +155,6 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 .mcd-card--zine .mcd-grid-2 > div:nth-child(4) .mcd-s-pill--den { background: var(--black) !important; color: var(--cream) !important; border: 2px solid var(--black) !important; }
 .mcd-card--zine .mcd-grid-2 > div:nth-child(5) .mcd-s-pill--den { background: var(--cream) !important; color: var(--black) !important; border: 2px solid var(--black) !important; }
 .mcd-support-block--den::before { content: ""; position: absolute; top: -10px; left: 18%; width: 56px; height: 18px; background: var(--cream); border: 2px solid var(--black); box-shadow: 1px 1px 0 var(--black); transform: rotate(-3deg); z-index: 3; display: none !important; }
-.mcd-support-head--den .mcd-tape, .mcd-support-block--den .mcd-tape { display: none !important; }
 .mcd-submit-btn, button.mcd-submit-btn { background: var(--brick) !important; color: var(--cream) !important; border: 2px solid var(--black) !important; text-shadow: 1px 1px 0 var(--black) !important; }
 .mcd-support-block--den input::placeholder, .mcd-support-block--den textarea::placeholder { text-transform: uppercase !important; }
 .mcd-card--gig .mcd-support-block--den p, .mcd-card--gig .mcd-support-block--den div { font-size: 14px !important; line-height: 1.65 !important; }
@@ -168,7 +162,6 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 .mcd-card--gig .mcd-support-block--den { padding: 10px 12px !important; gap: 10px !important; }
 .mcd-card--gig .mcd-card-body { gap: 10px !important; }
 .mcd-support-row--den.mcd-row-social { flex-wrap: wrap; gap: 14px !important; justify-content: center !important; border-top: none !important; }
-.mcd-follow-divider { display: none !important; height: 0 !important; margin: 0 !important; padding: 0 !important; background: transparent !important; border: none !important; }
 #mcd-footer, #mcd-footer.mcd-footer--full { display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; gap: 4px !important; text-align: center !important; width: 100% !important; max-width: none !important; }
 #mcd-footer .mcd-footer-line1, #mcd-footer .mcd-footer-line2 { display: block !important; width: 100% !important; max-width: 720px !important; text-align: center !important; margin: 0 auto !important; padding: 0 !important; }
 #mcd-footer .mcd-footer-line2 { line-height: 1.6 !important; text-wrap: balance !important; }
@@ -180,9 +173,6 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 .mcd-mini:hover { z-index: 10; transform: none !important; box-shadow: 4px 4px 0 var(--black) !important; }
 .mcd-mini:active { transform: none !important; box-shadow: 4px 4px 0 var(--black) !important; background: var(--cream) !important; }
 .mcd-mini:nth-child(1), .mcd-mini:nth-child(2), .mcd-mini:nth-child(3), .mcd-mini:nth-child(4), .mcd-mini:nth-child(5), .mcd-mini:nth-child(6) { transform: rotate(-0.5deg); }
-.mcd-footer-socials { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; margin-top: 10px; }
-.mcd-footer-socials a, .mcd-footer-socials button { font-family: 'Barlow Condensed',sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 0.12em; text-decoration: none; background: var(--cream); color: #050505; border: 2px solid #050505; border-radius: 6px; padding: 6px 10px; box-shadow: 2px 2px 0 #050505; cursor: pointer; }
-.mcd-footer-socials a:hover, .mcd-footer-socials button:hover { background: #CC2D30; color: #F0F0DA; }
 .mcd-manifesto { font-family: 'Alfa Slab One', cursive; font-style: italic; font-size: 21px; transform: rotate(-1deg); display: inline-block; margin-bottom: 10px; text-shadow: 2.5px 2px 0 var(--mint), 3px 3px 0 var(--black); text-decoration: none; word-break: keep-all !important; overflow-wrap: normal !important; hyphens: none !important; }
 .mcd-nowrap { white-space: nowrap !important; }
 .mcd-footer-line1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; margin-bottom: 4px; display: inline-block !important; background: #050505 !important; color: #F0F0DA !important; border: 2px solid #050505 !important; border-radius: 8px !important; padding: 6px 12px !important; box-shadow: 4px 4px 0 #9BDBC1 !important; }
@@ -207,9 +197,9 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 #mcd-footer { display: flex; justify-content: center; align-items: center; padding: 12px; margin-top: 12px; background: transparent; width: 100% !important; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; padding-bottom: 12px !important; }
 body { overscroll-behavior-y: contain; background: radial-gradient(ellipse at 50% 35%, #10120F 0%, #10120F 58%, #0E110F 74%, #0A0C0A 100%); color: var(--cream); font-family: 'IBM Plex Mono',monospace; overflow-x: hidden; padding-bottom: 0 !important; transition: padding-bottom 1.2s ease-in-out !important; }
 .mcd-mini::after { position: absolute; top: -9px; right: 10px; background: #CC2D30; color: #F0F0DA; font-family: 'Barlow Condensed',sans-serif; font-weight: 800; font-size: 9px; letter-spacing: 0.12em; padding: 2px 6px; border: 2px solid #050505; box-shadow: 2px 2px 0 #050505; transform: rotate(-2deg); z-index: 5; display: none !important; content: none !important; }
-.mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp { height: auto !important; display: block !important; margin: 0 auto !important; filter: none !important; transform: none !important; border: none !important; border-radius: 0 !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; opacity: 1 !important; width: 140px !important; }
-.mcd-card--gig .mcd-3hc-stamp-wrap { align-self: center !important; display: block !important; width: fit-content !important; background: transparent !important; background-image: none !important; border: 3px solid #050505 !important; border-radius: 0 !important; clip-path: polygon(0 2%, 100% 0, 98% 96%, 2% 100%) !important; padding: 0 !important; box-shadow: 4px 4px 0 #050505 !important; transform: rotate(-0.3deg) !important; overflow: hidden !important; text-align: center !important; max-width: 150px !important; margin: 6px auto 0 auto !important; }
-.mcd-card--gig .mcd-card-note { margin-top: 6px !important; padding: 6px 12px 2px 12px !important; }
+.mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp { height: auto !important; display: block !important; margin: 0 auto !important; filter: none !important; transform: none !important; border: none !important; border-radius: 0 !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; opacity: 1 !important; width: 170px !important; }
+.mcd-card--gig .mcd-3hc-stamp-wrap { align-self: center !important; display: block !important; width: fit-content !important; background: transparent !important; background-image: none !important; border: 3px solid #050505 !important; border-radius: 0 !important; clip-path: polygon(0 2%, 100% 0, 98% 96%, 2% 100%) !important; padding: 0 !important; box-shadow: 4px 4px 0 #050505 !important; transform: rotate(-0.3deg) !important; overflow: hidden !important; text-align: center !important; max-width: 180px !important; margin: auto !important; }
+.mcd-card--gig .mcd-card-note { margin-top: 0 !important; padding: 8px 12px 4px 12px !important; }
 .mcd-card--gig .mcd-card-body > div:last-child { padding-top: 8px !important; justify-content: flex-start !important; }
 .mcd-card--zine .mcd-zine-intro { display: flex; flex-direction: column; margin: 0 !important; padding: 0 !important; gap: 6px !important; text-align: center !important; }
 .mcd-card--zine .mcd-card-text { margin: 0 !important; line-height: 1.65 !important; font-size: 13px !important; text-align: center !important; }
@@ -422,9 +412,9 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
 
 /* Ko-fi tip-jar sub-line (V238) */
 .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi { flex-direction: column !important; gap: 6px !important; }
-.mcd-kofi-sub { display: block !important; font-family: 'IBM Plex Mono', monospace !important; font-style: normal !important; font-size: 11px !important; font-weight: 700 !important; letter-spacing: 0.14em !important; color: var(--mint) !important; text-shadow: 1px 1px 0 var(--black) !important; opacity: 0.95; }
+.mcd-kofi-sub { display: block !important; font-family: 'IBM Plex Mono', monospace !important; font-style: normal !important; font-size: 13px !important; font-weight: 700 !important; letter-spacing: 0.14em !important; color: var(--mint) !important; text-shadow: 1px 1px 0 var(--black) !important; opacity: 0.95; }
 @media (max-width: 768px) {
-  .mcd-kofi-sub { font-size: 9px !important; letter-spacing: 0.1em !important; }
+  .mcd-kofi-sub { font-size: 11px !important; letter-spacing: 0.1em !important; }
 }
 
 /* Option 1: Dynamic ON AIR red pill + pulsing red dot when playing (V242) */
@@ -464,4 +454,57 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   #mcd-player .mcd-player-head { padding: 6px 8px; }
   #mcd-player .mcd-player-brand-text { font-size: 10px; }
   #mcd-player #mcd-next, #mcd-player #mcd-eject { font-size: 10px; padding: 3px 6px; height: 24px; }
+}
+
+/* V247: Blocked Mixcloud widget fallback + IG/FB in-app browser tip */
+#mcd-player .mcd-blocked-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: #10120F;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  z-index: 5;
+}
+#mcd-player.is-blocked .mcd-blocked-fallback {
+  display: flex;
+}
+#mcd-player .mcd-blocked-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #CC2D30;
+  color: #F0F0DA;
+  border: 2px solid #050505;
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 #050505;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  padding: 7px 12px;
+  white-space: nowrap;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+#mcd-player .mcd-blocked-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 #050505;
+}
+#mcd-player .mcd-inapp-tip {
+  background: #10120F;
+  color: #9BDBC1;
+  border-bottom: 2px solid #050505;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-align: center;
+  padding: 5px 8px;
+  line-height: 1.3;
+}
+@media (max-width: 390px) {
+  #mcd-player .mcd-blocked-btn { font-size: 11.5px; padding: 6px 10px; }
+  #mcd-player .mcd-inapp-tip { font-size: 8.5px; }
 }
