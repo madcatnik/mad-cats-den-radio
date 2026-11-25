@@ -1,4 +1,4 @@
-/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V248) */
+/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V253) */
 
 /* === FONTS === */
 @font-face {
@@ -507,4 +507,136 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
 @media (max-width: 390px) {
   #mcd-player .mcd-blocked-btn { font-size: 11.5px; padding: 6px 10px; }
   #mcd-player .mcd-inapp-tip { font-size: 8.5px; }
+}
+
+/* V250: Styled responsive QR code box inside Support Block */
+.mcd-qr-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 100%;
+  background: var(--cream);
+  color: var(--black);
+  border: 3px solid var(--black);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 0 auto 14px auto;
+  box-shadow: 4px 4px 0 var(--mint);
+  transform: rotate(0.4deg);
+}
+
+/* V251: Pure zine stamp at bottom of Gig Card */
+.mcd-gig-stub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 18, 15, 0.85);
+  color: var(--cream);
+  border: 3px solid var(--black);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 6px 4px 8px 4px;
+  box-shadow: 4px 4px 0 var(--brick);
+  transform: rotate(-0.5deg);
+  text-align: center;
+}
+.mcd-gig-stub-line {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  color: var(--cream);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.mcd-qr-frame {
+  flex-shrink: 0;
+  border: 2.5px solid var(--black);
+  background: var(--cream);
+  padding: 2px;
+  line-height: 0;
+  box-shadow: 2px 2px 0 var(--black);
+}
+.mcd-qr-svg {
+  display: block;
+  width: 84px;
+  height: 84px;
+}
+.mcd-qr-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+.mcd-qr-title {
+  font-family: 'Alfa Slab One', cursive;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--black);
+  line-height: 1.15;
+}
+.mcd-qr-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(5, 5, 5, 0.78);
+  line-height: 1.35;
+}
+@media (max-width: 480px) {
+  .mcd-qr-box {
+    gap: 10px;
+    padding: 8px 10px;
+  }
+  .mcd-qr-svg {
+    width: 72px;
+    height: 72px;
+  }
+  .mcd-qr-title {
+    font-size: 12px;
+  }
+  .mcd-qr-sub {
+    font-size: 9px;
+  }
+}
+
+/* V253: Flanking monospace side-stamps around 3HC stamp */
+.mcd-stamp-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  margin: auto 0;
+  padding: 10px 4px;
+}
+.mcd-card--gig .mcd-stamp-row .mcd-3hc-stamp-wrap {
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+.mcd-stamp-side {
+  flex: 1 1 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(16, 18, 15, 0.52);
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+}
+.mcd-stamp-side--left {
+  transform: rotate(-1.5deg);
+}
+.mcd-stamp-side--right {
+  transform: rotate(1.5deg);
+}
+@media (max-width: 1023px) {
+  .mcd-stamp-side {
+    display: none;
+  }
 }
