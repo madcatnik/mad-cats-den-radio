@@ -1,4 +1,4 @@
-/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V253) */
+/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V255) */
 
 /* === FONTS === */
 @font-face {
@@ -337,9 +337,9 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   .den-line { font-size: 90px !important; }
   .mcd-head-row2 .mcd-coming { white-space: nowrap !important; font-size: 12px !important; }
   .mcd-head-row2 .mcd-card-pill { white-space: nowrap !important; font-size: 11px !important; opacity: 0.92 !important; }
-  .mcd-head-mobile { gap: 6px !important; background: #CC2D30 !important; padding: 8px 12px !important; border-bottom: 3px solid #050505 !important; display: flex !important; flex-direction: column !important; }
-  .mcd-head-row2 { display: flex !important; align-items: center !important; flex-wrap: nowrap !important; gap: 10px !important; order: 1 !important; }
-  .mcd-head-row1 { font-family: 'Alfa Slab One',cursive !important; font-style: italic !important; font-size: 20px !important; line-height: 1.1 !important; color: #F0F0DA !important; order: 2 !important; }
+  .mcd-head-mobile { gap: 8px !important; background: #CC2D30 !important; padding: 10px 12px !important; border-bottom: 3px solid #050505 !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; }
+  .mcd-head-row1 { font-family: 'Alfa Slab One',cursive !important; font-style: italic !important; font-size: 20px !important; line-height: 1.1 !important; color: #F0F0DA !important; order: 1 !important; text-align: center !important; }
+  .mcd-head-row2 { display: flex !important; align-items: center !important; justify-content: center !important; flex-wrap: nowrap !important; gap: 10px !important; order: 2 !important; }
   #mcd-footer { margin-bottom: 24px; font-size: 10px !important; padding: 4px 0 !important; white-space: nowrap; overflow: hidden; padding-bottom: 12px !important; }
   .mcd-card--gig .mcd-3hc-stamp-wrap { max-width: 130px !important; }
   .mcd-card--gig .mcd-3hc-stamp-wrap .mcd-3hc-stamp { width: 120px !important; }
@@ -638,5 +638,12 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
 @media (max-width: 1023px) {
   .mcd-stamp-side {
     display: none;
+  }
+}
+
+/* V254: Hide QR code box on mobile (no need to scan your own phone screen) */
+@media (max-width: 768px) {
+  .mcd-qr-box {
+    display: none !important;
   }
 }
