@@ -1,4 +1,4 @@
-/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V258) */
+/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V260) */
 
 /* === FONTS === */
 @font-face {
@@ -351,14 +351,16 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   .mcd-follow-heading { margin: 0 auto 10px auto !important; font-size: 12.5px !important; padding: 3px 10px !important; }
   #mcd-player { bottom: 0; right: 0; left: 0; width: 100%; max-width: 100%; border-radius: 8px 8px 0 0; transform: translateY(110%); visibility: hidden; pointer-events: none; padding-bottom: env(safe-area-inset-bottom, 0px); box-shadow: 0 -4px 0 #050505; }
   #mcd-player.show { visibility: visible !important; transform: none !important; pointer-events: auto !important; }
-  #mcd-player .mcd-player-head { padding: 7px 10px; }
-  #mcd-player .mcd-player-head-top { width: 100%; flex-wrap: nowrap; justify-content: space-between; align-items: center; gap: 6px; }
-  #mcd-player .mcd-player-brand { flex: 1 1 auto; min-width: 0; flex-wrap: nowrap; gap: 5px; }
-  #mcd-player .mcd-player-dot { width: 10px; height: 10px; }
-  #mcd-player .mcd-player-brand-text { font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
-  #mcd-player .mcd-player-controls { flex: 0 0 auto; width: auto; display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; }
-  #mcd-player #mcd-next, #mcd-player #mcd-eject { flex: 0 0 auto; font-size: 10.5px; padding: 4px 7px; height: 26px; box-shadow: 2px 2px 0 #050505; box-sizing: border-box; white-space: nowrap; }
-  body:has(#mcd-player.show) { padding-bottom: 165px !important; }
+  #mcd-player .mcd-player-head { padding: 12px 12px; }
+  #mcd-player .mcd-player-head-top { width: 100%; flex-wrap: nowrap; justify-content: space-between; align-items: center; gap: 8px; }
+  #mcd-player .mcd-player-brand { flex: 1 1 auto; min-width: 0; flex-wrap: nowrap; gap: 6px; }
+  #mcd-player .mcd-player-dot { width: 11px; height: 11px; }
+  #mcd-player .mcd-player-brand-text { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; }
+  #mcd-player .mcd-player-controls { flex: 0 0 auto; width: auto; display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; }
+  #mcd-player #mcd-next, #mcd-player #mcd-eject { flex: 0 0 auto; font-size: 11.5px; padding: 6px 10px; height: 32px; box-shadow: 2px 2px 0 #050505; box-sizing: border-box; white-space: nowrap; }
+  #mcd-player .mcd-player-marquee { height: 34px; padding: 0 10px; }
+  #mcd-player .mcd-player-vu { height: 8px; }
+  body:has(#mcd-player.show), body.mcd-player-open { padding-bottom: 190px !important; }
 }
 
 @media (max-width: 599px) {
@@ -451,9 +453,9 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   }
 }
 @media (max-width: 390px) {
-  #mcd-player .mcd-player-head { padding: 6px 8px; }
-  #mcd-player .mcd-player-brand-text { font-size: 10px; }
-  #mcd-player #mcd-next, #mcd-player #mcd-eject { font-size: 10px; padding: 3px 6px; height: 24px; }
+  #mcd-player .mcd-player-head { padding: 10px 10px; }
+  #mcd-player .mcd-player-brand-text { font-size: 11px; }
+  #mcd-player #mcd-next, #mcd-player #mcd-eject { font-size: 10.5px; padding: 5px 8px; height: 30px; }
 }
 
 /* V247: Blocked Mixcloud widget fallback + IG/FB in-app browser tip */

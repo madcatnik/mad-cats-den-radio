@@ -547,7 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fallbackReloadSameTarget();
   }
 
-  // V259: Manual NEXT TAPE uses shuffle-bag + direct iframe src swap so Mixcloud can't silently ignore widget.load().
+  // V260: Manual NEXT TAPE uses shuffle-bag + widget.load() when ready (keeps mobile autoplay unlocked), with iframe src fallback.
   function playNext(autoplay){
     const nextIdx = pickNextIdx();
     const nTape = TAPES[nextIdx];
@@ -555,6 +555,27 @@ document.addEventListener('DOMContentLoaded', () => {
     pendingPlay = false;
     if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; }
     lastSwitchAt = Date.now();
+    if (widget && widgetReady && widget.load && autoplay) {
+      openPlayer();
+      currentIdx = nextIdx; currentTape = nTape;
+      stopPosTimer();
+      lastKnownPos = 0; pendingSeek = 0; seekRetryCount = 0; tapeDuration = 0;
+      try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
+      try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
+      isPlaying = true; setMarquee(); startPosTimer();
+      loadedTapeId = nTape.id;
+      const fallbackReload = () => {
+        widget = null; widgetReady = false; isBinding = false;
+        if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true));
+      };
+      try {
+        const r = widget.load(nTape.feed, true);
+        if (r && r.then) r.then(()=>{}).catch(fallbackReload);
+      } catch(e) {
+        fallbackReload();
+      }
+      return;
+    }
     currentIdx = nextIdx; currentTape = nTape;
     stopPosTimer();
     lastKnownPos = 0; pendingSeek = 0; seekRetryCount = 0; tapeDuration = 0;
