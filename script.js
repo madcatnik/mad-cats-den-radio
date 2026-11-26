@@ -481,11 +481,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, false));
   }
 
-  // V208 auto-next: use Widget load(feed, true) so it keeps playing without a click.
-  // Iframe reload with autoplay=1 gets blocked when there is no click, load() does not.
+  // V259 shuffle-bag: play every tape once before repeating; scales automatically as TAPES grows.
+  let shuffleBag = [];
+  function refillShuffleBag(excludeIdx){
+    shuffleBag = [];
+    for (let i = 0; i < TAPES.length; i++) {
+      if (i !== excludeIdx) shuffleBag.push(i);
+    }
+    for (let i = shuffleBag.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = shuffleBag[i];
+      shuffleBag[i] = shuffleBag[j];
+      shuffleBag[j] = tmp;
+    }
+  }
   function pickNextIdx(){
-    let n = currentIdx;
-    if (TAPES.length > 1) { do { n = Math.floor(Math.random() * TAPES.length); } while (n === currentIdx); }
+    if (TAPES.length <= 1) return currentIdx;
+    if (!shuffleBag.length) refillShuffleBag(currentIdx);
+    let n = shuffleBag.pop();
+    if (n === currentIdx) {
+      if (!shuffleBag.length) refillShuffleBag(currentIdx);
+      n = shuffleBag.pop();
+    }
     return n;
   }
   function autoNext(){
@@ -530,30 +547,17 @@ document.addEventListener('DOMContentLoaded', () => {
     fallbackReloadSameTarget();
   }
 
+  // V259: Manual NEXT TAPE uses shuffle-bag + direct iframe src swap so Mixcloud can't silently ignore widget.load().
   function playNext(autoplay){
-    let nextIdx = currentIdx;
-    if (TAPES.length > 1) {
-      do { nextIdx = Math.floor(Math.random() * TAPES.length); } while (nextIdx === currentIdx);
-    }
-    isAutoNexting = false;
-    lastSwitchAt = Date.now();
+    const nextIdx = pickNextIdx();
     const nTape = TAPES[nextIdx];
-    // V223: If widget ready, use load() — openPlayer BEFORE load, not after, so bindWidget doesn't make a second widget and kill the load.
-    if (widget && widgetReady && widget.load && autoplay) {
-      openPlayer();
-      currentIdx = nextIdx; currentTape = nTape;
-      stopPosTimer();
-      lastKnownPos = 0; pendingSeek = 0; tapeDuration = 0;
-      try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
-      try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
-      isPlaying = true; setMarquee(); startPosTimer();
-      loadedTapeId = nTape.id;
-      try { const r = widget.load(nTape.feed, true); if (r && r.then) r.then(()=>{}).catch(()=>{ /* load failed, fall back to reload */ widget = null; widgetReady = false; isBinding = false; if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true)); }); } catch(e){ widget = null; widgetReady = false; isBinding = false; if (iframe) iframe.setAttribute('src', tapeSrc(currentTape, true)); }
-      return;
-    }
+    isAutoNexting = false;
+    pendingPlay = false;
+    if (playFallbackTimer) { clearTimeout(playFallbackTimer); playFallbackTimer = null; }
+    lastSwitchAt = Date.now();
     currentIdx = nextIdx; currentTape = nTape;
     stopPosTimer();
-    lastKnownPos = 0; pendingSeek = 0; tapeDuration = 0;
+    lastKnownPos = 0; pendingSeek = 0; seekRetryCount = 0; tapeDuration = 0;
     try { localStorage.setItem('mcd_fresh_tape_pos', '0'); } catch(e){}
     try { localStorage.setItem('mcd_fresh_tape_id', currentTape.id); localStorage.setItem('mcd_fresh_paused_at', '0'); } catch(e){}
     isPlaying = !!autoplay; setMarquee();
