@@ -1,4 +1,4 @@
-/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V260) */
+/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V261) */
 
 /* === FONTS === */
 @font-face {
@@ -59,12 +59,13 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 .mcd-h-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: flex; align-items: center; gap: 6px; white-space: nowrap; z-index: 3; }
 .mcd-h-right { display: flex; align-items: center; gap: 12px; margin-left: auto; flex-shrink: 0; z-index: 3; }
 .mcd-live-dot { width: 8px; height: 8px; background: var(--mint); border-radius: 50%; display: inline-block; box-shadow: 0 0 0 2px var(--black), 0 0 8px rgba(155,219,193,0.6); animation: liveDotPulseMint 1.8s ease-in-out infinite; }
-#mcd-h-fire { background: var(--cream); color: var(--brick); border: 3px solid var(--black); border-radius: 14px; box-shadow: 3px 3px 0 var(--black); font-family: 'Alfa Slab One',cursive; font-size: 17px; padding: 10px 18px; transform: rotate(1deg); white-space: nowrap; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-.mcd-play-symbol { display: inline-block; font-size: 22px; line-height: 1; transform: translateY(1px); vertical-align: -1px; }
+#mcd-h-fire { background: var(--ink); color: var(--cream); border: 3px solid var(--black); border-radius: 14px; box-shadow: 4px 4px 0 var(--brick); font-family: 'Alfa Slab One',cursive; font-size: 17px; padding: 10px 18px; transform: rotate(1deg); white-space: nowrap; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.mcd-play-symbol { display: inline-block; font-size: 22px; line-height: 1; transform: translateY(1px); vertical-align: -1px; color: var(--brick); }
 .mcd-fire-label { display: inline-block; line-height: 1; }
-#mcd-h-fire:hover { transform: rotate(1deg) translate(-1px,-1px); box-shadow: 4px 4px 0 var(--black); }
-#mcd-h-fire:active { transform: rotate(1deg) translate(2px,2px) !important; box-shadow: 0 0 0 var(--black) !important; }
-#mcd-h-fire.is-playing { background: var(--brick); color: var(--cream); animation: patchWobble 4.5s ease-in-out infinite; }
+#mcd-h-fire:hover { transform: rotate(1deg) translate(-1px,-1px); box-shadow: 5px 5px 0 var(--brick); }
+#mcd-h-fire:active { transform: rotate(1deg) translate(2px,2px) !important; box-shadow: 0 0 0 var(--brick) !important; }
+#mcd-h-fire.is-playing { background: var(--brick); color: var(--cream); box-shadow: 3px 3px 0 var(--black); animation: patchWobble 4.5s ease-in-out infinite; }
+#mcd-h-fire.is-playing:hover { box-shadow: 4px 4px 0 var(--black); }
 #mcd-hero { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 56px; max-width: 1200px; margin: 12px auto 10px; padding: 0 32px; height: 400px; min-height: 400px; box-sizing: border-box; overflow: visible; position: relative; }
 .mcd-hero-mascot-wrap { position: relative; flex: 0 0 auto; width: 340px; height: 340px; display: flex; align-items: center; justify-content: center; transform: rotate(-0.7deg); overflow: visible; }
 .mcd-hero-glow { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(22px); opacity: 0.32; z-index: 0; }
@@ -321,12 +322,13 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   .mcd-card--gig .mcd-torn .mcd-card-title { font-size: 17px !important; white-space: nowrap !important; line-height: 1.1 !important; }
   .mcd-h-center { display: none !important; }
   .mcd-h-right { margin-left: auto; width: 100%; margin: 0; justify-content: center; gap: 0; display: contents !important; }
-  #mcd-h-fire { margin: 0 auto; font-variant-emoji: text; background: #CC2D30 !important; color: #F0F0DA !important; border: 3px solid #050505 !important; box-shadow: 4px 4px 0 #050505 !important; order: 4 !important; flex: 0 0 100% !important; width: 100% !important; max-width: 100% !important; font-size: 20px !important; padding: 14px 18px !important; text-align: center !important; transform: none !important; }
+  #mcd-h-fire { margin: 0 auto; font-variant-emoji: text; background: #10120F !important; color: #F0F0DA !important; border: 3px solid #050505 !important; box-shadow: 4px 4px 0 #CC2D30 !important; order: 4 !important; flex: 0 0 100% !important; width: 100% !important; max-width: 100% !important; font-size: 20px !important; padding: 14px 18px !important; text-align: center !important; transform: none !important; }
+  #mcd-h-fire.is-playing { background: #CC2D30 !important; color: #F0F0DA !important; box-shadow: 4px 4px 0 #050505 !important; }
   #mcd-header-player.is-playing .mcd-stamp-logo, #mcd-header-player.is-playing .mcd-live-dot, #mcd-header-player.is-playing .mcd-transmitting-txt { display: none !important; }
   #mcd-header-player.is-playing #mcd-h-fire { flex: 0 0 100% !important; }
   .mcd-live-dot { display: inline-block !important; order: 2 !important; margin-left: auto !important; align-self: center !important; margin-top: 1px !important; }
   .mcd-transmitting-txt { order: 3 !important; font-size: 11px !important; letter-spacing: 0.12em !important; align-self: center !important; display: inline-flex !important; align-items: center !important; line-height: 1.2 !important; padding-top: 1px !important; }
-  #mcd-h-fire .mcd-play-symbol { color: #F0F0DA !important; font-size: 19px !important; }
+  #mcd-h-fire .mcd-play-symbol { color: #CC2D30 !important; font-size: 19px !important; }
   #mcd-header-player { width: calc(100% - 8px); top: 4px; min-height: auto; display: flex !important; flex-wrap: wrap !important; align-items: center !important; gap: 6px !important; padding: 8px 12px 10px !important; justify-content: center !important; }
   .mcd-stamp-logo { font-size: 14px; max-width: 60%; display: inline-flex !important; order: 1 !important; flex: 0 1 auto !important; align-self: center !important; background: transparent !important; border: none !important; box-shadow: none !important; transform: none !important; padding: 0 !important; margin: 0 auto !important; justify-content: center !important; width: 100% !important; }
   .mcd-stamp-logo .mcd-text { font-size: 14px !important; color: #050505 !important; }
@@ -414,9 +416,9 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
 
 /* Ko-fi tip-jar sub-line (V238) */
 .mcd-support-row--den.mcd-row-kofi .mcd-s-pill--den.mcd-kofi { flex-direction: column !important; gap: 6px !important; }
-.mcd-kofi-sub { display: block !important; font-family: 'IBM Plex Mono', monospace !important; font-style: normal !important; font-size: 13px !important; font-weight: 700 !important; letter-spacing: 0.14em !important; color: var(--mint) !important; text-shadow: 1px 1px 0 var(--black) !important; opacity: 0.95; }
+.mcd-kofi-sub { display: block !important; font-family: 'Barlow Condensed', sans-serif !important; font-style: normal !important; font-size: 16px !important; font-weight: 800 !important; letter-spacing: 0.14em !important; color: var(--mint) !important; text-shadow: 1px 1px 0 var(--black) !important; opacity: 0.96; }
 @media (max-width: 768px) {
-  .mcd-kofi-sub { font-size: 11px !important; letter-spacing: 0.1em !important; }
+  .mcd-kofi-sub { font-size: 13.5px !important; letter-spacing: 0.11em !important; }
 }
 
 /* Option 1: Dynamic ON AIR red pill + pulsing red dot when playing (V242) */
@@ -511,18 +513,19 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   #mcd-player .mcd-inapp-tip { font-size: 8.5px; }
 }
 
-/* V250: Styled responsive QR code box inside Support Block */
+/* V261: Compact QR code stamp inside Support Block */
 .mcd-qr-box {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
+  width: fit-content;
   max-width: 100%;
   background: var(--cream);
   color: var(--black);
   border: 3px solid var(--black);
   border-radius: 12px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   margin: 0 auto 14px auto;
   box-shadow: 4px 4px 0 var(--mint);
   transform: rotate(0.4deg);
@@ -563,8 +566,8 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
 }
 .mcd-qr-svg {
   display: block;
-  width: 84px;
-  height: 84px;
+  width: 68px;
+  height: 68px;
 }
 .mcd-qr-meta {
   display: flex;
