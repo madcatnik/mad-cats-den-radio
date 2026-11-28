@@ -1,4 +1,4 @@
-/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V266) */
+/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V267) */
 
 /* === FONTS === */
 @font-face {
@@ -315,9 +315,6 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   .mcd-card--gig .mcd-card-head .mcd-date-pill { align-self: center !important; white-space: nowrap !important; }
   .mcd-trouble-desktop { display: none !important; }
   .mcd-trouble-mobile { display: block !important; }
-  .mcd-footer-line2-a { display: block !important; }
-  .mcd-footer-line2-sep { display: none !important; }
-  .mcd-footer-line2-b { display: block !important; margin-top: 4px !important; }
   .mcd-trouble-line1, .mcd-trouble-line2 { display: block !important; white-space: nowrap !important; text-align: center !important; }
   .mcd-card--gig .mcd-torn .mcd-card-title { font-size: 17px !important; white-space: nowrap !important; line-height: 1.1 !important; }
   .mcd-h-center { display: none !important; }
@@ -715,14 +712,11 @@ a:focus-visible, button:focus-visible {
   .mcd-card--zine .mcd-genre-tags {
     font-size: 11.5px !important;
   }
-  #mcd-footer .mcd-footer-line2 {
-    font-size: 10.5px !important;
-  }
 }
 
-/* === V264 REFINEMENTS === */
+/* === V267 FINAL POLISH (CONSOLIDATED) === */
 
-/* #1: Draggable player grab cursor on desktop */
+/* Desktop-only draggable player grab cursor */
 @media (min-width: 769px) {
   #mcd-player .mcd-player-head {
     cursor: grab;
@@ -733,24 +727,20 @@ a:focus-visible, button:focus-visible {
   }
 }
 
-/* #6: COMING SOON! +1px on desktop */
+/* COMING SOON! +1px on desktop */
 .mcd-head-desktop .mcd-coming {
   font-size: 25px !important;
 }
 
-/* #5: Hide skull in mobile zine intro */
-@media (max-width: 768px) {
-  .mcd-zine-skull {
-    display: none !important;
-  }
-}
-
-/* #11: Full-Width Gig Ticket Stub QR card */
+/* Full-Width Gig Ticket Stub QR card + Cat Breakout */
 .mcd-qr-box {
+  position: relative;
+  overflow: visible;
   width: 100%;
   justify-content: flex-start;
   gap: 0;
-  padding: 10px 14px;
+  padding: 12px 116px 12px 14px;
+  margin: 18px auto 22px auto;
   transform: rotate(0.3deg);
 }
 .mcd-qr-frame {
@@ -772,30 +762,6 @@ a:focus-visible, button:focus-visible {
   text-transform: uppercase;
   line-height: 1.2;
   margin-top: 2px;
-}
-
-/* #14: Mobile footer — lock cleanly to 3 rows (1 pill + 2 mono lines) */
-@media (max-width: 768px) {
-  #mcd-footer .mcd-footer-line2 {
-    max-width: 100% !important;
-    width: 100% !important;
-    font-size: clamp(8.5px, 2.5vw, 9.5px) !important;
-    letter-spacing: 0.03em !important;
-    line-height: 1.55 !important;
-    padding: 0 4px !important;
-  }
-  #mcd-footer .mcd-footer-line2-a,
-  #mcd-footer .mcd-footer-line2-b {
-    white-space: nowrap !important;
-  }
-}
-
-/* === V265: QR TICKET STUB CAT BREAKOUT === */
-.mcd-qr-box {
-  position: relative;
-  overflow: visible;
-  padding: 12px 116px 12px 14px;
-  margin: 18px auto 22px auto;
 }
 .mcd-qr-cat {
   position: absolute;
@@ -825,7 +791,7 @@ a:focus-visible, button:focus-visible {
   z-index: 2;
 }
 
-/* === V266: MARQUEE OPTION A + TALLER MOBILE PLAYER === */
+/* Marquee Option A: Brick-Red Tape Title + Muted Slogans */
 #mcd-player .mcd-mq-title {
   color: #CC2D30;
   padding-right: 0 !important;
@@ -835,7 +801,26 @@ a:focus-visible, button:focus-visible {
   padding-right: 0 !important;
 }
 
+/* Mobile polish: hide zine skull, 2-row footer, taller player deck */
 @media (max-width: 768px) {
+  .mcd-zine-skull {
+    display: none !important;
+  }
+  #mcd-footer .mcd-footer-line2 {
+    max-width: 100% !important;
+    width: 100% !important;
+    font-size: clamp(7.8px, 2.35vw, 9.5px) !important;
+    letter-spacing: 0.03em !important;
+    line-height: 1.5 !important;
+    padding: 0 4px !important;
+    white-space: nowrap !important;
+  }
+  #mcd-footer .mcd-footer-line2-a,
+  #mcd-footer .mcd-footer-line2-sep,
+  #mcd-footer .mcd-footer-line2-b {
+    display: inline !important;
+    white-space: nowrap !important;
+  }
   #mcd-player .mcd-player-head {
     padding: 16px 12px;
   }
@@ -852,7 +837,7 @@ a:focus-visible, button:focus-visible {
   }
   body:has(#mcd-player.show),
   body.mcd-player-open {
-    padding-bottom: 210px !important;
+    padding-bottom: calc(210px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 @media (max-width: 390px) {
