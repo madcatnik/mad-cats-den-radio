@@ -234,8 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (player) player.classList.toggle('is-playing', isPlaying);
     syncFallbackHref();
     if (isPlaying) {
-      const txt = 'NOW SPINNING: ' + currentTape.label + ' • LOW CEILING HIGH VOLUME • JUST BASEMENT SIGNAL';
-      marqueeText.textContent = txt + '  •  ' + txt;
+      const safeLabel = String(currentTape.label || '').replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+      const seg = '<span class="mcd-mq-muted">NOW SPINNING: </span><span class="mcd-mq-title">' + safeLabel + '</span><span class="mcd-mq-muted"> • LOW CEILING HIGH VOLUME • JUST BASEMENT SIGNAL</span>';
+      marqueeText.innerHTML = seg + '<span class="mcd-mq-muted">  •  </span>' + seg;
     } else {
       marqueeText.textContent = HELP_TEXT;
     }
@@ -619,5 +620,72 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('pagehide', persistNow);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') persistNow(); });
 
+  // V264: Desktop-only draggable player (drag by header, ignore buttons)
+  const playerHead = player.querySelector('.mcd-player-head');
+  if (playerHead) {
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+
+    function resetDragOnMobile() {
+      if (window.innerWidth <= 768) {
+        player.style.left = '';
+        player.style.top = '';
+        player.style.right = '';
+        player.style.bottom = '';
+        player.classList.remove('is-dragging');
+        isDragging = false;
+      } else if (player.style.left && player.style.top) {
+        const rect = player.getBoundingClientRect();
+        const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+        const maxTop = Math.max(8, window.innerHeight - rect.height - 8);
+        const clampedLeft = Math.min(Math.max(8, parseFloat(player.style.left)), maxLeft);
+        const clampedTop = Math.min(Math.max(8, parseFloat(player.style.top)), maxTop);
+        player.style.left = clampedLeft + 'px';
+        player.style.top = clampedTop + 'px';
+      }
+    }
+
+    playerHead.addEventListener('pointerdown', (e) => {
+      if (window.innerWidth <= 768) return;
+      if (e.button !== 0) return;
+      if (e.target.closest('button, a, input')) return;
+      const rect = player.getBoundingClientRect();
+      isDragging = true;
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
+      player.style.left = rect.left + 'px';
+      player.style.top = rect.top + 'px';
+      player.style.right = 'auto';
+      player.style.bottom = 'auto';
+      player.classList.add('is-dragging');
+      try { playerHead.setPointerCapture(e.pointerId); } catch(err){}
+      e.preventDefault();
+    });
+
+    playerHead.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const rect = player.getBoundingClientRect();
+      const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+      const maxTop = Math.max(8, window.innerHeight - rect.height - 8);
+      const nextLeft = Math.min(Math.max(8, e.clientX - dragOffsetX), maxLeft);
+      const nextTop = Math.min(Math.max(8, e.clientY - dragOffsetY), maxTop);
+      player.style.left = nextLeft + 'px';
+      player.style.top = nextTop + 'px';
+    });
+
+    function endDrag(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      player.classList.remove('is-dragging');
+      try { if (e && e.pointerId != null) playerHead.releasePointerCapture(e.pointerId); } catch(err){}
+    }
+
+    playerHead.addEventListener('pointerup', endDrag);
+    playerHead.addEventListener('pointercancel', endDrag);
+    window.addEventListener('resize', resetDragOnMobile);
+  }
+
   setMarquee();
 });
+

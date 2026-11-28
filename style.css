@@ -1,4 +1,4 @@
-/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V263) */
+/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V266) */
 
 /* === FONTS === */
 @font-face {
@@ -69,8 +69,8 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 #mcd-hero { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 56px; max-width: 1200px; margin: 12px auto 10px; padding: 0 32px; height: 400px; min-height: 400px; box-sizing: border-box; overflow: visible; position: relative; }
 .mcd-hero-mascot-wrap { position: relative; flex: 0 0 auto; width: 340px; height: 340px; display: flex; align-items: center; justify-content: center; transform: rotate(-0.7deg); overflow: visible; }
 .mcd-hero-glow { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(22px); opacity: 0.32; z-index: 0; }
-.mcd-hero-glow--mint { width: 260px; height: 260px; background: radial-gradient(circle at center, rgba(155,219,193,0.42) 0%, rgba(155,219,193,0.12) 45%, transparent 70%); animation: mcdGlowMint 3.5s ease-in-out infinite; }
-.mcd-hero-glow--brick { width: 360px; height: 360px; background: radial-gradient(circle at center, rgba(204,45,48,0.28) 0%, rgba(204,45,48,0.08) 50%, transparent 72%); animation: mcdGlowBrick 4.2s ease-in-out infinite; }
+.mcd-hero-glow--mint { width: 98%; height: 98%; background: radial-gradient(circle at center, rgba(155,219,193,0.42) 0%, rgba(155,219,193,0.12) 45%, transparent 70%); animation: mcdGlowMint 3.5s ease-in-out infinite; }
+.mcd-hero-glow--brick { width: 114%; height: 114%; background: radial-gradient(circle at center, rgba(204,45,48,0.28) 0%, rgba(204,45,48,0.08) 50%, transparent 72%); animation: mcdGlowBrick 4.2s ease-in-out infinite; }
 .mcd-hero-cat { position: relative; width: 100%; height: 100%; border-radius: 51% 49% 50% 50% / 50% 51% 49% 50%; overflow: hidden; background: #0b0d0b; border: 4px solid var(--brick); box-shadow: 4px 4px 0 var(--black); z-index: 2; }
 .mcd-hero-cat-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.02) contrast(1.05) brightness(1.08); display: block; }
 .mcd-tape { position: absolute; font-family: 'Barlow Condensed',sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 0.08em; background: var(--cream); color: var(--ink); border: 2px solid var(--black); padding: 8px 14px; box-shadow: 3px 3px 0 var(--black); z-index: 5; white-space: nowrap; line-height: 1; text-transform: uppercase; transition: transform 0.15s ease, z-index 0s; }
@@ -147,7 +147,7 @@ body::after { content: ""; position: fixed; inset: 0; width: 100%; height: 100%;
 .mcd-card--zine .mcd-grid-2 > div { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 10px !important; padding: 10px 12px !important; min-height: 0 !important; text-align: left !important; }
 .mcd-card--zine .mcd-grid-2 > div > div:first-child { flex: 1 1 auto !important; text-align: left !important; }
 .mcd-card--zine .mcd-grid-2 > div .mcd-s-pill--den { flex-shrink: 0 !important; margin: 0 !important; align-self: center !important; }
-.mcd-card--zine .mcd-manifesto { margin: 0 !important; color: var(--brick) !important; font-size: 26px !important; text-shadow: 2px 2px 0 var(--black) !important; }
+.mcd-card--zine .mcd-manifesto { margin: 0 !important; color: var(--brick) !important; font-size: 26.5px !important; text-shadow: 2px 2px 0 var(--black) !important; }
 #mcd-footer, .mcd-footer--full { border: none !important; border-top: none !important; border-bottom: none !important; box-shadow: none !important; outline: none !important; background: transparent !important; }
 #mcd-footer div, .mcd-footer--full div { border: none !important; box-shadow: none !important; outline: none !important; background: transparent !important; transform: none !important; }
 .mcd-footer--full { width: 100% !important; max-width: none !important; background: transparent !important; border: none !important; padding: 12px 16px !important; text-align: center; display: block; }
@@ -203,7 +203,7 @@ body { overscroll-behavior-y: contain; background: radial-gradient(ellipse at 50
 .mcd-card--gig .mcd-card-note { margin-top: 0 !important; padding: 8px 12px 4px 12px !important; }
 .mcd-card--gig .mcd-card-body > div:last-child { padding-top: 8px !important; justify-content: flex-start !important; }
 .mcd-card--zine .mcd-zine-intro { display: flex; flex-direction: column; margin: 0 !important; padding: 0 !important; gap: 6px !important; text-align: center !important; }
-.mcd-card--zine .mcd-card-text { margin: 0 !important; line-height: 1.65 !important; font-size: 12px !important; text-align: center !important; }
+.mcd-card--zine .mcd-card-text { margin: 0 !important; line-height: 1.65 !important; font-size: 11.5px !important; text-align: center !important; }
 .mcd-brewing { display: inline-flex; align-items: center; background: var(--mint) !important; color: #050505 !important; border: 2.5px solid #050505 !important; box-shadow: 3px 3px 0 #050505 !important; font-family: 'Barlow Condensed',sans-serif; font-weight: 800; letter-spacing: 0.14em; transform: rotate(-2deg); white-space: nowrap; align-self: center !important; margin: 2px auto 8px auto !important; font-size: 16px !important; padding: 6px 14px !important; }
 .mcd-follow-heading .mcd-follow-star { color: var(--brick) !important; margin-left: 2px !important; }
 .mcd-follow-heading { margin-bottom: 10px; border-top: none !important; align-items: center !important; align-self: center !important; background: var(--mint) !important; color: #050505 !important; border: 2.5px solid #050505 !important; box-shadow: 3px 3px 0 #050505 !important; font-family: 'Barlow Condensed', sans-serif !important; font-weight: 800 !important; letter-spacing: 0.14em !important; transform: rotate(-2deg) !important; margin: 0 auto 10px auto !important; white-space: nowrap !important; text-align: center !important; display: flex !important; width: fit-content !important; max-width: 100% !important; justify-content: center !important; margin-left: auto !important; margin-right: auto !important; font-size: 14px !important; padding: 3px 10px !important; }
@@ -215,7 +215,7 @@ html, body { margin: 0; padding: 0; background: var(--ink); min-height: 100vh; m
 #mcd-player .mcd-player-head-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 #mcd-player .mcd-player-head { background: #F0F0DA; border-bottom: 3px solid #050505; padding: 10px 14px; }
 #mcd-player .mcd-player-brand { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
-#mcd-player .mcd-player-dot { width: 12px; height: 12px; border-radius: 50%; background: #9BDBC1; border: 2px solid #050505; box-sizing: border-box; flex-shrink: 0; }
+#mcd-player .mcd-player-dot { width: 14px; height: 14px; border-radius: 50%; background: #9BDBC1; border: 2px solid #050505; box-sizing: border-box; flex-shrink: 0; }
 #mcd-player .mcd-player-brand-text { font-family: 'Alfa Slab One',cursive; font-style: italic; font-size: 14px; color: #050505; letter-spacing: 0.04em; white-space: nowrap; }
 #mcd-player .mcd-player-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
 #mcd-player #mcd-next, #mcd-player #mcd-eject { background: #F0F0DA; color: #050505; border: 2px solid #050505; border-radius: 4px; padding: 5px 10px; font-family: 'Barlow Condensed',sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 0.04em; cursor: pointer; box-shadow: 3px 3px 0 #050505; white-space: nowrap; height: 28px; display: inline-flex; align-items: center; justify-content: center; font-variant-emoji: text; }
@@ -224,13 +224,13 @@ html, body { margin: 0; padding: 0; background: var(--ink); min-height: 100vh; m
 #mcd-player .mcd-player-marquee-track { flex: 1 1 auto; min-width: 0; overflow: hidden; display: flex; align-items: center; }
 #mcd-player .mcd-player-marquee-inner { display: block; white-space: nowrap; animation: none; text-align: left; overflow: hidden; text-overflow: ellipsis; }
 #mcd-player.is-playing .mcd-player-marquee-inner { display: inline-block; text-align: left; overflow: visible; animation: mcd-fresh-marquee 22s linear infinite; }
-#mcd-player .mcd-player-marquee-inner span { font-family: 'Barlow Condensed',sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 0.06em; color: #050505; white-space: nowrap; padding-right: 40px; }
+#mcd-player .mcd-player-marquee-inner > span { font-family: 'Barlow Condensed',sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 0.06em; color: #050505; white-space: nowrap; padding-right: 40px; }
 #mcd-player .mcd-player-vu { background: #050505; height: 6px; overflow: hidden; display: flex; align-items: center; border-bottom: 2px solid #050505; }
 #mcd-player .mcd-player-vu .mcd-vu-bar { display: block; height: 100%; width: 100%; background: repeating-linear-gradient(90deg,#9BDBC1 0 14px,transparent 14px 24px); background-size: 24px 100%; background-position: 0 0; }
 #mcd-player.is-playing .mcd-player-vu .mcd-vu-bar { animation: mcd-vu-dash 2.5s linear infinite; }
 #mcd-player .mcd-mixcloud-wrap { position: relative; width: 100%; height: 60px; min-height: 60px; background: #000; overflow: visible; }
 #mcd-player iframe { width: 100%; height: 60px; min-height: 60px; border: 0; display: block; background: #000; }
-#mcd-player .mcd-mc-play-hint { flex-shrink: 0; background: #CC2D30; color: #F0F0DA; border: 2px solid #050505; border-radius: 4px; box-shadow: 2px 2px 0 #050505; font-family: 'Barlow Condensed',sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.08em; line-height: 1; padding: 3px 7px; white-space: nowrap; pointer-events: none; animation: mcdPlayHintPulse 1.5s ease-in-out infinite; }
+#mcd-player .mcd-mc-play-hint { flex-shrink: 0; background: #CC2D30; color: #F0F0DA; border: 2px solid #050505; border-radius: 4px; box-shadow: 2px 2px 0 #050505; font-family: 'Barlow Condensed',sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 0.08em; line-height: 1; padding: 4px 9px; white-space: nowrap; pointer-events: none; animation: mcdPlayHintPulse 1.5s ease-in-out infinite; }
 #mcd-player.is-playing .mcd-mc-play-hint { display: none; }
 body:has(#mcd-player.show) { padding-bottom: 170px !important; }
 body.mcd-player-open { padding-bottom: 170px !important; }
@@ -337,7 +337,7 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   .mcd-live-dot, .mcd-transmitting-txt { display: none !important; }
   .mcd-hero-mascot-wrap .mcd-tape--bottom { left: 8px !important; bottom: -6px !important; transform: rotate(-1deg) !important; }
   .den-line { font-size: 90px !important; }
-  .mcd-head-row2 .mcd-coming { white-space: nowrap !important; font-size: 12px !important; }
+  .mcd-head-row2 .mcd-coming { white-space: nowrap !important; font-size: 13px !important; }
   .mcd-head-row2 .mcd-card-pill { white-space: nowrap !important; font-size: 11px !important; opacity: 0.92 !important; }
   .mcd-card--zine .mcd-card-head.mcd-head-mobile { gap: 10px !important; background: #CC2D30 !important; padding: 14px 12px !important; border-bottom: 3px solid #050505 !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; }
   .mcd-head-row1 { font-family: 'Alfa Slab One',cursive !important; font-style: italic !important; font-size: 20px !important; line-height: 1.1 !important; color: #F0F0DA !important; text-shadow: 2px 2px 0 #050505 !important; order: 1 !important; text-align: center !important; }
@@ -356,7 +356,7 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   #mcd-player .mcd-player-head { padding: 12px 12px; }
   #mcd-player .mcd-player-head-top { width: 100%; flex-wrap: nowrap; justify-content: space-between; align-items: center; gap: 8px; }
   #mcd-player .mcd-player-brand { flex: 1 1 auto; min-width: 0; flex-wrap: nowrap; gap: 6px; }
-  #mcd-player .mcd-player-dot { width: 11px; height: 11px; }
+  #mcd-player .mcd-player-dot { width: 13px; height: 13px; }
   #mcd-player .mcd-player-brand-text { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; }
   #mcd-player .mcd-player-controls { flex: 0 0 auto; width: auto; display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; }
   #mcd-player #mcd-next, #mcd-player #mcd-eject { flex: 0 0 auto; font-size: 11.5px; padding: 6px 10px; height: 32px; box-shadow: 2px 2px 0 #050505; box-sizing: border-box; white-space: nowrap; }
@@ -390,7 +390,7 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   .mcd-support-row--den.mcd-row-social { border-top: none !important; flex-wrap: wrap !important; gap: 12px !important; }
   .mcd-support-row--den.mcd-row-social .mcd-s-pill--den { flex: 1 1 30% !important; font-size: 10px !important; padding: 7px 2px !important; }
   .mcd-3hc-stamp { width: 95px !important; height: auto; display: inline-block; background: transparent !important; border: none !important; padding: 0 !important; transform: rotate(-4deg); box-shadow: none !important; }
-  .mcd-card--zine .mcd-manifesto { font-size: 20px !important; line-height: 1.15 !important; text-wrap: balance !important; text-align: center !important; display: block !important; max-width: 280px !important; margin: 0 auto !important; }
+  .mcd-card--zine .mcd-manifesto { font-size: 20.5px !important; line-height: 1.15 !important; text-wrap: balance !important; text-align: center !important; display: block !important; max-width: 280px !important; margin: 0 auto !important; }
   .mcd-footer-line1 { font-size: 11px !important; }
   .mcd-footer-line2 { font-size: 9px !important; }
   .mcd-poster-wrap { width: 88% !important; max-width: 340px !important; }
@@ -432,10 +432,10 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
   box-shadow: 2px 2px 0 #050505;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 800;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.1em;
   line-height: 1;
-  padding: 3px 7px;
+  padding: 4px 9px;
   white-space: nowrap;
   animation: mcdPlayHintPulse 1.8s ease-in-out infinite;
 }
@@ -448,8 +448,8 @@ body.mcd-player-open #mcd-footer { margin-bottom: 10px !important; }
 }
 @media (max-width: 768px) {
   #mcd-player .mcd-on-air-pill {
-    font-size: 8.5px;
-    padding: 2px 5px;
+    font-size: 10px;
+    padding: 3px 6px;
     letter-spacing: 0.06em;
     flex-shrink: 0;
   }
@@ -717,5 +717,150 @@ a:focus-visible, button:focus-visible {
   }
   #mcd-footer .mcd-footer-line2 {
     font-size: 10.5px !important;
+  }
+}
+
+/* === V264 REFINEMENTS === */
+
+/* #1: Draggable player grab cursor on desktop */
+@media (min-width: 769px) {
+  #mcd-player .mcd-player-head {
+    cursor: grab;
+    user-select: none;
+  }
+  #mcd-player.is-dragging .mcd-player-head {
+    cursor: grabbing;
+  }
+}
+
+/* #6: COMING SOON! +1px on desktop */
+.mcd-head-desktop .mcd-coming {
+  font-size: 25px !important;
+}
+
+/* #5: Hide skull in mobile zine intro */
+@media (max-width: 768px) {
+  .mcd-zine-skull {
+    display: none !important;
+  }
+}
+
+/* #11: Full-Width Gig Ticket Stub QR card */
+.mcd-qr-box {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 10px 14px;
+  transform: rotate(0.3deg);
+}
+.mcd-qr-frame {
+  position: relative;
+  margin-right: 14px;
+}
+.mcd-qr-meta {
+  flex: 1 1 auto;
+  padding-left: 14px;
+  border-left: 2px dashed rgba(5, 5, 5, 0.38);
+  gap: 3px;
+}
+.mcd-qr-micro {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--brick);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+/* #14: Mobile footer — lock cleanly to 3 rows (1 pill + 2 mono lines) */
+@media (max-width: 768px) {
+  #mcd-footer .mcd-footer-line2 {
+    max-width: 100% !important;
+    width: 100% !important;
+    font-size: clamp(8.5px, 2.5vw, 9.5px) !important;
+    letter-spacing: 0.03em !important;
+    line-height: 1.55 !important;
+    padding: 0 4px !important;
+  }
+  #mcd-footer .mcd-footer-line2-a,
+  #mcd-footer .mcd-footer-line2-b {
+    white-space: nowrap !important;
+  }
+}
+
+/* === V265: QR TICKET STUB CAT BREAKOUT === */
+.mcd-qr-box {
+  position: relative;
+  overflow: visible;
+  padding: 12px 116px 12px 14px;
+  margin: 18px auto 22px auto;
+}
+.mcd-qr-cat {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%) rotate(2deg);
+  height: 122px;
+  width: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 3;
+  filter: drop-shadow(2px 2px 0 rgba(5, 5, 5, 0.25));
+}
+.mcd-qr-stamp {
+  position: absolute;
+  right: 112px;
+  bottom: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--brick);
+  opacity: 0.85;
+  transform: rotate(-11deg);
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+/* === V266: MARQUEE OPTION A + TALLER MOBILE PLAYER === */
+#mcd-player .mcd-mq-title {
+  color: #CC2D30;
+  padding-right: 0 !important;
+}
+#mcd-player .mcd-mq-muted {
+  color: rgba(5, 5, 5, 0.65);
+  padding-right: 0 !important;
+}
+
+@media (max-width: 768px) {
+  #mcd-player .mcd-player-head {
+    padding: 16px 12px;
+  }
+  #mcd-player #mcd-next,
+  #mcd-player #mcd-eject {
+    height: 36px;
+    padding: 6px 11px;
+  }
+  #mcd-player .mcd-player-marquee {
+    height: 40px;
+  }
+  #mcd-player .mcd-player-vu {
+    height: 10px;
+  }
+  body:has(#mcd-player.show),
+  body.mcd-player-open {
+    padding-bottom: 210px !important;
+  }
+}
+@media (max-width: 390px) {
+  #mcd-player .mcd-player-head {
+    padding: 14px 10px;
+  }
+  #mcd-player #mcd-next,
+  #mcd-player #mcd-eject {
+    height: 34px;
   }
 }
