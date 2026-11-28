@@ -1,4 +1,4 @@
-/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V267) */
+/* MAD CATS DEN — Consolidated & De-bloated Stylesheet (V268) */
 
 /* === FONTS === */
 @font-face {
@@ -719,11 +719,11 @@ a:focus-visible, button:focus-visible {
 /* Desktop-only draggable player grab cursor */
 @media (min-width: 769px) {
   #mcd-player .mcd-player-head {
-    cursor: grab;
+    cursor: move;
     user-select: none;
   }
   #mcd-player.is-dragging .mcd-player-head {
-    cursor: grabbing;
+    cursor: move;
   }
 }
 
@@ -848,4 +848,11 @@ a:focus-visible, button:focus-visible {
   #mcd-player #mcd-eject {
     height: 34px;
   }
+}
+
+/* === V268: INSTANT HERO GLOW ON PLAY === */
+#mcd-hero.is-playing .mcd-hero-glow--mint,
+#mcd-hero.is-playing .mcd-hero-glow--brick {
+  animation: none !important;
+  transition: opacity 0.3s ease-out, transform 0.35s ease-out, filter 0.35s ease-out !important;
 }
